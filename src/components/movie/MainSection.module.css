@@ -1,0 +1,57 @@
+.movie {
+  margin-top: 1.2rem;
+  width: 100%;
+}
+
+.main-movie {
+  width: 100%;
+  height: 250px;
+  position: relative;
+}
+
+.main-movie img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 1rem;
+}
+
+.main-movie-desc {
+  position: absolute;
+  bottom: 1.5rem;
+  left: 1.5rem;
+}
+
+.main-movie-title {
+  font-size: 26px;
+  color: #fff;
+  font-weight: 800;
+  margin-bottom: 0.75rem;
+}
+
+.actions button {
+  cursor: pointer;
+}
+
+.actions .watch {
+  background-color: #d67b30;
+  font-size: 15px;
+  font-weight: 700;
+  border: none;
+  padding: 0.75rem 1rem;
+  margin-right: 10px;
+  color: #fff;
+}
+
+.add {
+  border: none;
+  padding: 0.75rem 1rem;
+  margin-right: 10px;
+  background-color: #fff;
+  color: #d67b30;
+}
+
+.link {
+  color: #fff;
+  text-decoration: none;
+}

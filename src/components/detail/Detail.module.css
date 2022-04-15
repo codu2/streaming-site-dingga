@@ -1,0 +1,164 @@
+.container {
+  padding: 15px;
+  flex: 6;
+  width: 100%;
+}
+
+.content-img {
+  width: 50%;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 20px;
+}
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding-bottom: 30px;
+  border-bottom: 1px solid #d67b30;
+}
+
+.content {
+  padding: 15px;
+  height: 300px;
+  width: 400px;
+  margin-left: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.content-map {
+  display: flex;
+  align-items: center;
+  height: 25px;
+}
+
+.logo-img {
+  min-width: 30px;
+  max-width: 40px;
+  height: 25px;
+  object-fit: contain;
+  margin-right: 7px;
+}
+
+.logo-name {
+  font-size: 13px;
+  color: #333;
+  margin-right: 7px;
+  line-height: 25px;
+}
+
+.title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  color: #333;
+  margin-top: 7px;
+}
+
+.title > span:first-child {
+  font-size: 23px;
+  font-weight: 600;
+}
+
+.title > span:last-child {
+  font-size: 13px;
+  font-weight: 500;
+  color: #d67b30;
+}
+
+.tagline {
+  text-align: center;
+  font-size: 14px;
+  font-style: italic;
+  color: #666;
+}
+
+.genres {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.genre {
+  color: #d67b30;
+  border: 1px solid #d67b30;
+  padding: 5px 10px;
+  border-radius: 16px;
+  font-size: 12px;
+  margin: 5px 10px;
+}
+
+.info {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  font-size: 13px;
+  color: #444;
+  font-weight: 300;
+}
+
+.info > span:last-child {
+  margin-left: 10px;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.actions .watch {
+  background-color: #d67b30;
+  font-size: 15px;
+  font-weight: 700;
+  border: 1px solid #d67b30;
+  padding: 14px 16px;
+  color: #fff;
+  cursor: pointer;
+  width: 80%;
+}
+
+.actions .add {
+  border: none;
+  padding: 14px 16px;
+  background-color: #fff;
+  color: #d67b30;
+  border: 1px solid #d67b30;
+  cursor: pointer;
+  width: 15%;
+}
+
+.desc {
+  width: 100%;
+  padding: 10px 15px;
+}
+
+.directors {
+  display: flex;
+  align-items: center;
+}
+
+.director {
+  display: flex;
+  align-items: center;
+}
+
+.director img {
+  width: 70px;
+  height: 100px;
+  object-fit: cover;
+}
+
+.overview {
+  font-size: 14px;
+  text-align: justify;
+  font-weight: 300;
+  color: #444;
+  line-height: 24px;
+}

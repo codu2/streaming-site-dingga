@@ -1,0 +1,25 @@
+.home {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  padding: 0.75rem 1.3rem;
+  border-right: 1.5px solid rgba(0, 0, 0, 0.3);
+  flex: 4;
+}
+
+.home-tab {
+  list-style: none;
+  display: flex;
+}
+
+.tab {
+  font-size: 14px;
+  color: #9593a4;
+  margin-right: 30px;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.show-tab {
+  color: #5f5d70;
+}
