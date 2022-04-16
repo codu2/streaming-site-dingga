@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 import axios from "axios";
 import useAsync from "../../hooks/use-data";
@@ -26,36 +27,40 @@ const SingleItem = () => {
 
   return (
     <React.Fragment>
-      <div className={classes["item-card"]}>
-        <img
-          src={
-            data[0].backdrop_path
-              ? `https://image.tmdb.org/t/p/w500${data[0].backdrop_path}`
-              : `https://image.tmdb.org/t/p/w500${data[0].poster_path}`
-          }
-          alt="list-item"
-        />
-        {data[0].title || data[0].name ? (
-          <div className={classes["item-title"]}>
-            {data[0].media_type === "movie" ? data[0].title : data[0].name}
-          </div>
-        ) : null}
-      </div>
-      <div className={classes["item-card"]}>
-        <img
-          src={
-            data[1].backdrop_path
-              ? `https://image.tmdb.org/t/p/w500${data[1].backdrop_path}`
-              : `https://image.tmdb.org/t/p/w500${data[1].poster_path}`
-          }
-          alt="list-item"
-        />
-        {data[1].title || data[1].name ? (
-          <div className={classes["item-title"]}>
-            {data[1].media_type === "movie" ? data[1].title : data[1].name}
-          </div>
-        ) : null}
-      </div>
+      <Link to={`/${data[0].media_type}/${data[0].id}`}>
+        <div className={classes["item-card"]}>
+          <img
+            src={
+              data[0].backdrop_path
+                ? `https://image.tmdb.org/t/p/w500${data[0].backdrop_path}`
+                : `https://image.tmdb.org/t/p/w500${data[0].poster_path}`
+            }
+            alt="list-item"
+          />
+          {data[0].title || data[0].name ? (
+            <div className={classes["item-title"]}>
+              {data[0].media_type === "movie" ? data[0].title : data[0].name}
+            </div>
+          ) : null}
+        </div>
+      </Link>
+      <Link to={`/${data[1].media_type}/${data[1].id}`}>
+        <div className={classes["item-card"]}>
+          <img
+            src={
+              data[1].backdrop_path
+                ? `https://image.tmdb.org/t/p/w500${data[1].backdrop_path}`
+                : `https://image.tmdb.org/t/p/w500${data[1].poster_path}`
+            }
+            alt="list-item"
+          />
+          {data[1].title || data[1].name ? (
+            <div className={classes["item-title"]}>
+              {data[1].media_type === "movie" ? data[1].title : data[1].name}
+            </div>
+          ) : null}
+        </div>
+      </Link>
     </React.Fragment>
   );
 };
