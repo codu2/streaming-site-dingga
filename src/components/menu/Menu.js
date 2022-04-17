@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 import classes from "./Menu.module.css";
 import {
@@ -19,12 +19,18 @@ import {
 import { BsFillAwardFill, BsFillCameraVideoFill } from "react-icons/bs";
 
 const Menu = () => {
+  const location = useLocation();
+
+  const menuHome = `${location.pathname === "/" && classes.current}`;
+  const menuTv = `${location.pathname === "/tv" && classes.current}`;
+  const menuMovie = `${location.pathname === "/movie" && classes.current}`;
+
   return (
     <div className={classes.menu}>
       <div className={classes["menu-card"]}>
         <h1>MENU</h1>
         <ul>
-          <li className={classes.current}>
+          <li className={menuHome}>
             <Link to="/" className={classes.link}>
               <AiFillHome />
               Home
@@ -64,13 +70,17 @@ const Menu = () => {
       <div className={classes["menu-card"]}>
         <h1>CATEGORY</h1>
         <ul>
-          <li>
-            <RiSlideshow3Fill />
-            TV-Show
+          <li className={menuTv}>
+            <Link to={`/tv`} className={classes.link}>
+              <RiSlideshow3Fill />
+              TV Show
+            </Link>
           </li>
-          <li>
-            <RiMovie2Fill />
-            Movie
+          <li className={menuMovie}>
+            <Link to={`/movie`} className={classes.link}>
+              <RiMovie2Fill />
+              Movie
+            </Link>
           </li>
           <li>
             <BsFillCameraVideoFill />
