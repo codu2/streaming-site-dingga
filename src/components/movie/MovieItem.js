@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 import axios from "axios";
 import useAsync from "../../hooks/use-data";
@@ -40,17 +41,19 @@ const MovieItem = () => {
       <ul className={classes.items}>
         {data.map((movie) => (
           <li key={movie.id}>
-            <div className={classes["movie-item-card"]}>
-              <img
-                src={
-                  movie.poster_path
-                    ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
-                    : `https://image.tmdb.org/t/p/w500${movie.backdrop_path}`
-                }
-                alt={movie.title}
-              />
-              <div className={classes["movie-title"]}>{movie.title}</div>
-            </div>
+            <Link to={`/movie/${movie.id}`}>
+              <div className={classes["movie-item-card"]}>
+                <img
+                  src={
+                    movie.poster_path
+                      ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+                      : `https://image.tmdb.org/t/p/w500${movie.backdrop_path}`
+                  }
+                  alt={movie.title}
+                />
+                <div className={classes["movie-title"]}>{movie.title}</div>
+              </div>
+            </Link>
           </li>
         ))}
       </ul>

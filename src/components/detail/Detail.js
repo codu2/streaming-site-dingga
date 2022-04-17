@@ -24,7 +24,7 @@ const Detail = () => {
 
   const getSimilar = async () => {
     const response = await axios.get(
-      `https://api.themoviedb.org/3/${media}/${path}/similar?api_key=${API_KEY}&language=en-US&page=1`
+      `https://api.themoviedb.org/3/${media}/${path}/similar?api_key=${API_KEY}&include_adult=false&language=en-US&page=1`
     );
     return response.data.results;
   };
@@ -102,24 +102,30 @@ const Detail = () => {
           {data.tagline !== "" && (
             <div className={classes.tagline}>{`"${data.tagline}"`}</div>
           )}
-          <ul className={classes.genres}>
-            {data.genres.map((genre) => (
-              <li key={genre.id} className={classes.genre}>
-                {genre.name}
-              </li>
-            ))}
-          </ul>
+          {data.genres && (
+            <ul className={classes.genres}>
+              {data.genres.map((genre) => (
+                <li key={genre.id} className={classes.genre}>
+                  <Link to={`/genre/${genre.id}`} className={classes.link}>
+                    {genre.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          )}
           <div className={classes.info}>
             <span>
               {media === "tv"
                 ? `Episode Run Time : ${data.episode_run_time}(min)`
                 : `RunTime : ${data.runtime}(min)`}
             </span>
-            <span>
-              {media === "tv"
-                ? `Languages : ${data.languages.map((language) => language)}`
-                : `Languages : ${data.original_language}`}
-            </span>
+            {data.languages && (
+              <span>
+                {media === "tv"
+                  ? `Languages : ${data.languages.map((language) => language)}`
+                  : `Languages : ${data.original_language}`}
+              </span>
+            )}
           </div>
           <div className={classes.actions}>
             <button className={classes.watch}>Watch Now</button>
@@ -157,37 +163,49 @@ const Detail = () => {
             <div className={classes.similar}>
               <ul className={classes["similar-list"]}>
                 <li className={classes["similar-list-item"]}>
-                  <Link to={`/${media}/${similar.data[0].id}`}>
+                  <Link to={`/${media}/${similarData[0].id}`}>
                     <img
-                      src={`https://image.tmdb.org/t/p/w500${similar.data[0].poster_path}`}
+                      src={`https://image.tmdb.org/t/p/w500${similarData[0].poster_path}`}
                       alt={
                         media === "tv"
-                          ? similar.data[0].name
-                          : similar.data[0].original_title
+                          ? similarData[0].name
+                          : similarData[0].original_title
                       }
                     />
                   </Link>
                 </li>
                 <li className={classes["similar-list-item"]}>
-                  <Link to={`/${media}/${similar.data[1].id}`}>
+                  <Link to={`/${media}/${similarData[1].id}`}>
                     <img
-                      src={`https://image.tmdb.org/t/p/w500${similar.data[1].poster_path}`}
+                      src={`https://image.tmdb.org/t/p/w500${similarData[1].poster_path}`}
                       alt={
                         media === "tv"
-                          ? similar.data[1].name
-                          : similar.data[1].original_title
+                          ? similarData[1].name
+                          : similarData[1].original_title
                       }
                     />
                   </Link>
                 </li>
                 <li className={classes["similar-list-item"]}>
-                  <Link to={`/${media}/${similar.data[2].id}`}>
+                  <Link to={`/${media}/${similarData[2].id}`}>
                     <img
-                      src={`https://image.tmdb.org/t/p/w500${similar.data[2].poster_path}`}
+                      src={`https://image.tmdb.org/t/p/w500${similarData[2].poster_path}`}
                       alt={
                         media === "tv"
-                          ? similar.data[2].name
-                          : similar.data[2].original_title
+                          ? similarData[2].name
+                          : similarData[2].original_title
+                      }
+                    />
+                  </Link>
+                </li>
+                <li className={classes["similar-list-item"]}>
+                  <Link to={`/${media}/${similarData[3].id}`}>
+                    <img
+                      src={`https://image.tmdb.org/t/p/w500${similarData[3].poster_path}`}
+                      alt={
+                        media === "tv"
+                          ? similarData[3].name
+                          : similarData[3].original_title
                       }
                     />
                   </Link>
