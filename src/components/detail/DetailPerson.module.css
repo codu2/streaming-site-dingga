@@ -1,0 +1,101 @@
+.container {
+  padding: 15px;
+  flex: 6;
+  width: 70%;
+}
+
+.wrapper {
+  display: flex;
+  padding: 10px;
+}
+
+.content-img {
+  width: 200px;
+  height: 250px;
+  object-fit: cover;
+}
+
+.content {
+  height: 250px;
+  overflow: hidden;
+  font-weight: 300;
+  color: #333;
+  margin-left: 20px;
+  padding: 10px 0;
+}
+
+.name {
+  font-size: 23px;
+  font-weight: 600;
+  margin-top: 10px;
+}
+
+.birth {
+  display: flex;
+  align-items: center;
+  font-size: 15px;
+  margin: 12px 0 10px;
+}
+
+.birthday {
+  margin-right: 15px;
+}
+
+.biography {
+  font-size: 12px;
+  height: 150px;
+  overflow-y: auto;
+  padding: 5px 12px 5px 0;
+}
+
+.biography::-webkit-scrollbar {
+  width: 7px;
+  background-color: #fff;
+}
+
+.biography::-webkit-scrollbar-thumb {
+  width: 7px;
+  background-color: #f4f4f4;
+}
+
+.cast {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  height: 235px;
+  width: 100%;
+  overflow: hidden;
+  padding-top: 20px;
+  margin-top: 10px;
+  border-top: 1px solid #333;
+}
+
+.cast-item {
+  height: 100%;
+  width: 110px;
+  margin-right: 10px;
+}
+
+.cast-img {
+  width: 110px;
+  height: 150px;
+  object-fit: cover;
+}
+
+.cast-title {
+  font-size: 13px;
+  font-weight: 300;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  padding: 0 5px;
+  cursor: pointer;
+}
+
+.link {
+  text-decoration: none;
+  color: #333;
+}

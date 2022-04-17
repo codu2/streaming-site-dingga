@@ -25,6 +25,8 @@ const SideBar = () => {
     }
   };
 
+  console.log(searchResult);
+
   return (
     <div className={classes["side-bar"]}>
       <input

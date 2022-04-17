@@ -96,9 +96,11 @@ const Detail = () => {
               ))}
           </div>
           <div className={classes.title}>
-            <span>{`${media === "tv" ? data.name : data.title} (${new Date(
-              data.release_date
-            ).getFullYear()})`}</span>
+            <span>{`${media === "tv" ? data.name : data.title} (${
+              media === "tv"
+                ? `${new Date(data.first_air_date).getFullYear()}~`
+                : new Date(data.release_date).getFullYear()
+            })`}</span>
             <span>{`${data.vote_average} (${data.vote_count})`}</span>
           </div>
           {data.tagline !== "" && (

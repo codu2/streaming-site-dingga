@@ -8,6 +8,7 @@ import Layout from "./components/Layout";
 import Detail from "./components/detail/Detail";
 import DetailGenre from "./components/detail/DetailGenre";
 import Category from "./pages/Category";
+import DetailPerson from "./components/detail/DetailPerson";
 
 function App() {
   const location = useLocation();
@@ -20,6 +21,7 @@ function App() {
         <Route path="/tv" element={<Category />} />
         <Route path="/movie/:id" element={<Detail key={location.pathname} />} />
         <Route path="/tv/:id" element={<Detail key={location.pathname} />} />
+        <Route path="/person/:id" element={<DetailPerson />} />
         <Route path="/genre/:id" element={<DetailGenre />} />
       </Route>
     </Routes>
