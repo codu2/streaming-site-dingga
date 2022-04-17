@@ -96,7 +96,9 @@ const Detail = () => {
               ))}
           </div>
           <div className={classes.title}>
-            <span>{media === "tv" ? data.name : data.original_title}</span>
+            <span>{`${media === "tv" ? data.name : data.title} (${new Date(
+              data.release_date
+            ).getFullYear()})`}</span>
             <span>{`${data.vote_average} (${data.vote_count})`}</span>
           </div>
           {data.tagline !== "" && (
@@ -169,7 +171,7 @@ const Detail = () => {
                       alt={
                         media === "tv"
                           ? similarData[0].name
-                          : similarData[0].original_title
+                          : similarData[0].title
                       }
                     />
                   </Link>
@@ -181,7 +183,7 @@ const Detail = () => {
                       alt={
                         media === "tv"
                           ? similarData[1].name
-                          : similarData[1].original_title
+                          : similarData[1].title
                       }
                     />
                   </Link>
@@ -193,7 +195,7 @@ const Detail = () => {
                       alt={
                         media === "tv"
                           ? similarData[2].name
-                          : similarData[2].original_title
+                          : similarData[2].title
                       }
                     />
                   </Link>
@@ -205,7 +207,7 @@ const Detail = () => {
                       alt={
                         media === "tv"
                           ? similarData[3].name
-                          : similarData[3].original_title
+                          : similarData[3].title
                       }
                     />
                   </Link>
