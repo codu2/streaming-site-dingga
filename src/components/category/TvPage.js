@@ -4,6 +4,10 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import useAsync from "../../hooks/use-data";
 
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+
 import classes from "./TvPage.module.css";
 import {
   BsArrowLeftCircle,
@@ -11,6 +15,44 @@ import {
   BsSkipStartCircle,
 } from "react-icons/bs";
 import { AiOutlineSearch } from "react-icons/ai";
+
+function PrevArrow(props) {
+  const { className, style, onClick } = props;
+  return (
+    <BsArrowLeftCircle
+      className={className}
+      style={{
+        ...style,
+        display: "block",
+        background: "none",
+        color: "#d67b30",
+        width: "28px",
+        height: "28px",
+        left: "0",
+      }}
+      onClick={onClick}
+    />
+  );
+}
+
+function NextArrow(props) {
+  const { className, style, onClick } = props;
+  return (
+    <BsArrowRightCircle
+      className={className}
+      style={{
+        ...style,
+        display: "block",
+        background: "none",
+        color: "#d67b30",
+        width: "28px",
+        height: "28px",
+        right: "0",
+      }}
+      onClick={onClick}
+    />
+  );
+}
 
 const API_KEY = process.env.REACT_APP_API_KEY;
 
@@ -86,6 +128,17 @@ const TvPage = () => {
     }
   };
 
+  const settings = {
+    dots: false, // 점은 안 보이게
+    infinite: true, // 무한 슬라이더
+    speed: 500,
+    slidesToShow: 5, //5장씩 보이게 해주세요
+    slidesToScroll: 5, //1장씩 넘어가세요
+    draggable: false, // 드래그 안되게
+    prevArrow: <PrevArrow />,
+    nextArrow: <NextArrow />,
+  };
+
   return (
     <div className={classes.container}>
       <h1>TV Shows</h1>
@@ -128,10 +181,9 @@ const TvPage = () => {
             </div>
             {contentTab === 0 && onTheAirData && (
               <div className={classes["content"]}>
-                <BsArrowLeftCircle className={classes["left-button"]} />
-                <ul className={classes["content-list"]}>
-                  {onTheAirData.map((data) => (
-                    <li key={data.id} className={classes["content-item"]}>
+                <Slider {...settings} className={classes["content-list"]}>
+                  {onTheAirData.map((data, index) => (
+                    <div key={data.id} className={classes["content-item"]}>
                       <Link to={`/tv/${data.id}`}>
                         <img
                           src={
@@ -141,19 +193,20 @@ const TvPage = () => {
                           }
                           alt={data.name}
                         />
+                        {index < 3 && (
+                          <span className={classes.ranking}>{index + 1}</span>
+                        )}
                       </Link>
-                    </li>
+                    </div>
                   ))}
-                </ul>
-                <BsArrowRightCircle className={classes["right-button"]} />
+                </Slider>
               </div>
             )}
             {contentTab === 1 && airingTodayData && (
               <div className={classes["content"]}>
-                <BsArrowLeftCircle className={classes["left-button"]} />
-                <ul className={classes["content-list"]}>
-                  {airingTodayData.map((data) => (
-                    <li key={data.id} className={classes["content-item"]}>
+                <Slider {...settings} className={classes["content-list"]}>
+                  {airingTodayData.map((data, index) => (
+                    <div key={data.id} className={classes["content-item"]}>
                       <Link to={`/tv/${data.id}`}>
                         <img
                           src={
@@ -163,19 +216,20 @@ const TvPage = () => {
                           }
                           alt={data.name}
                         />
+                        {index < 3 && (
+                          <span className={classes.ranking}>{index + 1}</span>
+                        )}
                       </Link>
-                    </li>
+                    </div>
                   ))}
-                </ul>
-                <BsArrowRightCircle className={classes["right-button"]} />
+                </Slider>
               </div>
             )}
             {contentTab === 2 && topRatedData && (
               <div className={classes["content"]}>
-                <BsArrowLeftCircle className={classes["left-button"]} />
-                <ul className={classes["content-list"]}>
-                  {topRatedData.map((data) => (
-                    <li key={data.id} className={classes["content-item"]}>
+                <Slider {...settings} className={classes["content-list"]}>
+                  {topRatedData.map((data, index) => (
+                    <div key={data.id} className={classes["content-item"]}>
                       <Link to={`/tv/${data.id}`}>
                         <img
                           src={
@@ -185,19 +239,20 @@ const TvPage = () => {
                           }
                           alt={data.name}
                         />
+                        {index < 3 && (
+                          <span className={classes.ranking}>{index + 1}</span>
+                        )}
                       </Link>
-                    </li>
+                    </div>
                   ))}
-                </ul>
-                <BsArrowRightCircle className={classes["right-button"]} />
+                </Slider>
               </div>
             )}
             {contentTab === 3 && popularData && (
               <div className={classes["content"]}>
-                <BsArrowLeftCircle className={classes["left-button"]} />
-                <ul className={classes["content-list"]}>
-                  {popularData.map((data) => (
-                    <li key={data.id} className={classes["content-item"]}>
+                <Slider {...settings} className={classes["content-list"]}>
+                  {popularData.map((data, index) => (
+                    <div key={data.id} className={classes["content-item"]}>
                       <Link to={`/tv/${data.id}`}>
                         <img
                           src={
@@ -207,39 +262,45 @@ const TvPage = () => {
                           }
                           alt={data.name}
                         />
+                        {index < 3 && (
+                          <span className={classes.ranking}>{index + 1}</span>
+                        )}
                       </Link>
-                    </li>
+                    </div>
                   ))}
-                </ul>
-                <BsArrowRightCircle className={classes["right-button"]} />
+                </Slider>
               </div>
             )}
           </div>
           <div className={classes["content-wrapper"]}>
             <div className={classes.trending}>
-              <h1>Trending</h1>
+              <h1>Today's Trending</h1>
               {trendingData && (
-                <ul className={classes["trending-list"]}>
-                  {trendingData
-                    .filter((item, index) => index < 10)
-                    .map((data) => (
-                      <li
-                        key={data.id}
-                        className={classes["trending-list-item"]}
-                      >
-                        <Link to={`/tv/${data.id}`}>
-                          <img
-                            src={
-                              data.poster_path
-                                ? `https://image.tmdb.org/t/p/w500${data.poster_path}`
-                                : `https://image.tmdb.org/t/p/w500${data.backdrop_path}`
-                            }
-                            alt={data.name}
-                          />
-                        </Link>
-                      </li>
-                    ))}
-                </ul>
+                <div className={classes.content}>
+                  <Slider {...settings} className={classes["content-list"]}>
+                    {trendingData
+                      .filter((item, index) => index < 10)
+                      .map((data, index) => (
+                        <div key={data.id} className={classes["content-item"]}>
+                          <Link to={`/tv/${data.id}`}>
+                            <img
+                              src={
+                                data.poster_path
+                                  ? `https://image.tmdb.org/t/p/w500${data.poster_path}`
+                                  : `https://image.tmdb.org/t/p/w500${data.backdrop_path}`
+                              }
+                              alt={data.name}
+                            />
+                            {index < 3 && (
+                              <span className={classes.ranking}>
+                                {index + 1}
+                              </span>
+                            )}
+                          </Link>
+                        </div>
+                      ))}
+                  </Slider>
+                </div>
               )}
             </div>
           </div>

@@ -73,10 +73,10 @@ const Detail = () => {
 
   const settings = {
     dots: false, // 점은 안 보이게
-    infinite: true, // 무한 슬라이더
+    infinite: false, // 무한 슬라이더
     speed: 500,
-    slidesToShow: 4, //5장씩 보이게 해주세요
-    slidesToScroll: 4, //1장씩 넘어가세요
+    slidesToShow: 5, //5장씩 보이게 해주세요
+    slidesToScroll: 5, //1장씩 넘어가세요
     arrows: false,
   };
 
@@ -185,20 +185,19 @@ const Detail = () => {
               <Slider {...settings} className={classes["cast-list"]}>
                 {castData.map((data) => (
                   <div key={data.id} className={classes["cast-list-item"]}>
-                    <Link to={`/person/${data.id}`}>
+                    <Link to={`/person/${data.id}`} className={classes.link}>
                       <img
                         src={
                           data.profile_path &&
                           `https://image.tmdb.org/t/p/w500${data.profile_path}`
                         }
                         alt={data.profile_path && data.name}
-                        className={classes["cast-img"]}
                       />
-                      <div className={classes["cast-info"]}>
-                        <div>{data.character}</div>
-                        <div>{data.name}</div>
-                      </div>
                     </Link>
+                    <div className={classes["cast-info"]}>
+                      <div>{data.character}</div>
+                      <div>{data.name}</div>
+                    </div>
                   </div>
                 ))}
               </Slider>
@@ -277,29 +276,3 @@ const Detail = () => {
 };
 
 export default Detail;
-
-/*
-contentTab === 0 && castData && (
-            <div className={classes.cast}>
-              <Slider {...settings} className={classes["cast-list"]}>
-                {castData.map((data) => (
-                  <div key={data.id} className={classes["cast-list-item"]}>
-                    <Link to={`/person/${data.id}`}>
-                      <img
-                        src={
-                          data.profile_path &&
-                          `https://image.tmdb.org/t/p/w500${data.profile_path}`
-                        }
-                        alt={data.profile_path && data.name}
-                      />
-                    </Link>
-                    <div className={classes["cast-info"]}>
-                      <div>{data.character}</div>
-                      <div>{data.name}</div>
-                    </div>
-                  </div>
-                ))}
-              </Slider>
-            </div>
-          )}
-          */

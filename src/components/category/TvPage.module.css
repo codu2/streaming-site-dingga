@@ -15,7 +15,7 @@
 .wrapper {
   width: 100%;
   display: grid;
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: 2.2fr 1fr;
   padding: 10px 15px;
 }
 
@@ -29,6 +29,10 @@
 
 .content-box::-webkit-scrollbar {
   width: 0;
+}
+
+.content-wrapper {
+  width: 100%;
 }
 
 .content {
@@ -45,6 +49,7 @@
   align-items: center;
   margin-left: 20px;
   margin-top: 10px;
+  width: 100%;
 }
 
 .content-tab {
@@ -55,6 +60,7 @@
   border-bottom: 1px solid transparent;
   cursor: pointer;
   margin-bottom: 7px;
+  padding-bottom: 3px;
 }
 
 .content-tab.active {
@@ -62,75 +68,45 @@
   border-bottom: 1px solid #d67b30;
 }
 
-.left-button {
-  font-size: 30px;
-  color: #d67b30;
-  position: absolute;
-  top: 50%;
-  left: 0;
-  transform: translateY(-50%);
-  cursor: pointer;
-}
-
-.right-button {
-  font-size: 30px;
-  color: #d67b30;
-  position: absolute;
-  top: 50%;
-  right: 0;
-  transform: translateY(-50%);
-  cursor: pointer;
-}
-
 .content-list {
-  display: flex;
-  align-items: flex-start;
-  height: 150px;
-  width: 90%;
+  height: 180px;
+  width: 100%;
   overflow: hidden;
-  list-style: none;
-  margin: 10px 0;
+  padding: 10px 35px;
 }
 
 .content-item {
   width: 110px;
-  height: 150px;
+  height: 160px;
+  position: relative;
 }
 
 .content-item img {
   width: 110px;
-  height: 150px;
+  height: 160px;
   object-fit: cover;
+}
+
+.ranking {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background-color: #c5b358;
+  color: #f4f4f4;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .trending h1 {
   font-size: 14px;
   font-weight: 500;
   color: #d67b30;
-  margin-left: 20px;
-  margin-bottom: 10px;
-}
-
-.trending-list {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  list-style: none;
-  flex-wrap: wrap;
-  padding: 10px 10px 10px 15px;
-}
-
-.trending-list-item {
-  width: 110px;
-  height: 150px;
-  margin-right: 10px;
-  margin-bottom: 10px;
-}
-
-.trending-list-item img {
-  width: 110px;
-  height: 150px;
-  object-fit: cover;
+  margin: 10px 0 3px 20px;
 }
 
 .side-box {
