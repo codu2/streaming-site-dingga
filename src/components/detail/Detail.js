@@ -9,7 +9,9 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 import classes from "./Detail.module.css";
-import { FaPlus } from "react-icons/fa";
+import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
+import { BsListUl, BsBookmark, BsBookmarkFill } from "react-icons/bs";
+import { TiThList } from "react-icons/ti";
 
 const API_KEY = process.env.REACT_APP_API_KEY;
 
@@ -160,7 +162,13 @@ const Detail = () => {
           <div className={classes.actions}>
             <button className={classes.watch}>Watch Now</button>
             <button className={classes.add}>
-              <FaPlus />
+              <BsListUl />
+            </button>
+            <button className={classes.like}>
+              <AiOutlineHeart />
+            </button>
+            <button className={classes.bookmark}>
+              <BsBookmark />
             </button>
           </div>
         </div>

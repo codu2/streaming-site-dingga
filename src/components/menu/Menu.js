@@ -2,21 +2,20 @@ import React from "react";
 import { Link, useLocation } from "react-router-dom";
 
 import classes from "./Menu.module.css";
-import {
-  AiFillHome,
-  AiFillClockCircle,
-  AiFillStar,
-  AiFillProfile,
-} from "react-icons/ai";
+import { AiFillHome, AiFillHeart, AiFillProfile } from "react-icons/ai";
 import {
   RiCommunityFill,
   RiCompassDiscoverFill,
   RiSlideshow3Fill,
-  RiFolderDownloadFill,
   RiMovie2Fill,
   RiLogoutBoxRFill,
 } from "react-icons/ri";
-import { BsFillAwardFill, BsFillCameraVideoFill } from "react-icons/bs";
+import {
+  BsFillAwardFill,
+  BsFillCameraVideoFill,
+  BsBookmarkFill,
+} from "react-icons/bs";
+import { TiThList } from "react-icons/ti";
 
 const Menu = () => {
   const location = useLocation();
@@ -24,6 +23,12 @@ const Menu = () => {
   const menuHome = `${location.pathname === "/" && classes.current}`;
   const menuTv = `${location.pathname === "/tv" && classes.current}`;
   const menuMovie = `${location.pathname === "/movie" && classes.current}`;
+  const menuLiked = `${
+    location.pathname === "/account/id/liked" && classes.current
+  }`;
+  const menuWatchlist = `${
+    location.pathname === "/account/id/watchlist" && classes.current
+  }`;
 
   return (
     <div className={classes.menu}>
@@ -51,23 +56,6 @@ const Menu = () => {
         </ul>
       </div>
       <div className={classes["menu-card"]}>
-        <h1>LIBRARY</h1>
-        <ul>
-          <li>
-            <AiFillClockCircle />
-            Recent
-          </li>
-          <li>
-            <AiFillStar />
-            Top Rated
-          </li>
-          <li>
-            <RiFolderDownloadFill />
-            Downloaded
-          </li>
-        </ul>
-      </div>
-      <div className={classes["menu-card"]}>
         <h1>CATEGORY</h1>
         <ul>
           <li className={menuTv}>
@@ -85,6 +73,27 @@ const Menu = () => {
           <li>
             <BsFillCameraVideoFill />
             All
+          </li>
+        </ul>
+      </div>
+      <div className={classes["menu-card"]}>
+        <h1>LIBRARY</h1>
+        <ul>
+          <li className={menuWatchlist}>
+            <Link to={`/account/id/watchlist`} className={classes.link}>
+              <TiThList />
+              Watchlist
+            </Link>
+          </li>
+          <li className={menuLiked}>
+            <Link to={`/account/id/liked`} className={classes.link}>
+              <AiFillHeart />
+              Liked
+            </Link>
+          </li>
+          <li>
+            <BsBookmarkFill />
+            Bookmark
           </li>
         </ul>
       </div>

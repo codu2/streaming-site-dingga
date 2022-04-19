@@ -121,17 +121,30 @@
   padding: 14px 16px;
   color: #fff;
   cursor: pointer;
-  width: 80%;
+  width: 60%;
 }
 
-.actions .add {
+.actions .add,
+.like,
+.bookmark {
   border: none;
-  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background-color: #fff;
   color: #d67b30;
   border: 1px solid #d67b30;
   cursor: pointer;
-  width: 15%;
+  width: 47px;
+  height: 47px;
+  font-size: 18px;
+}
+
+.actions .add:hover svg,
+.like:hover svg,
+.bookmark:hover svg {
+  transform: scale(1.2);
+  transition: all 400ms ease-in-out;
 }
 
 .details {
@@ -187,6 +200,7 @@
   overflow: hidden;
   width: 100%;
   max-width: 500px;
+  padding-left: 10px;
 }
 
 .cast-list-item {
@@ -287,7 +301,7 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  padding-top: 10px;
+  padding-left: 10px;
 }
 
 .similar-list-item {
