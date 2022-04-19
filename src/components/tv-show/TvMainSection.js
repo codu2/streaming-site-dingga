@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 import axios from "axios";
 import useAsync from "../../hooks/use-data";
@@ -38,7 +39,11 @@ const TvMainSection = () => {
         <div className={classes["main-tv-desc"]}>
           <div className={classes["main-tv-title"]}>{data[0].name}</div>
           <div className={classes.actions}>
-            <button className={classes.watch}>Watch Now</button>
+            <button className={classes.watch}>
+              <Link to={`/tv/${data[0].id}`} className={classes.link}>
+                Watch Now
+              </Link>
+            </button>
             <button className={classes.add}>
               <FaPlus />
             </button>

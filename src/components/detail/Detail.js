@@ -13,7 +13,7 @@ const Detail = () => {
   const location = useLocation();
   const media = location.pathname.split("/")[1];
   const path = location.pathname.split("/")[2];
-  const [reviewsTab, setReviewsTab] = useState(true);
+  const [contentTab, setContentTab] = useState(0);
 
   const getData = async () => {
     const response = await axios.get(
@@ -36,23 +36,35 @@ const Detail = () => {
     return response.data.results;
   };
 
+  const getCast = async () => {
+    const response = await axios.get(
+      `https://api.themoviedb.org/3/${media}/${path}/credits?api_key=${API_KEY}&language=en-US`
+    );
+    return response.data.cast;
+  };
+
   const [state] = useAsync(getData, []);
   const [similar] = useAsync(getSimilar, []);
   const [reviews] = useAsync(getReviews, []);
+  const [cast] = useAsync(getCast, []);
 
   const { loading, data, error } = state;
   const { data: similarData } = similar;
   const { data: reviewsData } = reviews;
+  const { data: castData } = cast;
 
   if (loading) return <div>Loading..</div>;
   if (error) return <div>An error has occurred!</div>;
   if (!data) return null;
 
+  const castTabCss = `${classes["detail-tab"]} ${
+    contentTab === 0 && classes.active
+  }`;
   const reviewsTabCss = `${classes["detail-tab"]} ${
-    reviewsTab && classes.active
+    contentTab === 1 && classes.active
   }`;
   const similarTabCss = `${classes["detail-tab"]} ${
-    !reviewsTab && classes.active
+    contentTab === 2 && classes.active
   }`;
 
   return (
@@ -62,7 +74,8 @@ const Detail = () => {
           src={
             data.backdrop_path
               ? `https://image.tmdb.org/t/p/w500${data.backdrop_path}`
-              : `https://image.tmdb.org/t/p/w500${data.poster_path}`
+              : data.poster_path &&
+                `https://image.tmdb.org/t/p/w500${data.poster_path}`
           }
           alt={data.name}
           className={classes["content-img"]}
@@ -143,15 +156,43 @@ const Detail = () => {
         <div className={classes.overview}>{data.overview}</div>
         <div className={classes.detail}>
           <div className={classes["detail-tabs"]}>
-            <span className={reviewsTabCss} onClick={() => setReviewsTab(true)}>
+            <span className={castTabCss} onClick={() => setContentTab(0)}>
+              Cast
+            </span>
+            <span className={reviewsTabCss} onClick={() => setContentTab(1)}>
               Reviews
             </span>
             <span
               className={similarTabCss}
-              onClick={() => setReviewsTab(false)}
+              onClick={() => setContentTab(2)}
             >{`Similar ${media}`}</span>
           </div>
-          {reviewsTab && reviewsData && (
+          {contentTab === 0 && castData && (
+            <div className={classes.cast}>
+              <ul className={classes["cast-list"]}>
+                {castData
+                  .filter((item, index) => index < 4)
+                  .map((data) => (
+                    <li key={data.id} className={classes["cast-list-item"]}>
+                      <Link to={`/person/${data.id}`}>
+                        <img
+                          src={
+                            data.profile_path &&
+                            `https://image.tmdb.org/t/p/w500${data.profile_path}`
+                          }
+                          alt={data.profile_path && data.name}
+                        />
+                      </Link>
+                      <div className={classes["cast-info"]}>
+                        <div>{data.character}</div>
+                        <div>{data.name}</div>
+                      </div>
+                    </li>
+                  ))}
+              </ul>
+            </div>
+          )}
+          {contentTab === 1 && reviewsData && (
             <div className={classes.reviews}>
               <ul className={classes["review-list"]}>
                 {reviewsData.map((review) => (
@@ -163,7 +204,7 @@ const Detail = () => {
               </ul>
             </div>
           )}
-          {!reviewsTab && similarData && (
+          {contentTab === 2 && similarData && (
             <div className={classes.similar}>
               <ul className={classes["similar-list"]}>
                 <li className={classes["similar-list-item"]}>

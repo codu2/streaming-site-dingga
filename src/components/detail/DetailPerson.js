@@ -37,14 +37,17 @@ const DetailPerson = () => {
   if (error) return <div>An error has occurred!</div>;
   if (!data) return null;
 
-  console.log(data, castData);
+  console.log(castData);
 
   return (
     <div className={classes.container}>
       <div className={classes.wrapper}>
         <img
-          src={`https://image.tmdb.org/t/p/w500${data.profile_path}`}
-          alt={data.name}
+          src={
+            data.profile_path &&
+            `https://image.tmdb.org/t/p/w500${data.profile_path}`
+          }
+          alt={data.profile_path && data.name}
           className={classes["content-img"]}
         />
         <div className={classes.content}>
@@ -64,9 +67,10 @@ const DetailPerson = () => {
                 src={
                   data.poster_path
                     ? `https://image.tmdb.org/t/p/w500${data.poster_path}`
-                    : `https://image.tmdb.org/t/p/w500${data.backdrop_path}`
+                    : data.backdrop_path &&
+                      `https://image.tmdb.org/t/p/w500${data.backdrop_path}`
                 }
-                alt={data.title ? data.title : data.name}
+                alt={data.poster_path && data.title ? data.title : data.name}
                 className={classes["cast-img"]}
               />
               <div className={classes["cast-title"]}>

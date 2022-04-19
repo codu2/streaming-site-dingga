@@ -318,9 +318,9 @@ const MoviePage = () => {
                 <div className={classes["watching-img"]}>
                   <img
                     src={
-                      nomadlandData.poster_path
-                        ? `https://image.tmdb.org/t/p/w500${nomadlandData.poster_path}`
-                        : `https://image.tmdb.org/t/p/w500${nomadlandData.backdrop_path}`
+                      nomadlandData.backdrop_path
+                        ? `https://image.tmdb.org/t/p/w500${nomadlandData.backdrop_path}`
+                        : `https://image.tmdb.org/t/p/w500${nomadlandData.poster_path}`
                     }
                     alt={nomadlandData.title}
                   />

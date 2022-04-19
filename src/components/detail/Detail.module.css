@@ -178,6 +178,57 @@
   border-bottom: 1px solid #d67b30;
 }
 
+.cast {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.cast-list {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 10px;
+  width: 100%;
+}
+
+.cast-list-item {
+  width: 100px;
+  height: 180px;
+  margin-right: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.cast-list-item img {
+  width: 90px;
+  height: 110px;
+  object-fit: cover;
+  cursor: pointer;
+}
+
+.cast-info {
+  margin-top: 5px;
+}
+
+.cast-info > div {
+  font-size: 12px;
+  text-align: center;
+  padding: 2px 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.cast-info > div:first-child {
+  border-bottom: 1px dotted #d67b30;
+}
+
 .reviews {
   flex: 1;
   display: flex;
@@ -218,6 +269,7 @@
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 1;
+  min-width: 115px;
 }
 
 .review-list-item > span:last-child {
