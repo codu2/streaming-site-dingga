@@ -4,24 +4,11 @@
   overflow: hidden;
 }
 
-.item-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
 .item-top h1 {
   font-size: 15px;
   color: #5f5d70;
   font-weight: 700;
   margin-bottom: 0.85rem;
-}
-
-.slide-button span {
-  color: #d67b30;
-  margin-right: 10px;
-  cursor: pointer;
-  font-size: 18px;
 }
 
 .items {
@@ -64,4 +51,19 @@
   word-wrap: break-word;
   width: 85%;
   text-align: center;
+}
+
+.prev-button {
+  right: 40px;
+  font-size: 0;
+  line-height: 0;
+  position: absolute;
+  display: block;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  transform: translate(0, -50%);
+  cursor: pointer;
+  border: none;
+  outline: none;
 }

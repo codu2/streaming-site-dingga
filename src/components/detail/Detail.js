@@ -4,6 +4,10 @@ import { useLocation, Link } from "react-router-dom";
 import axios from "axios";
 import useAsync from "../../hooks/use-data";
 
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+
 import classes from "./Detail.module.css";
 import { FaPlus } from "react-icons/fa";
 
@@ -66,6 +70,15 @@ const Detail = () => {
   const similarTabCss = `${classes["detail-tab"]} ${
     contentTab === 2 && classes.active
   }`;
+
+  const settings = {
+    dots: false, // 점은 안 보이게
+    infinite: true, // 무한 슬라이더
+    speed: 500,
+    slidesToShow: 4, //5장씩 보이게 해주세요
+    slidesToScroll: 4, //1장씩 넘어가세요
+    arrows: false,
+  };
 
   return (
     <div className={classes.container}>
@@ -169,27 +182,26 @@ const Detail = () => {
           </div>
           {contentTab === 0 && castData && (
             <div className={classes.cast}>
-              <ul className={classes["cast-list"]}>
-                {castData
-                  .filter((item, index) => index < 4)
-                  .map((data) => (
-                    <li key={data.id} className={classes["cast-list-item"]}>
-                      <Link to={`/person/${data.id}`}>
-                        <img
-                          src={
-                            data.profile_path &&
-                            `https://image.tmdb.org/t/p/w500${data.profile_path}`
-                          }
-                          alt={data.profile_path && data.name}
-                        />
-                      </Link>
+              <Slider {...settings} className={classes["cast-list"]}>
+                {castData.map((data) => (
+                  <div key={data.id} className={classes["cast-list-item"]}>
+                    <Link to={`/person/${data.id}`}>
+                      <img
+                        src={
+                          data.profile_path &&
+                          `https://image.tmdb.org/t/p/w500${data.profile_path}`
+                        }
+                        alt={data.profile_path && data.name}
+                        className={classes["cast-img"]}
+                      />
                       <div className={classes["cast-info"]}>
                         <div>{data.character}</div>
                         <div>{data.name}</div>
                       </div>
-                    </li>
-                  ))}
-              </ul>
+                    </Link>
+                  </div>
+                ))}
+              </Slider>
             </div>
           )}
           {contentTab === 1 && reviewsData && (
@@ -265,3 +277,29 @@ const Detail = () => {
 };
 
 export default Detail;
+
+/*
+contentTab === 0 && castData && (
+            <div className={classes.cast}>
+              <Slider {...settings} className={classes["cast-list"]}>
+                {castData.map((data) => (
+                  <div key={data.id} className={classes["cast-list-item"]}>
+                    <Link to={`/person/${data.id}`}>
+                      <img
+                        src={
+                          data.profile_path &&
+                          `https://image.tmdb.org/t/p/w500${data.profile_path}`
+                        }
+                        alt={data.profile_path && data.name}
+                      />
+                    </Link>
+                    <div className={classes["cast-info"]}>
+                      <div>{data.character}</div>
+                      <div>{data.name}</div>
+                    </div>
+                  </div>
+                ))}
+              </Slider>
+            </div>
+          )}
+          */
