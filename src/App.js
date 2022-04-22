@@ -11,6 +11,7 @@ import Category from "./pages/Category";
 import DetailPerson from "./components/detail/DetailPerson";
 import Liked from "./components/account/Liked";
 import WatchList from "./components/account/WatchList";
+import Login from "./components/account/Login";
 
 function App() {
   const location = useLocation();
@@ -27,6 +28,7 @@ function App() {
         <Route path="/genre/:id" element={<DetailGenre />} />
         <Route path="/account/:id/liked" element={<Liked />} />
         <Route path="/account/:id/watchlist" element={<WatchList />} />
+        <Route path="/login" element={<Login />} />
       </Route>
     </Routes>
   );

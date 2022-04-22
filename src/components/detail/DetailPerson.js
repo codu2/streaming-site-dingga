@@ -4,6 +4,10 @@ import { useLocation, Link } from "react-router-dom";
 import axios from "axios";
 import useAsync from "../../hooks/use-data";
 
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+
 import classes from "./DetailPerson.module.css";
 
 const API_KEY = process.env.REACT_APP_API_KEY;
@@ -37,7 +41,13 @@ const DetailPerson = () => {
   if (error) return <div>An error has occurred!</div>;
   if (!data) return null;
 
-  console.log(castData);
+  const settings = {
+    dots: false, // 점은 안 보이게
+    infinite: true, // 무한 슬라이더
+    speed: 500,
+    slidesToShow: 8, //5장씩 보이게 해주세요
+    slidesToScroll: 8, //1장씩 넘어가세요
+  };
 
   return (
     <div className={classes.container}>
@@ -59,10 +69,10 @@ const DetailPerson = () => {
           <div className={classes.biography}>{data.biography}</div>
         </div>
       </div>
-      <ul className={classes.cast}>
+      <Slider {...settings} className={classes.cast}>
         {castData &&
           castData.map((data) => (
-            <li className={classes["cast-item"]} key={data.id}>
+            <div className={classes["cast-item"]} key={data.id}>
               <img
                 src={
                   data.poster_path
@@ -83,9 +93,9 @@ const DetailPerson = () => {
                     : new Date(data.release_date).getFullYear()
                 })`}</Link>
               </div>
-            </li>
+            </div>
           ))}
-      </ul>
+      </Slider>
     </div>
   );
 };

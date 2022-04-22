@@ -56,7 +56,7 @@ const Liked = () => {
             {watchlistMovies &&
               watchlistMovies.map((item) => (
                 <li key={item.id}>
-                  <Link to={`/tv/${item.id}`} className={classes.link}>
+                  <Link to={`/movie/${item.id}`} className={classes.link}>
                     <div className={classes["section-item"]}>
                       <img
                         src={

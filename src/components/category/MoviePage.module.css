@@ -96,7 +96,7 @@
 .ranking {
   position: absolute;
   top: 5px;
-  right: 15px;
+  left: 15px;
   background-color: #c5b358;
   color: #f4f4f4;
   border-radius: 50%;

@@ -59,9 +59,6 @@
 }
 
 .cast {
-  list-style: none;
-  display: flex;
-  align-items: center;
   height: 235px;
   width: 100%;
   overflow: hidden;
@@ -72,12 +69,12 @@
 
 .cast-item {
   height: 100%;
-  width: 110px;
+  width: 110px !important;
   margin-right: 10px;
 }
 
 .cast-img {
-  width: 110px;
+  width: 100%;
   height: 150px;
   object-fit: cover;
 }

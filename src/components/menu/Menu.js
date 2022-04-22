@@ -8,6 +8,7 @@ import {
   RiCompassDiscoverFill,
   RiSlideshow3Fill,
   RiMovie2Fill,
+  RiLoginBoxFill,
   RiLogoutBoxRFill,
 } from "react-icons/ri";
 import {
@@ -105,8 +106,10 @@ const Menu = () => {
             Profile
           </li>
           <li>
-            <RiLogoutBoxRFill />
-            Log Out
+            <Link to="/login" className={classes.link}>
+              <RiLoginBoxFill />
+              Log In
+            </Link>
           </li>
         </ul>
       </div>
