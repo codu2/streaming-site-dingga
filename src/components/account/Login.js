@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 
 import axios from "axios";
+import Context from "../../store/Context";
 
 import classes from "./Login.module.css";
 import { AiFillHome } from "react-icons/ai";
@@ -9,9 +10,9 @@ import { AiFillHome } from "react-icons/ai";
 const API_KEY = process.env.REACT_APP_API_KEY;
 
 const Login = () => {
+  const ctx = useContext(Context);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [state, setState] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
@@ -31,10 +32,24 @@ const Login = () => {
           request_token: getNewToken.data.request_token,
         }
       );
-      setState(response.data);
-      setLoading(false);
 
-      window.location.replace("/");
+      if (response.data.success) {
+        const getSessionId = await axios.post(
+          `https://api.themoviedb.org/3/authentication/session/new?api_key=${API_KEY}`,
+          {
+            request_token: getNewToken.data.request_token,
+          }
+        );
+
+        const getAccount = await axios.get(
+          `https://api.themoviedb.org/3/account?api_key=${API_KEY}&session_id=${getSessionId.data.session_id}`
+        );
+
+        ctx.loggedInUser(getAccount.data);
+
+        setLoading(false);
+        window.location.replace("/");
+      }
     } catch (err) {
       setLoading(false);
 

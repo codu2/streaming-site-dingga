@@ -1,8 +1,9 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
 
 import axios from "axios";
 import useAsync from "../../hooks/use-data";
+import Context from "../../store/Context";
 
 import classes from "./Account.module.css";
 import { TiThList } from "react-icons/ti";
@@ -11,35 +12,33 @@ const API_KEY = process.env.REACT_APP_API_KEY;
 const SESSION_ID = process.env.REACT_APP_SESSION_ID;
 
 const Liked = () => {
-  const [user, setUser] = useState({});
+  const ctx = useContext(Context);
+  const location = useLocation();
+  const path = location.pathname.split("/")[2];
 
-  const getAccount = async () => {
-    const response = await axios.get(
-      `https://api.themoviedb.org/3/account?api_key=${API_KEY}&session_id=${SESSION_ID}`
-    );
-    setUser(response.data);
-    return response.data;
-  };
+  useEffect(() => {
+    if (!ctx.user) {
+      window.location.replace("/login");
+    }
+  }, [path]);
 
   const getWatchListMovie = async () => {
     const response = await axios.get(
-      `https://api.themoviedb.org/3/account/${user.id}/watchlist/movies?api_key=${API_KEY}&session_id=${SESSION_ID}`
+      `https://api.themoviedb.org/3/account/${ctx.user.id}/watchlist/movies?api_key=${API_KEY}&session_id=${SESSION_ID}`
     );
     return response.data.results;
   };
 
   const getWatchListTv = async () => {
     const response = await axios.get(
-      `https://api.themoviedb.org/3/account/${user.id}/watchlist/tv?api_key=${API_KEY}&session_id=${SESSION_ID}`
+      `https://api.themoviedb.org/3/account/${ctx.user.id}/watchlist/tv?api_key=${API_KEY}&session_id=${SESSION_ID}`
     );
     return response.data.results;
   };
 
-  const [account] = useAsync(getAccount, []);
   const [watchlistMovie] = useAsync(getWatchListMovie, []);
   const [watchlistTv] = useAsync(getWatchListTv, []);
 
-  const { loading, data, error } = account;
   const { data: watchlistMovies } = watchlistMovie;
   const { data: watchlistTvShows } = watchlistTv;
 

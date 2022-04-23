@@ -6,6 +6,7 @@ const Context = React.createContext({
   watchlist: null,
   bookmark: null,
   loggedInUser: (user) => {},
+  logout: () => {},
 });
 
 export default Context;

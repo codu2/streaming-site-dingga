@@ -1,8 +1,9 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
 
 import axios from "axios";
 import useAsync from "../../hooks/use-data";
+import Context from "../../store/Context";
 
 import classes from "./Account.module.css";
 import { AiFillHeart } from "react-icons/ai";
@@ -11,35 +12,33 @@ const API_KEY = process.env.REACT_APP_API_KEY;
 const SESSION_ID = process.env.REACT_APP_SESSION_ID;
 
 const Liked = () => {
-  const [user, setUser] = useState({});
+  const ctx = useContext(Context);
+  const location = useLocation();
+  const path = location.pathname.split("/")[2];
 
-  const getAccount = async () => {
-    const response = await axios.get(
-      `https://api.themoviedb.org/3/account?api_key=${API_KEY}&session_id=${SESSION_ID}`
-    );
-    setUser(response.data);
-    return response.data;
-  };
+  useEffect(() => {
+    if (!ctx.user) {
+      window.location.replace("/login");
+    }
+  }, [path]);
 
   const getFavoriteMovie = async () => {
     const response = await axios.get(
-      `https://api.themoviedb.org/3/account/${user.id}/favorite/movies?api_key=${API_KEY}&session_id=${SESSION_ID}`
+      `https://api.themoviedb.org/3/account/${ctx.user.id}/favorite/movies?api_key=${API_KEY}&session_id=${SESSION_ID}`
     );
     return response.data.results;
   };
 
   const getFavoriteTv = async () => {
     const response = await axios.get(
-      `https://api.themoviedb.org/3/account/${user.id}/favorite/tv?api_key=${API_KEY}&session_id=${SESSION_ID}`
+      `https://api.themoviedb.org/3/account/${ctx.user.id}/favorite/tv?api_key=${API_KEY}&session_id=${SESSION_ID}`
     );
     return response.data.results;
   };
 
-  const [account] = useAsync(getAccount, []);
   const [favoriteMovie] = useAsync(getFavoriteMovie, []);
   const [favoriteTvShow] = useAsync(getFavoriteTv, []);
 
-  const { loading, data, error } = account;
   const { data: favoriteMovies } = favoriteMovie;
   const { data: favoriteTvShows } = favoriteTvShow;
 

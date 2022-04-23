@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link, useLocation } from "react-router-dom";
+
+import Context from "../../store/Context";
 
 import classes from "./Menu.module.css";
 import { AiFillHome, AiFillHeart, AiFillProfile } from "react-icons/ai";
@@ -20,6 +22,12 @@ import { TiThList } from "react-icons/ti";
 
 const Menu = () => {
   const location = useLocation();
+  const ctx = useContext(Context);
+
+  const handleLogout = () => {
+    ctx.logout();
+    window.location.replace("/");
+  };
 
   const menuHome = `${location.pathname === "/" && classes.current}`;
   const menuTv = `${location.pathname === "/tv" && classes.current}`;
@@ -105,12 +113,19 @@ const Menu = () => {
             <AiFillProfile />
             Profile
           </li>
-          <li>
-            <Link to="/login" className={classes.link}>
-              <RiLoginBoxFill />
-              Log In
-            </Link>
-          </li>
+          {ctx.user ? (
+            <li onClick={handleLogout}>
+              <RiLogoutBoxRFill />
+              Log Out
+            </li>
+          ) : (
+            <li>
+              <Link to="/login" className={classes.link}>
+                <RiLoginBoxFill />
+                Log In
+              </Link>
+            </li>
+          )}
         </ul>
       </div>
     </div>
