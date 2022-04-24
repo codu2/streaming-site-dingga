@@ -6,16 +6,15 @@ import useAsync from "../../hooks/use-data";
 import Context from "../../store/Context";
 
 import classes from "./Account.module.css";
-import { TiThList } from "react-icons/ti";
+import { AiFillHeart, AiOutlineClose } from "react-icons/ai";
 import { HiOutlineDotsVertical } from "react-icons/hi";
-import { AiOutlineHeart, AiOutlineClose } from "react-icons/ai";
-import { BsBookmark } from "react-icons/bs";
+import { BsListUl, BsBookmark } from "react-icons/bs";
 import { RiDeleteBackLine } from "react-icons/ri";
 
 const API_KEY = process.env.REACT_APP_API_KEY;
 const SESSION_ID = process.env.REACT_APP_SESSION_ID;
 
-const WatchList = () => {
+const Favorite = () => {
   const ctx = useContext(Context);
   const location = useLocation();
   const path = location.pathname.split("/")[2];
@@ -27,38 +26,38 @@ const WatchList = () => {
     }
   }, [path]);
 
-  const getWatchListMovie = async () => {
+  const getFavoriteMovie = async () => {
     const response = await axios.get(
-      `https://api.themoviedb.org/3/account/${ctx.user.id}/watchlist/movies?api_key=${API_KEY}&session_id=${SESSION_ID}`
+      `https://api.themoviedb.org/3/account/${ctx.user.id}/favorite/movies?api_key=${API_KEY}&session_id=${SESSION_ID}`
     );
     return response.data.results;
   };
 
-  const getWatchListTv = async () => {
+  const getFavoriteTv = async () => {
     const response = await axios.get(
-      `https://api.themoviedb.org/3/account/${ctx.user.id}/watchlist/tv?api_key=${API_KEY}&session_id=${SESSION_ID}`
+      `https://api.themoviedb.org/3/account/${ctx.user.id}/favorite/tv?api_key=${API_KEY}&session_id=${SESSION_ID}`
     );
     return response.data.results;
   };
 
-  const [watchlistMovie] = useAsync(getWatchListMovie, []);
-  const [watchlistTv] = useAsync(getWatchListTv, []);
+  const [favoriteMovie] = useAsync(getFavoriteMovie, []);
+  const [favoriteTvShow] = useAsync(getFavoriteTv, []);
 
-  const { data: watchlistMovies } = watchlistMovie;
-  const { data: watchlistTvShows } = watchlistTv;
+  const { data: favoriteMovies } = favoriteMovie;
+  const { data: favoriteTvShows } = favoriteTvShow;
 
   return (
     <div className={classes.container}>
       <h1>
-        <TiThList />
-        My Watchlist
+        <AiFillHeart />
+        My Favorites
       </h1>
       <div className={classes.wrapper}>
         <div className={classes.section}>
           <h1>Movies</h1>
           <ul className={classes["section-list"]}>
-            {watchlistMovies &&
-              watchlistMovies.map((item) => (
+            {favoriteMovies &&
+              favoriteMovies.map((item) => (
                 <li key={item.id}>
                   <div className={classes["section-item"]}>
                     <img
@@ -100,7 +99,7 @@ const WatchList = () => {
                       {actions === item.id && (
                         <div className={classes.actions}>
                           <span>
-                            <AiOutlineHeart /> Favorite
+                            <BsListUl /> Add to Watchlist
                           </span>
                           <span>
                             <BsBookmark /> Bookmark
@@ -119,8 +118,8 @@ const WatchList = () => {
         <div className={classes.section}>
           <h1>TV Shows</h1>
           <ul className={classes["section-list"]}>
-            {watchlistTvShows &&
-              watchlistTvShows.map((item) => (
+            {favoriteTvShows &&
+              favoriteTvShows.map((item) => (
                 <li key={item.id}>
                   <div className={classes["section-item"]}>
                     <img
@@ -134,7 +133,7 @@ const WatchList = () => {
                     />
                     <div className={classes["section-item-info"]}>
                       <Link to={`/tv/${item.id}`} className={classes.link}>
-                        <div className={classes.title}>{item.name}</div>
+                        <div className={classes.title}>{item.name}</div>{" "}
                       </Link>
                       <div className={classes.info}>
                         {`${item.first_air_date}(${
@@ -162,7 +161,7 @@ const WatchList = () => {
                       {actions === item.id && (
                         <div className={classes.actions}>
                           <span>
-                            <AiOutlineHeart /> Favorite
+                            <BsListUl /> Add to Watchlist
                           </span>
                           <span>
                             <BsBookmark /> Bookmark
@@ -183,4 +182,4 @@ const WatchList = () => {
   );
 };
 
-export default WatchList;
+export default Favorite;

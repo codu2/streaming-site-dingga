@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useLocation, Link } from "react-router-dom";
 
 import axios from "axios";
 import useAsync from "../../hooks/use-data";
+import Context from "../../store/Context";
 
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
@@ -14,8 +15,10 @@ import { BsListUl, BsBookmark, BsBookmarkFill } from "react-icons/bs";
 import { TiThList } from "react-icons/ti";
 
 const API_KEY = process.env.REACT_APP_API_KEY;
+const SESSION_ID = process.env.REACT_APP_SESSION_ID;
 
 const Detail = () => {
+  const ctx = useContext(Context);
   const location = useLocation();
   const media = location.pathname.split("/")[1];
   const path = location.pathname.split("/")[2];
@@ -63,6 +66,42 @@ const Detail = () => {
   if (error) return <div>An error has occurred!</div>;
   if (!data) return null;
 
+  const handleWatchlist = async () => {
+    try {
+      const response = await axios.post(
+        `https://api.themoviedb.org/3/account/${ctx.user.id}/watchlist?api_key=${API_KEY}&session_id=${SESSION_ID}`,
+        {
+          media_type: media,
+          media_id: data.id,
+          watchlist: true,
+        }
+      );
+      if (response.data.success) {
+        window.location.replace(`/account/${ctx.user.id}/watchlist`);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleFavorite = async () => {
+    try {
+      const response = await axios.post(
+        `https://api.themoviedb.org/3/account/${ctx.user.id}/favorite?api_key=${API_KEY}&session_id=${SESSION_ID}`,
+        {
+          media_type: media,
+          media_id: data.id,
+          favorite: true,
+        }
+      );
+      if (response.data.success) {
+        window.location.replace(`/account/${ctx.user.id}/favorite`);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const castTabCss = `${classes["detail-tab"]} ${
     contentTab === 0 && classes.active
   }`;
@@ -81,8 +120,6 @@ const Detail = () => {
     slidesToScroll: 5, //1장씩 넘어가세요
     arrows: false,
   };
-
-  console.log(data);
 
   return (
     <div className={classes.container}>
@@ -163,10 +200,10 @@ const Detail = () => {
           </div>
           <div className={classes.actions}>
             <button className={classes.watch}>Watch Now</button>
-            <button className={classes.add}>
+            <button className={classes.add} onClick={handleWatchlist}>
               <BsListUl />
             </button>
-            <button className={classes.like}>
+            <button className={classes.like} onClick={handleFavorite}>
               <AiOutlineHeart />
             </button>
             <button className={classes.bookmark}>

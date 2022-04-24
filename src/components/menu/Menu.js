@@ -32,11 +32,11 @@ const Menu = () => {
   const menuHome = `${location.pathname === "/" && classes.current}`;
   const menuTv = `${location.pathname === "/tv" && classes.current}`;
   const menuMovie = `${location.pathname === "/movie" && classes.current}`;
-  const menuLiked = `${
-    location.pathname === "/account/id/liked" && classes.current
+  const menuFavorite = `${
+    location.pathname.split("/")[3] === "favorite" && classes.current
   }`;
   const menuWatchlist = `${
-    location.pathname === "/account/id/watchlist" && classes.current
+    location.pathname.split("/")[3] === "watchlist" && classes.current
   }`;
 
   return (
@@ -89,15 +89,21 @@ const Menu = () => {
         <h1>LIBRARY</h1>
         <ul>
           <li className={menuWatchlist}>
-            <Link to={`/account/id/watchlist`} className={classes.link}>
+            <Link
+              to={`/account/${ctx.user.id}/watchlist`}
+              className={classes.link}
+            >
               <TiThList />
               Watchlist
             </Link>
           </li>
-          <li className={menuLiked}>
-            <Link to={`/account/id/liked`} className={classes.link}>
+          <li className={menuFavorite}>
+            <Link
+              to={`/account/${ctx.user.id}/favorite`}
+              className={classes.link}
+            >
               <AiFillHeart />
-              Liked
+              Favorite
             </Link>
           </li>
           <li>

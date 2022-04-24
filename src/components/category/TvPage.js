@@ -315,8 +315,8 @@ const TvPage = () => {
             <div className={classes["search-result"]}>
               {query && searchResult && (
                 <ul>
-                  {searchResult.map((result) => (
-                    <li>
+                  {searchResult.map((result, index) => (
+                    <li key={index}>
                       <Link to={`/tv/${result.id}`} className={classes.link}>
                         {result.name}
                       </Link>

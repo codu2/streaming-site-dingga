@@ -9,7 +9,7 @@ import Detail from "./components/detail/Detail";
 import DetailGenre from "./components/detail/DetailGenre";
 import Category from "./pages/Category";
 import DetailPerson from "./components/detail/DetailPerson";
-import Liked from "./components/account/Liked";
+import Favorite from "./components/account/Favorite";
 import WatchList from "./components/account/WatchList";
 import Login from "./components/account/Login";
 
@@ -26,7 +26,7 @@ function App() {
         <Route path="/tv/:id" element={<Detail key={location.pathname} />} />
         <Route path="/person/:id" element={<DetailPerson />} />
         <Route path="/genre/:id" element={<DetailGenre />} />
-        <Route path="/account/:id/liked" element={<Liked />} />
+        <Route path="/account/:id/favorite" element={<Favorite />} />
         <Route path="/account/:id/watchlist" element={<WatchList />} />
         <Route path="/login" element={<Login />} />
       </Route>
