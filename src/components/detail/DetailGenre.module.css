@@ -5,7 +5,7 @@
 }
 
 .genre {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 300;
   color: #333;
   line-height: 24px;
@@ -14,9 +14,9 @@
 }
 
 .genre span {
-  font-size: 22px;
-  font-weight: 400;
-  color: #333;
+  font-size: 20px;
+  font-weight: 500;
+  color: #d67b30;
 }
 
 .genre-result {
@@ -33,23 +33,24 @@
 }
 
 .genre-content > h1 {
-  margin: 10px 0 5px;
+  margin: 10px 0 15px;
   font-size: 15px;
   font-weight: 500;
   color: #d67b30;
 }
 
-.genre-content > ul {
-  list-style: none;
-  display: flex;
-  align-items: center;
+.genre-list {
   height: 200px;
+  width: 100%;
+  max-width: 870px;
+  overflow: hidden;
 }
 
-.genre-content-item {
+.genre-list-item {
   height: 100%;
-  width: 100px;
+  width: 100px !important;
   margin-right: 10px;
+  overflow: hidden;
 }
 
 .genre-title {
@@ -62,11 +63,16 @@
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   padding: 5px;
+  cursor: pointer;
 }
 
-.genre-content-item img {
+.genre-list-item img {
   width: 100px;
   height: 150px;
   object-fit: cover;
-  cursor: pointer;
+}
+
+.link {
+  color: #333;
+  text-decoration: none;
 }

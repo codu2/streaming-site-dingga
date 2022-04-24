@@ -4,6 +4,10 @@ import { useLocation, Link } from "react-router-dom";
 import axios from "axios";
 import useAsync from "../../hooks/use-data";
 
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+
 import classes from "./DetailGenre.module.css";
 
 const API_KEY = process.env.REACT_APP_API_KEY;
@@ -48,6 +52,14 @@ const DetailGenre = () => {
     }
   }, [path, genresData]);
 
+  const settings = {
+    dots: false, // 점은 안 보이게
+    infinite: true, // 무한 슬라이더
+    speed: 500,
+    slidesToShow: 8, //5장씩 보이게 해주세요
+    slidesToScroll: 8, //1장씩 넘어가세요
+  };
+
   return (
     <div className={classes.container}>
       <h1 className={classes.genre}>
@@ -57,50 +69,48 @@ const DetailGenre = () => {
         {genreMovie.length !== 0 && (
           <div className={classes["genre-content"]}>
             <h1>Movie</h1>
-            <ul>
+            <Slider {...settings} className={classes["genre-list"]}>
               {genreMovie &&
                 genreMovie.map((movie) => (
-                  <li key={movie.id} className={classes["genre-content-item"]}>
-                    <Link to={`/movie/${movie.id}`}>
-                      <img
-                        src={
-                          movie.poster_path
-                            ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
-                            : `https://image.tmdb.org/t/p/w500${movie.backdrop_path}`
-                        }
-                        alt={movie.original_title}
-                      />
+                  <div key={movie.id} className={classes["genre-list-item"]}>
+                    <img
+                      src={
+                        movie.poster_path
+                          ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+                          : `https://image.tmdb.org/t/p/w500${movie.backdrop_path}`
+                      }
+                      alt={movie.title}
+                    />
+                    <Link to={`/movie/${movie.id}`} className={classes.link}>
+                      <div className={classes["genre-title"]}>
+                        {movie.title}
+                      </div>
                     </Link>
-                    <div className={classes["genre-title"]}>
-                      {movie.original_title}
-                    </div>
-                  </li>
+                  </div>
                 ))}
-            </ul>
+            </Slider>
           </div>
         )}
         {genreTv.length !== 0 && (
           <div className={classes["genre-content"]}>
             <h1>TV Show</h1>
-            <ul>
+            <Slider {...settings} className={classes["genre-list"]}>
               {genreTv.map((tv) => (
-                <li key={tv.id} className={classes["genre-content-item"]}>
-                  <Link to={`/tv/${tv.id}`}>
-                    <img
-                      src={
-                        tv.poster_path
-                          ? `https://image.tmdb.org/t/p/w500${tv.poster_path}`
-                          : `https://image.tmdb.org/t/p/w500${tv.backdrop_path}`
-                      }
-                      alt={tv.original_name}
-                    />
+                <div key={tv.id} className={classes["genre-list-item"]}>
+                  <img
+                    src={
+                      tv.poster_path
+                        ? `https://image.tmdb.org/t/p/w500${tv.poster_path}`
+                        : `https://image.tmdb.org/t/p/w500${tv.backdrop_path}`
+                    }
+                    alt={tv.name}
+                  />
+                  <Link to={`/tv/${tv.id}`} className={classes.link}>
+                    <div className={classes["genre-title"]}>{tv.name}</div>
                   </Link>
-                  <div className={classes["genre-title"]}>
-                    {tv.original_name}
-                  </div>
-                </li>
+                </div>
               ))}
-            </ul>
+            </Slider>
           </div>
         )}
       </div>
