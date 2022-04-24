@@ -26,6 +26,7 @@ const Menu = () => {
 
   const handleLogout = () => {
     ctx.logout();
+
     window.location.replace("/");
   };
 
@@ -90,7 +91,7 @@ const Menu = () => {
         <ul>
           <li className={menuWatchlist}>
             <Link
-              to={`/account/${ctx.user.id}/watchlist`}
+              to={`/account/${ctx.user && ctx.user.id}/watchlist`}
               className={classes.link}
             >
               <TiThList />
@@ -99,7 +100,7 @@ const Menu = () => {
           </li>
           <li className={menuFavorite}>
             <Link
-              to={`/account/${ctx.user.id}/favorite`}
+              to={`/account/${ctx.user && ctx.user.id}/favorite`}
               className={classes.link}
             >
               <AiFillHeart />

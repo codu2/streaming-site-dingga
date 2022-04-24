@@ -8,6 +8,7 @@ import classes from "./Login.module.css";
 import { AiFillHome } from "react-icons/ai";
 
 const API_KEY = process.env.REACT_APP_API_KEY;
+const SESSION_ID = process.env.REACT_APP_SESSION_ID;
 
 const Login = () => {
   const ctx = useContext(Context);
@@ -34,6 +35,7 @@ const Login = () => {
       );
 
       if (response.data.success) {
+        /*
         const getSessionId = await axios.post(
           `https://api.themoviedb.org/3/authentication/session/new?api_key=${API_KEY}`,
           {
@@ -43,6 +45,11 @@ const Login = () => {
 
         const getAccount = await axios.get(
           `https://api.themoviedb.org/3/account?api_key=${API_KEY}&session_id=${getSessionId.data.session_id}`
+        );
+        */
+
+        const getAccount = await axios.get(
+          `https://api.themoviedb.org/3/account?api_key=${API_KEY}&session_id=${SESSION_ID}`
         );
 
         ctx.loggedInUser(getAccount.data);

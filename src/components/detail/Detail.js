@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useLocation, Link } from "react-router-dom";
 
 import axios from "axios";
@@ -67,38 +67,88 @@ const Detail = () => {
   if (!data) return null;
 
   const handleWatchlist = async () => {
-    try {
-      const response = await axios.post(
-        `https://api.themoviedb.org/3/account/${ctx.user.id}/watchlist?api_key=${API_KEY}&session_id=${SESSION_ID}`,
-        {
-          media_type: media,
-          media_id: data.id,
-          watchlist: true,
+    if (ctx.user) {
+      if (
+        ctx.watchlist_movie.find((item) => item.id === data.id) ||
+        ctx.watchlist_tv.find((item) => item.id === data.id)
+      ) {
+        try {
+          const response = await axios.post(
+            `https://api.themoviedb.org/3/account/${ctx.user.id}/watchlist?api_key=${API_KEY}&session_id=${SESSION_ID}`,
+            {
+              media_type: media,
+              media_id: data.id,
+              watchlist: false,
+            }
+          );
+          if (response.data.success) {
+            window.location.reload();
+          }
+        } catch (error) {
+          console.log(error);
         }
-      );
-      if (response.data.success) {
-        window.location.replace(`/account/${ctx.user.id}/watchlist`);
+      } else {
+        try {
+          const response = await axios.post(
+            `https://api.themoviedb.org/3/account/${ctx.user.id}/watchlist?api_key=${API_KEY}&session_id=${SESSION_ID}`,
+            {
+              media_type: media,
+              media_id: data.id,
+              watchlist: true,
+            }
+          );
+          if (response.data.success) {
+            window.location.replace(`/account/${ctx.user.id}/watchlist`);
+          }
+        } catch (error) {
+          console.log(error);
+        }
       }
-    } catch (error) {
-      console.log(error);
+    } else {
+      window.alert(`Please login to add this ${media} to your watchlist`);
     }
   };
 
   const handleFavorite = async () => {
-    try {
-      const response = await axios.post(
-        `https://api.themoviedb.org/3/account/${ctx.user.id}/favorite?api_key=${API_KEY}&session_id=${SESSION_ID}`,
-        {
-          media_type: media,
-          media_id: data.id,
-          favorite: true,
+    if (ctx.user) {
+      if (
+        ctx.favorite_movie.find((item) => item.id === data.id) ||
+        ctx.favorite_movie.find((item) => item.id === data.id)
+      ) {
+        try {
+          const response = await axios.post(
+            `https://api.themoviedb.org/3/account/${ctx.user.id}/favorite?api_key=${API_KEY}&session_id=${SESSION_ID}`,
+            {
+              media_type: media,
+              media_id: data.id,
+              favorite: false,
+            }
+          );
+          if (response.data.success) {
+            window.location.reload();
+          }
+        } catch (error) {
+          console.log(error);
         }
-      );
-      if (response.data.success) {
-        window.location.replace(`/account/${ctx.user.id}/favorite`);
+      } else {
+        try {
+          const response = await axios.post(
+            `https://api.themoviedb.org/3/account/${ctx.user.id}/favorite?api_key=${API_KEY}&session_id=${SESSION_ID}`,
+            {
+              media_type: media,
+              media_id: data.id,
+              favorite: true,
+            }
+          );
+          if (response.data.success) {
+            window.location.replace(`/account/${ctx.user.id}/favorite`);
+          }
+        } catch (error) {
+          console.log(error);
+        }
       }
-    } catch (error) {
-      console.log(error);
+    } else {
+      window.alert(`Please login to add this ${media} to your favorite`);
     }
   };
 
@@ -201,10 +251,24 @@ const Detail = () => {
           <div className={classes.actions}>
             <button className={classes.watch}>Watch Now</button>
             <button className={classes.add} onClick={handleWatchlist}>
-              <BsListUl />
+              {(ctx.watchlist_movie &&
+                ctx.watchlist_movie.find((item) => item.id === data.id)) ||
+              (ctx.watchlist_tv &&
+                ctx.watchlist_tv.find((item) => item.id === data.id)) ? (
+                <TiThList />
+              ) : (
+                <BsListUl />
+              )}
             </button>
             <button className={classes.like} onClick={handleFavorite}>
-              <AiOutlineHeart />
+              {(ctx.favorite_movie &&
+                ctx.favorite_movie.find((item) => item.id === data.id)) ||
+              (ctx.favorite_tv &&
+                ctx.favorite_tv.find((item) => item.id === data.id)) ? (
+                <AiFillHeart />
+              ) : (
+                <AiOutlineHeart />
+              )}
             </button>
             <button className={classes.bookmark}>
               <BsBookmark />
