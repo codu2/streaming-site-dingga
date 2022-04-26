@@ -25,7 +25,7 @@ function PrevArrow(props) {
         ...style,
         display: "block",
         background: "none",
-        color: "#d67b30",
+        color: "#f4f4f4",
         width: "28px",
         height: "28px",
         left: "0",
@@ -44,7 +44,7 @@ function NextArrow(props) {
         ...style,
         display: "block",
         background: "none",
-        color: "#d67b30",
+        color: "#f4f4f4",
         width: "28px",
         height: "28px",
         right: "0",
@@ -136,8 +136,8 @@ const MoviePage = () => {
     dots: false, // 점은 안 보이게
     infinite: true, // 무한 슬라이더
     speed: 500,
-    slidesToShow: 5, //5장씩 보이게 해주세요
-    slidesToScroll: 5, //1장씩 넘어가세요
+    slidesToShow: 4, //5장씩 보이게 해주세요
+    slidesToScroll: 4, //5장씩 넘어가세요
     draggable: false, // 드래그 안되게
     prevArrow: <PrevArrow />,
     nextArrow: <NextArrow />,
@@ -242,23 +242,25 @@ const MoviePage = () => {
             {genreMovie && (
               <div className={classes["content"]}>
                 <Slider {...settings} className={classes["content-list"]}>
-                  {genreMovie.map((data, index) => (
-                    <div key={data.id} className={classes["content-item"]}>
-                      <Link to={`/movie/${data.id}`}>
-                        <img
-                          src={
-                            data.poster_path
-                              ? `https://image.tmdb.org/t/p/w500${data.poster_path}`
-                              : `https://image.tmdb.org/t/p/w500${data.backdrop_path}`
-                          }
-                          alt={data.title}
-                        />
-                        {index < 3 && (
-                          <span className={classes.ranking}>{index + 1}</span>
-                        )}
-                      </Link>
-                    </div>
-                  ))}
+                  {genreMovie
+                    .filter((data) => data.backdrop_path)
+                    .map((data, index) => (
+                      <div key={data.id} className={classes["content-item"]}>
+                        <Link to={`/movie/${data.id}`}>
+                          <img
+                            src={
+                              data.backdrop_path
+                                ? `https://image.tmdb.org/t/p/w500${data.backdrop_path}`
+                                : `https://image.tmdb.org/t/p/w500${data.poster_path}`
+                            }
+                            alt={data.title}
+                          />
+                          <div className={classes["content-title"]}>
+                            {data.title}
+                          </div>
+                        </Link>
+                      </div>
+                    ))}
                 </Slider>
               </div>
             )}
@@ -278,75 +280,89 @@ const MoviePage = () => {
             {contentTab === 0 && topRatedData && (
               <div className={classes["content"]}>
                 <Slider {...settings} className={classes["content-list"]}>
-                  {topRatedData.map((data, index) => (
-                    <div key={data.id} className={classes["content-item"]}>
-                      <Link to={`/movie/${data.id}`}>
-                        <img
-                          src={
-                            data.poster_path
-                              ? `https://image.tmdb.org/t/p/w500${data.poster_path}`
-                              : `https://image.tmdb.org/t/p/w500${data.backdrop_path}`
-                          }
-                          alt={data.title}
-                        />
-                        {index < 3 && (
-                          <span className={classes.ranking}>{index + 1}</span>
-                        )}
-                      </Link>
-                    </div>
-                  ))}
+                  {topRatedData
+                    .filter((data) => data.backdrop_path)
+                    .map((data, index) => (
+                      <div key={data.id} className={classes["content-item"]}>
+                        <Link to={`/movie/${data.id}`}>
+                          <img
+                            src={
+                              data.backdrop_path
+                                ? `https://image.tmdb.org/t/p/w500${data.backdrop_path}`
+                                : `https://image.tmdb.org/t/p/w500${data.poster_path}`
+                            }
+                            alt={data.title}
+                          />
+                          <div className={classes["content-title"]}>
+                            {data.title}
+                          </div>
+                        </Link>
+                      </div>
+                    ))}
                 </Slider>
               </div>
             )}
             {contentTab === 1 && nowPlayingData && (
               <div className={classes["content"]}>
                 <Slider {...settings} className={classes["content-list"]}>
-                  {nowPlayingData.map((data, index) => (
-                    <div key={data.id} className={classes["content-item"]}>
-                      <Link to={`/movie/${data.id}`}>
-                        <img
-                          src={
-                            data.poster_path
-                              ? `https://image.tmdb.org/t/p/w500${data.poster_path}`
-                              : `https://image.tmdb.org/t/p/w500${data.backdrop_path}`
-                          }
-                          alt={data.title}
-                        />
-                        {index < 3 && (
-                          <span className={classes.ranking}>{index + 1}</span>
-                        )}
-                      </Link>
-                    </div>
-                  ))}
+                  {nowPlayingData
+                    .filter((data) => data.backdrop_path)
+                    .map((data, index) => (
+                      <div key={data.id} className={classes["content-item"]}>
+                        <Link to={`/movie/${data.id}`}>
+                          <img
+                            src={
+                              data.backdrop_path
+                                ? `https://image.tmdb.org/t/p/w500${data.backdrop_path}`
+                                : `https://image.tmdb.org/t/p/w500${data.poster_path}`
+                            }
+                            alt={data.title}
+                          />
+                          <div className={classes["content-title"]}>
+                            {data.title}
+                          </div>
+                        </Link>
+                      </div>
+                    ))}
                 </Slider>
               </div>
             )}
             {contentTab === 2 && popularData && (
               <div className={classes["content"]}>
                 <Slider {...settings} className={classes["content-list"]}>
-                  {popularData.map((data, index) => (
-                    <li key={data.id} className={classes["content-item"]}>
-                      <Link to={`/movie/${data.id}`}>
-                        <img
-                          src={
-                            data.poster_path
-                              ? `https://image.tmdb.org/t/p/w500${data.poster_path}`
-                              : `https://image.tmdb.org/t/p/w500${data.backdrop_path}`
-                          }
-                          alt={data.title}
-                        />
-                        {index < 3 && (
-                          <span className={classes.ranking}>{index + 1}</span>
-                        )}
-                      </Link>
-                    </li>
-                  ))}
+                  {popularData
+                    .filter((data) => data.backdrop_path)
+                    .map((data, index) => (
+                      <li key={data.id} className={classes["content-item"]}>
+                        <Link to={`/movie/${data.id}`}>
+                          <img
+                            src={
+                              data.backdrop_path
+                                ? `https://image.tmdb.org/t/p/w500${data.backdrop_path}`
+                                : `https://image.tmdb.org/t/p/w500${data.poster_path}`
+                            }
+                            alt={data.title}
+                          />
+                          <div className={classes["content-title"]}>
+                            {data.title}
+                          </div>
+                        </Link>
+                      </li>
+                    ))}
                 </Slider>
               </div>
             )}
           </div>
         </div>
-        <div className={classes["side-box"]}>
+      </div>
+    </div>
+  );
+};
+
+export default MoviePage;
+
+/*
+<div className={classes["side-box"]}>
           <div className={classes["side-content"]}>
             <h1>Search for Movie Title</h1>
             <div className={classes["search-input"]}>
@@ -390,9 +406,4 @@ const MoviePage = () => {
             </div>
           )}
         </div>
-      </div>
-    </div>
-  );
-};
-
-export default MoviePage;
+        */
