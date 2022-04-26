@@ -21,7 +21,7 @@ function PrevArrow(props) {
         display: "block",
         background: "none",
         left: "0",
-        top: "-20px",
+        top: "-40px",
         color: "#f4f4f4",
       }}
       onClick={onClick}
@@ -39,7 +39,7 @@ function NextArrow(props) {
         display: "block",
         background: "none",
         right: "0",
-        top: "-20px",
+        top: "-40px",
         color: "#f4f4f4",
       }}
       onClick={onClick}
@@ -69,8 +69,8 @@ const MovieItem = () => {
     dots: false,
     infinite: false,
     speed: 500,
-    slidesToShow: 8,
-    slidesToScroll: 8,
+    slidesToShow: 5,
+    slidesToScroll: 5,
     draggable: false,
     prevArrow: <PrevArrow />,
     nextArrow: <NextArrow />,
@@ -83,16 +83,16 @@ const MovieItem = () => {
       </div>
       <Slider {...settings} className={classes.item}>
         {data
-          .filter((data) => data.poster_path || data.backdrop_path)
+          .filter((data) => data.backdrop_path)
           .map((movie) => (
             <div key={movie.id}>
               <Link to={`/movie/${movie.id}`}>
                 <div className={classes["movie-item-card"]}>
                   <img
                     src={
-                      movie.poster_path
-                        ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
-                        : `https://image.tmdb.org/t/p/w500${movie.backdrop_path}`
+                      movie.backdrop_path
+                        ? `https://image.tmdb.org/t/p/w500${movie.backdrop_path}`
+                        : `https://image.tmdb.org/t/p/w500${movie.poster_path}`
                     }
                     alt={movie.title}
                   />

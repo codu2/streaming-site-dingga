@@ -1,5 +1,6 @@
 .tv-item {
-  margin-top: 2rem;
+  padding-top: 3rem;
+  padding-bottom: 1rem;
   width: 100%;
   overflow: hidden;
 }
@@ -8,7 +9,7 @@
   font-size: 16px;
   color: #f4f4f4;
   font-weight: 500;
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
   text-align: center;
 }
 
@@ -19,31 +20,26 @@
 }
 
 .tv-item-card {
-  width: 120px;
-  height: 190px;
+  width: 200px;
+  height: 120px;
   position: relative;
   background-color: rgba(0, 0, 0, 0.9);
-  border-radius: 0.7rem;
   cursor: pointer;
 }
 
 .tv-item-card img {
-  width: 100px;
-  height: 130px;
+  width: 200px;
+  height: 120px;
   object-fit: cover;
-  position: absolute;
-  top: 7.5px;
-  left: 7.5px;
-  border-radius: 0.7rem;
 }
 
 .tv-title {
   color: #f4f4f4;
-  font-size: 12px;
-  font-weight: 300;
+  font-size: 13px;
+  font-weight: 500;
   position: absolute;
-  top: 145px;
-  left: 5px;
+  bottom: 10px;
+  left: 20px;
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
@@ -51,5 +47,4 @@
   -webkit-box-orient: vertical;
   word-wrap: break-word;
   width: 85%;
-  text-align: center;
 }

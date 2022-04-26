@@ -1,16 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 import axios from "axios";
 import useAsync from "../../hooks/use-data";
 
 import classes from "./Home.module.css";
+import { AiOutlineClose } from "react-icons/ai";
 
 const API_KEY = process.env.REACT_APP_API_KEY;
 
 const Home = () => {
   const [content, setContent] = useState({});
   const [loading, setLoading] = useState(false);
-  const [trailer, setTrailer] = useState([]);
+  const [trailer, setTrailer] = useState({});
+  const [openTrailer, setOpenTrailer] = useState(false);
 
   const getData = async () => {
     const response = await axios.get(
@@ -21,19 +23,24 @@ const Home = () => {
     const getTrailer = await axios.get(
       `https://api.themoviedb.org/3/movie/${response.data.results[0].id}/videos?api_key=${API_KEY}&language=en-US`
     );
-    setTrailer(getTrailer.data.results);
+    setTrailer(
+      getTrailer.data.results.find(
+        (trailer) => trailer.name === "Official Trailer"
+      )
+    );
 
     return response.data;
   };
 
   const [state] = useAsync(getData, []);
 
-  const handleTrailerEnter = () => {
+  const handleTrailer = () => {
     setLoading(true);
-  };
 
-  const handleTrailerOut = () => {
-    setLoading(false);
+    setTimeout(() => {
+      setOpenTrailer(true);
+      setLoading(false);
+    }, 1000);
   };
 
   return (
@@ -80,8 +87,7 @@ const Home = () => {
               </div>
               <div
                 className={classes["content-trailer-button"]}
-                onMouseEnter={handleTrailerEnter}
-                onMouseOut={handleTrailerOut}
+                onClick={handleTrailer}
               >
                 Watch Trailer
               </div>
@@ -89,6 +95,25 @@ const Home = () => {
           </div>
         </div>
       </div>
+      {openTrailer && (
+        <div className={classes.trailer}>
+          <iframe
+            src={`https://www.youtube.com/embed/${trailer.key}`}
+            width="800px"
+            height="400px"
+            title={content.title}
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          />
+          <div
+            className={classes["close-button"]}
+            onClick={() => setOpenTrailer(false)}
+          >
+            <AiOutlineClose />
+          </div>
+        </div>
+      )}
     </div>
   );
 };
