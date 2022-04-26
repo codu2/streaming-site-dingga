@@ -1,19 +1,20 @@
 import React from "react";
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 
 import "../App.css";
 
-import LeftSection from "../components/menu/LeftSection";
+import Header from "../components/menu/Header";
 
 const Layout = () => {
-  const location = useLocation();
-  const path = location.pathname.split("/")[1];
-
   return (
     <div className="wrapper">
       <div className="container">
-        {path !== "login" && <LeftSection />}
-        <Outlet />
+        <header>
+          <Header />
+        </header>
+        <main>
+          <Outlet />
+        </main>
       </div>
     </div>
   );

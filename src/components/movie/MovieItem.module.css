@@ -1,14 +1,14 @@
 .movie-item {
-  margin-top: 1rem;
+  margin-top: 2rem;
   width: 100%;
   overflow: hidden;
 }
 
 .movie-item-top h1 {
-  font-size: 15px;
-  color: #5f5d70;
-  font-weight: 700;
-  margin-bottom: 0.7rem;
+  font-size: 16px;
+  color: #f4f4f4;
+  font-weight: 500;
+  margin-bottom: 1rem;
   text-align: center;
 }
 
@@ -22,8 +22,7 @@
   width: 120px;
   height: 190px;
   position: relative;
-  background-color: #f4f4f4;
-  border-radius: 0.7rem;
+  background-color: rgba(0, 0, 0, 0.9);
   cursor: pointer;
 }
 
@@ -34,13 +33,12 @@
   position: absolute;
   top: 7.5px;
   left: 7.5px;
-  border-radius: 0.7rem;
 }
 
 .movie-title {
-  color: #333;
+  color: #f4f4f4;
   font-size: 12px;
-  font-weight: 800;
+  font-weight: 300;
   position: absolute;
   top: 145px;
   left: 5px;

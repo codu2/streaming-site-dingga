@@ -1,25 +1,121 @@
 .home {
+  max-width: 1024px;
+  width: 100%;
+  height: max-content;
+  /*min-height: calc(100vh - 60px);*/
+}
+
+.content {
+  width: 100%;
+  height: 450px;
+  position: relative;
+}
+
+.content-image {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-  overflow: hidden;
-  padding: 0.75rem 1.3rem;
-  border-right: 1.5px solid rgba(0, 0, 0, 0.3);
-  flex: 4;
+  object-fit: cover;
+  opacity: 0.8;
 }
 
-.home-tab {
-  list-style: none;
+.content-info {
+  position: absolute;
+  bottom: 5rem;
+  left: 3rem;
+  color: #f4f4f4;
+}
+
+.content-info-align {
   display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
-.tab {
-  font-size: 14px;
-  color: #9593a4;
-  margin-right: 30px;
-  cursor: pointer;
+.content-title {
+  font-size: 30px;
   font-weight: 700;
+  margin-bottom: 10px;
+  letter-spacing: 1px;
 }
 
-.show-tab {
-  color: #5f5d70;
+.content-overview {
+  font-size: 15px;
+  width: 60%;
+  line-height: 20px;
+}
+
+.content-trailer {
+  display: flex;
+  align-items: center;
+  width: 30%;
+}
+
+.content-trailer-loading {
+  width: 60px;
+  height: 60px;
+  position: relative;
+}
+
+.outer {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.inner {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.content-trailer-loading svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.content-trailer-loading circle {
+  fill: none;
+  stroke: url(#GradientColor);
+  stroke-width: 8px;
+  stroke-dasharray: 472;
+  stroke-dashoffset: 0;
+}
+
+.content-trailer-loading circle.active {
+  animation: progress 2s linear forwards;
+}
+
+@keyframes progress {
+  0% {
+    stroke-dashoffset: 472;
+  }
+
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+.content-trailer-button {
+  margin-left: 10px;
+  font-size: 15px;
+  font-weight: 500;
+  padding: 5px 0;
+  border-bottom: 1px solid transparent;
+  color: #f4f4f4;
+}
+
+.content-trailer-button:hover {
+  border-bottom: 1px solid #f4f4f4;
+  cursor: pointer;
 }

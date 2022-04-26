@@ -2,7 +2,6 @@ import React, { useContext, useEffect } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 
 import axios from "axios";
-import useAsync from "./hooks/use-data";
 import Context from "./store/Context";
 
 import "./App.css";
@@ -52,7 +51,7 @@ function App() {
     if (ctx.user) {
       getData();
     }
-  }, []);
+  }, [ctx.user]);
 
   return (
     <Routes>

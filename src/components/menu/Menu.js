@@ -4,21 +4,7 @@ import { Link, useLocation } from "react-router-dom";
 import Context from "../../store/Context";
 
 import classes from "./Menu.module.css";
-import { AiFillHome, AiFillHeart, AiFillProfile } from "react-icons/ai";
-import {
-  RiCommunityFill,
-  RiCompassDiscoverFill,
-  RiSlideshow3Fill,
-  RiMovie2Fill,
-  RiLoginBoxFill,
-  RiLogoutBoxRFill,
-} from "react-icons/ri";
-import {
-  BsFillAwardFill,
-  BsFillCameraVideoFill,
-  BsBookmarkFill,
-} from "react-icons/bs";
-import { TiThList } from "react-icons/ti";
+import { AiOutlineSearch } from "react-icons/ai";
 
 const Menu = () => {
   const location = useLocation();
@@ -30,9 +16,15 @@ const Menu = () => {
     window.location.replace("/");
   };
 
-  const menuHome = `${location.pathname === "/" && classes.current}`;
-  const menuTv = `${location.pathname === "/tv" && classes.current}`;
-  const menuMovie = `${location.pathname === "/movie" && classes.current}`;
+  const menuHome = `${classes["menu-item"]} ${
+    location.pathname === "/" && classes.current
+  }`;
+  const menuTv = `${classes["menu-item"]} ${
+    location.pathname === "/tv" && classes.current
+  }`;
+  const menuMovie = `${classes["menu-item"]} ${
+    location.pathname === "/movie" && classes.current
+  }`;
   const menuFavorite = `${
     location.pathname.split("/")[3] === "favorite" && classes.current
   }`;
@@ -42,51 +34,51 @@ const Menu = () => {
 
   return (
     <div className={classes.menu}>
-      <div className={classes["menu-card"]}>
-        <h1>MENU</h1>
-        <ul>
-          <li className={menuHome}>
-            <Link to="/" className={classes.link}>
-              <AiFillHome />
-              Home
-            </Link>
-          </li>
-          <li>
-            <RiCommunityFill />
-            Community
-          </li>
-          <li>
-            <RiCompassDiscoverFill />
-            Discover
-          </li>
-          <li>
-            <BsFillAwardFill />
-            Awards
-          </li>
-        </ul>
+      <ul className={classes["menu-list"]}>
+        <li className={menuHome}>
+          <Link to="/" className={classes.link}>
+            Home
+          </Link>
+        </li>
+        <li className={menuMovie}>
+          <Link to={`/movie`} className={classes.link}>
+            Movies
+          </Link>
+        </li>
+        <li className={menuTv}>
+          <Link to={`/tv`} className={classes.link}>
+            TV Shows
+          </Link>
+        </li>
+        {ctx.user && <li className={classes["menu-item"]}>My Page</li>}
+      </ul>
+      <div className={classes.search}>
+        <AiOutlineSearch />
+        <input
+          type="text"
+          autoComplete="off"
+          className={classes["search-input"]}
+        />
       </div>
-      <div className={classes["menu-card"]}>
-        <h1>CATEGORY</h1>
-        <ul>
-          <li className={menuTv}>
-            <Link to={`/tv`} className={classes.link}>
-              <RiSlideshow3Fill />
-              TV Show
-            </Link>
-          </li>
-          <li className={menuMovie}>
-            <Link to={`/movie`} className={classes.link}>
-              <RiMovie2Fill />
-              Movie
-            </Link>
-          </li>
-          <li>
-            <BsFillCameraVideoFill />
-            All
-          </li>
-        </ul>
-      </div>
-      <div className={classes["menu-card"]}>
+      {ctx.user ? (
+        <div className={classes["logout-button"]} onClick={handleLogout}>
+          Log Out
+        </div>
+      ) : (
+        <div className={classes["login-button"]}>
+          <Link to="/login" className={classes.link}>
+            Log In
+          </Link>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default Menu;
+
+/*
+<div className={classes["menu-card"]}>
         <h1>LIBRARY</h1>
         <ul>
           <li className={menuWatchlist}>
@@ -113,30 +105,4 @@ const Menu = () => {
           </li>
         </ul>
       </div>
-      <div className={classes["menu-card"]}>
-        <h1>GENERAL</h1>
-        <ul>
-          <li>
-            <AiFillProfile />
-            Profile
-          </li>
-          {ctx.user ? (
-            <li onClick={handleLogout}>
-              <RiLogoutBoxRFill />
-              Log Out
-            </li>
-          ) : (
-            <li>
-              <Link to="/login" className={classes.link}>
-                <RiLoginBoxFill />
-                Log In
-              </Link>
-            </li>
-          )}
-        </ul>
-      </div>
-    </div>
-  );
-};
-
-export default Menu;
+      */

@@ -1,13 +1,15 @@
 import React from "react";
 
 import Home from "../components/home/Home";
-import SideBar from "../components/side-bar/SideBar";
+import MovieItem from "../components/movie/MovieItem";
+import TvShowItem from "../components/tv-show/TvShowItem";
 
 const Homepage = () => {
   return (
     <>
       <Home />
-      <SideBar />
+      <MovieItem />
+      <TvShowItem />
     </>
   );
 };

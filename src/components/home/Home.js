@@ -1,56 +1,96 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from "react";
 
-import classes from './Home.module.css';
-import All from '../all/All';
-import Movie from '../movie/Movie';
-import TvShow from '../tv-show/TvShow';
+import axios from "axios";
+import useAsync from "../../hooks/use-data";
+
+import classes from "./Home.module.css";
+
+const API_KEY = process.env.REACT_APP_API_KEY;
 
 const Home = () => {
-    const [all, setAll] = useState(true);
-    const [movie, setMovie] = useState(false);
-    const [tv, setTv] = useState(false);
+  const [content, setContent] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [trailer, setTrailer] = useState([]);
 
-    const onAllTabbed = event => {
-        event.preventDefault();
+  const getData = async () => {
+    const response = await axios.get(
+      `https://api.themoviedb.org/3/trending/all/day?api_key=${API_KEY}`
+    );
+    setContent(response.data.results[0]);
 
-        setAll(true);
-        setMovie(false);
-        setTv(false);
-    }
+    const getTrailer = await axios.get(
+      `https://api.themoviedb.org/3/movie/${response.data.results[0].id}/videos?api_key=${API_KEY}&language=en-US`
+    );
+    setTrailer(getTrailer.data.results);
 
-    const onMovieTabbed = event => {
-        event.preventDefault();
+    return response.data;
+  };
 
-        setAll(false);
-        setMovie(true);
-        setTv(false);
-    }
+  const [state] = useAsync(getData, []);
 
-    const onTvTabbed = event => {
-        event.preventDefault();
-        
-        setAll(false);
-        setMovie(false);
-        setTv(true);
-    }
+  const handleTrailerEnter = () => {
+    setLoading(true);
+  };
 
-    const allClasses = `${classes.tab} ${all === true ? classes['show-tab'] : ''}`;
-    const movieClasses = `${classes.tab} ${movie === true ? classes['show-tab'] : ''}`;
-    const tvClasses = `${classes.tab} ${tv === true ? classes['show-tab'] : ''}`;
-    
-    return (
-        <div className={classes.home}>
-            <ul className={classes['home-tab']}>
-                <li onClick={onAllTabbed} className={allClasses}>All</li>
-                <li onClick={onMovieTabbed} className={movieClasses}>Movie</li>
-                <li onClick={onTvTabbed} className={tvClasses}>TV-Show</li>
-            </ul>
-            {all && <All />}
-            {movie && <Movie />}
-            {tv && <TvShow />}
+  const handleTrailerOut = () => {
+    setLoading(false);
+  };
+
+  return (
+    <div className={classes.home}>
+      <div className={classes.content}>
+        <img
+          src={`https://image.tmdb.org/t/p/w1280${content.backdrop_path}`}
+          alt={content.title ? content.title : content.name}
+          className={classes["content-image"]}
+        />
+        <div className={classes["content-info"]}>
+          <div className={classes["content-title"]}>
+            {content.title ? content.title : content.name}
+          </div>
+          <div className={classes["content-info-align"]}>
+            <div className={classes["content-overview"]}>
+              {content.overview}
+            </div>
+            <div className={classes["content-trailer"]}>
+              <div className={classes["content-trailer-loading"]}>
+                <div className={classes.outer}>
+                  <div className={classes.inner}></div>
+                </div>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  version="1.1"
+                  width="60px"
+                  height="60px"
+                >
+                  <defs>
+                    <linearGradient id="GradientColor">
+                      <stop offset="0%" stopColor="#ccc" />
+                      <stop offset="100%" stopColor="#f4f4f4" />
+                    </linearGradient>
+                  </defs>
+                  <circle
+                    cx="30"
+                    cy="30"
+                    r="25"
+                    strokeLinecap="round"
+                    className={loading ? classes.active : null}
+                  />
+                </svg>
+              </div>
+              <div
+                className={classes["content-trailer-button"]}
+                onMouseEnter={handleTrailerEnter}
+                onMouseOut={handleTrailerOut}
+              >
+                Watch Trailer
+              </div>
+            </div>
+          </div>
         </div>
-    )
+      </div>
+    </div>
+  );
 };
 
 export default Home;
-
