@@ -56,38 +56,45 @@ function NextArrow(props) {
 
 const API_KEY = process.env.REACT_APP_API_KEY;
 
+const getTopRated = async () => {
+  const response = await axios.get(
+    `https://api.themoviedb.org/3/movie/top_rated?api_key=${API_KEY}&include_adult=false&language=en-US&page=1`
+  );
+  return response.data.results;
+};
+
+const getNowPlaying = async () => {
+  const response = await axios.get(
+    `https://api.themoviedb.org/3/movie/now_playing?api_key=${API_KEY}&language=en-US&page=1`
+  );
+  return response.data.results;
+};
+
+const getPopular = async () => {
+  const response = await axios.get(
+    `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}`
+  );
+  return response.data.results;
+};
+
+const getTrending = async () => {
+  const response = await axios.get(
+    `https://api.themoviedb.org/3/trending/movie/day?api_key=${API_KEY}&include_adult=false`
+  );
+  return response.data.results;
+};
+
+const getData = async () => {
+  const response = await axios.get(
+    `https://api.themoviedb.org/3/movie/581734?api_key=${API_KEY}&language=en-US`
+  );
+  return response.data;
+};
+
 const MoviePage = () => {
   const [contentTab, setContentTab] = useState(0);
   const [genreTab, setGenreTab] = useState("28|32");
   const [genreMovie, setGenreMovie] = useState([]);
-
-  const getTopRated = async () => {
-    const response = await axios.get(
-      `https://api.themoviedb.org/3/movie/top_rated?api_key=${API_KEY}&include_adult=false&language=en-US&page=1`
-    );
-    return response.data.results;
-  };
-
-  const getNowPlaying = async () => {
-    const response = await axios.get(
-      `https://api.themoviedb.org/3/movie/now_playing?api_key=${API_KEY}&language=en-US&page=1`
-    );
-    return response.data.results;
-  };
-
-  const getPopular = async () => {
-    const response = await axios.get(
-      `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}`
-    );
-    return response.data.results;
-  };
-
-  const getData = async () => {
-    const response = await axios.get(
-      `https://api.themoviedb.org/3/movie/581734?api_key=${API_KEY}&language=en-US`
-    );
-    return response.data;
-  };
 
   useEffect(() => {
     const getGenreMovie = async () => {
@@ -102,11 +109,13 @@ const MoviePage = () => {
   const [top_rated] = useAsync(getTopRated, []);
   const [now_playing] = useAsync(getNowPlaying, []);
   const [popular] = useAsync(getPopular, []);
+  const [trending] = useAsync(getTrending, []);
   const [nomadland] = useAsync(getData, []);
 
   const { data: topRatedData } = top_rated;
   const { data: nowPlayingData } = now_playing;
   const { data: popularData } = popular;
+  const { data: trendingData } = trending;
   const { data: nomadlandData } = nomadland;
 
   const [searchResult, setSearchResult] = useState([]);
@@ -136,11 +145,20 @@ const MoviePage = () => {
     dots: false, // 점은 안 보이게
     infinite: true, // 무한 슬라이더
     speed: 500,
-    slidesToShow: 4, //5장씩 보이게 해주세요
-    slidesToScroll: 4, //5장씩 넘어가세요
+    slidesToShow: 4, //4장씩 보이게 해주세요
+    slidesToScroll: 4, //4장씩 넘어가세요
     draggable: false, // 드래그 안되게
     prevArrow: <PrevArrow />,
     nextArrow: <NextArrow />,
+  };
+
+  const tredingSettings = {
+    dots: false,
+    infinite: false,
+    speed: 500,
+    slidesToShow: 3,
+    slidesToScroll: 3,
+    draggable: true,
   };
 
   return (
@@ -148,6 +166,39 @@ const MoviePage = () => {
       <h1>Movies</h1>
       <div className={classes.wrapper}>
         <div className={classes["content-box"]}>
+          <div className={classes["content-wrapper"]}>
+            <div className={classes.trending}>
+              <h1>Today's Trending 10</h1>
+              {trendingData && (
+                <div className={classes.content}>
+                  <Slider
+                    {...tredingSettings}
+                    className={classes["content-list"]}
+                  >
+                    {trendingData
+                      .filter((data, index) => data.backdrop_path && index < 10)
+                      .map((data) => (
+                        <div key={data.id} className={classes["content-item"]}>
+                          <Link to={`/movie/${data.id}`}>
+                            <img
+                              src={
+                                data.backdrop_path
+                                  ? `https://image.tmdb.org/t/p/w500${data.backdrop_path}`
+                                  : `https://image.tmdb.org/t/p/w500${data.poster_path}`
+                              }
+                              alt={data.title}
+                            />
+                            <div className={classes["content-title"]}>
+                              {data.title}
+                            </div>
+                          </Link>
+                        </div>
+                      ))}
+                  </Slider>
+                </div>
+              )}
+            </div>
+          </div>
           <div className={classes["content-wrapper"]}>
             <div className={classes["content-genre-tabs"]}>
               <div
@@ -240,11 +291,11 @@ const MoviePage = () => {
               </div>
             </div>
             {genreMovie && (
-              <div className={classes["content"]}>
+              <div className={classes.content}>
                 <Slider {...settings} className={classes["content-list"]}>
                   {genreMovie
                     .filter((data) => data.backdrop_path)
-                    .map((data, index) => (
+                    .map((data) => (
                       <div key={data.id} className={classes["content-item"]}>
                         <Link to={`/movie/${data.id}`}>
                           <img
@@ -278,11 +329,11 @@ const MoviePage = () => {
               </div>
             </div>
             {contentTab === 0 && topRatedData && (
-              <div className={classes["content"]}>
+              <div className={classes.content}>
                 <Slider {...settings} className={classes["content-list"]}>
                   {topRatedData
                     .filter((data) => data.backdrop_path)
-                    .map((data, index) => (
+                    .map((data) => (
                       <div key={data.id} className={classes["content-item"]}>
                         <Link to={`/movie/${data.id}`}>
                           <img
@@ -303,11 +354,11 @@ const MoviePage = () => {
               </div>
             )}
             {contentTab === 1 && nowPlayingData && (
-              <div className={classes["content"]}>
+              <div className={classes.content}>
                 <Slider {...settings} className={classes["content-list"]}>
                   {nowPlayingData
                     .filter((data) => data.backdrop_path)
-                    .map((data, index) => (
+                    .map((data) => (
                       <div key={data.id} className={classes["content-item"]}>
                         <Link to={`/movie/${data.id}`}>
                           <img
@@ -328,11 +379,11 @@ const MoviePage = () => {
               </div>
             )}
             {contentTab === 2 && popularData && (
-              <div className={classes["content"]}>
+              <div className={classes.content}>
                 <Slider {...settings} className={classes["content-list"]}>
                   {popularData
                     .filter((data) => data.backdrop_path)
-                    .map((data, index) => (
+                    .map((data) => (
                       <li key={data.id} className={classes["content-item"]}>
                         <Link to={`/movie/${data.id}`}>
                           <img

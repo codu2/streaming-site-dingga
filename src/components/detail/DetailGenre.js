@@ -68,7 +68,7 @@ const DetailGenre = () => {
       <div className={classes["genre-result"]}>
         {genreMovie.length !== 0 && (
           <div className={classes["genre-content"]}>
-            <h1>Movie</h1>
+            <h1>- Movies</h1>
             <Slider {...settings} className={classes["genre-list"]}>
               {genreMovie &&
                 genreMovie.map((movie) => (
@@ -93,7 +93,7 @@ const DetailGenre = () => {
         )}
         {genreTv.length !== 0 && (
           <div className={classes["genre-content"]}>
-            <h1>TV Show</h1>
+            <h1>- TV Shows</h1>
             <Slider {...settings} className={classes["genre-list"]}>
               {genreTv.map((tv) => (
                 <div key={tv.id} className={classes["genre-list-item"]}>

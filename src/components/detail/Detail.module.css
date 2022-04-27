@@ -1,7 +1,8 @@
 .container {
   padding: 15px;
-  flex: 6;
   width: 100%;
+  height: max-content;
+  min-height: calc(100vh - 60px);
 }
 
 .content-img {
@@ -16,13 +17,13 @@
   align-items: center;
   justify-content: flex-start;
   padding-bottom: 30px;
-  border-bottom: 1px solid #d67b30;
+  border-bottom: 1px solid #f4f4f4;
 }
 
 .content {
   padding: 15px;
   height: 300px;
-  width: 500px;
+  width: 50%;
   margin-left: 15px;
   display: flex;
   flex-direction: column;
@@ -36,27 +37,26 @@
 }
 
 .logo-img {
-  min-width: 30px;
-  max-width: 40px;
+  width: 60px;
   height: 25px;
   object-fit: contain;
   margin-right: 7px;
-}
-
-.logo-name {
-  font-size: 13px;
-  color: #333;
-  margin-right: 7px;
-  line-height: 25px;
+  background-color: #4a7720;
+  padding: 5px 12px;
+  border-radius: 15px;
 }
 
 .title {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
-  color: #333;
+  color: #f4f4f4;
   margin-top: 7px;
+  text-align: center;
+}
+
+.title > span {
+  margin-top: 5px;
 }
 
 .title > span:first-child {
@@ -67,14 +67,14 @@
 .title > span:last-child {
   font-size: 13px;
   font-weight: 500;
-  color: #d67b30;
+  color: #4a7720;
 }
 
 .tagline {
   text-align: center;
   font-size: 14px;
   font-style: italic;
-  color: #666;
+  color: #d7d7d7;
 }
 
 .genres {
@@ -86,8 +86,8 @@
 }
 
 .genre {
-  color: #d67b30;
-  border: 1px solid #d67b30;
+  color: #4a7720;
+  border: 1px solid #4a7720;
   padding: 5px 10px;
   border-radius: 16px;
   font-size: 12px;
@@ -99,7 +99,7 @@
   align-items: center;
   justify-content: flex-end;
   font-size: 13px;
-  color: #444;
+  color: #f4f4f4;
   font-weight: 300;
 }
 
@@ -114,10 +114,10 @@
 }
 
 .actions .watch {
-  background-color: #d67b30;
+  background-color: #4a7720;
   font-size: 15px;
   font-weight: 700;
-  border: 1px solid #d67b30;
+  border: 1px solid #4a7720;
   padding: 14px 16px;
   color: #fff;
   cursor: pointer;
@@ -127,17 +127,17 @@
 .actions .add,
 .like,
 .bookmark {
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #fff;
-  color: #d67b30;
-  border: 1px solid #d67b30;
+  background-color: #4a7720;
+  border: 1px solid #4a7720;
+  padding: 12px 13px;
+  color: #fff;
   cursor: pointer;
   width: 47px;
   height: 47px;
   font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .actions .add:hover svg,
@@ -149,7 +149,7 @@
 
 .details {
   width: 100%;
-  padding: 10px 15px;
+  padding: 15px 15px 10px;
   display: flex;
   align-items: flex-start;
 }
@@ -159,28 +159,28 @@
   font-size: 12px;
   text-align: justify;
   font-weight: 300;
-  color: #444;
+  color: #d7d7d7;
   line-height: 20px;
-  padding-right: 10px;
+  padding-left: 15px;
   word-break: break-all;
 }
 
 .detail {
   width: 55%;
-  padding-left: 10px;
+  padding-right: 15px;
 }
 
 .detail-tabs {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
 }
 
 .detail-tab {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 500;
-  color: #d67b30;
+  color: #d7d7d7;
   padding: 3px 7px;
   border-bottom: 1px solid transparent;
   cursor: pointer;
@@ -189,18 +189,17 @@
 }
 
 .detail-tab.active {
-  border-bottom: 1px solid #d67b30;
+  color: #f4f4f4;
+  border-bottom: 1px solid #f4f4f4;
 }
 
 .cast {
-  flex: 1;
+  width: 100%;
 }
 
 .cast-list {
   overflow: hidden;
   width: 100%;
-  max-width: 500px;
-  padding-left: 10px;
 }
 
 .cast-list-item {
@@ -213,9 +212,10 @@
 
 .cast-list-item img {
   width: 90px;
-  height: 110px;
+  height: 120px;
   object-fit: cover;
   cursor: pointer;
+  margin: 0 auto;
 }
 
 .cast-info {
@@ -224,22 +224,23 @@
 }
 
 .cast-info > div {
-  font-size: 12px;
+  font-size: 11px;
   text-align: center;
-  padding: 2px 0;
+  padding: 3px 0;
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
+  color: #f4f4f4;
 }
 
 .cast-info > div:first-child {
-  border-bottom: 1px dotted #d67b30;
+  border-bottom: 1px dotted #f4f4f4;
 }
 
 .reviews {
-  flex: 1;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -252,16 +253,17 @@
   overflow: auto;
   height: 180px;
   padding: 5px 10px;
+  color: #f4f4f4;
 }
 
 .review-list::-webkit-scrollbar {
-  background-color: #fff;
-  width: 7px;
+  background-color: #000;
+  width: 5px;
 }
 
 .review-list::-webkit-scrollbar-thumb {
   background-color: #f4f4f4;
-  width: 7px;
+  width: 5px;
 }
 
 .review-list-item {
@@ -293,7 +295,7 @@
 }
 
 .similar {
-  flex: 1;
+  width: 100%;
 }
 
 .similar-list {
@@ -319,13 +321,5 @@
 .link {
   text-decoration: none;
   font-size: 12px;
-  color: #d67b30;
-}
-
-.slick-slide {
-  width: 100% !important;
-}
-
-.slick-list {
-  width: 100% !important;
+  color: #4a7720;
 }

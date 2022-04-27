@@ -166,8 +166,8 @@ const Detail = () => {
     dots: false, // 점은 안 보이게
     infinite: false, // 무한 슬라이더
     speed: 500,
-    slidesToShow: 5, //5장씩 보이게 해주세요
-    slidesToScroll: 5, //1장씩 넘어가세요
+    slidesToShow: 4, //4장씩 보이게 해주세요
+    slidesToScroll: 4, //4장씩 넘어가세요
     arrows: false,
   };
 
@@ -177,9 +177,9 @@ const Detail = () => {
         <img
           src={
             data.backdrop_path
-              ? `https://image.tmdb.org/t/p/w500${data.backdrop_path}`
+              ? `https://image.tmdb.org/t/p/w1280${data.backdrop_path}`
               : data.poster_path &&
-                `https://image.tmdb.org/t/p/w500${data.poster_path}`
+                `https://image.tmdb.org/t/p/w1280${data.poster_path}`
           }
           alt={data.name}
           className={classes["content-img"]}
@@ -277,7 +277,6 @@ const Detail = () => {
         </div>
       </div>
       <div className={classes.details}>
-        <div className={classes.overview}>{data.overview}</div>
         <div className={classes.detail}>
           <div className={classes["detail-tabs"]}>
             <span className={castTabCss} onClick={() => setContentTab(0)}>
@@ -329,58 +328,23 @@ const Detail = () => {
           {contentTab === 2 && similarData && (
             <div className={classes.similar}>
               <ul className={classes["similar-list"]}>
-                <li className={classes["similar-list-item"]}>
-                  <Link to={`/${media}/${similarData[0].id}`}>
-                    <img
-                      src={`https://image.tmdb.org/t/p/w500${similarData[0].poster_path}`}
-                      alt={
-                        media === "tv"
-                          ? similarData[0].name
-                          : similarData[0].title
-                      }
-                    />
-                  </Link>
-                </li>
-                <li className={classes["similar-list-item"]}>
-                  <Link to={`/${media}/${similarData[1].id}`}>
-                    <img
-                      src={`https://image.tmdb.org/t/p/w500${similarData[1].poster_path}`}
-                      alt={
-                        media === "tv"
-                          ? similarData[1].name
-                          : similarData[1].title
-                      }
-                    />
-                  </Link>
-                </li>
-                <li className={classes["similar-list-item"]}>
-                  <Link to={`/${media}/${similarData[2].id}`}>
-                    <img
-                      src={`https://image.tmdb.org/t/p/w500${similarData[2].poster_path}`}
-                      alt={
-                        media === "tv"
-                          ? similarData[2].name
-                          : similarData[2].title
-                      }
-                    />
-                  </Link>
-                </li>
-                <li className={classes["similar-list-item"]}>
-                  <Link to={`/${media}/${similarData[3].id}`}>
-                    <img
-                      src={`https://image.tmdb.org/t/p/w500${similarData[3].poster_path}`}
-                      alt={
-                        media === "tv"
-                          ? similarData[3].name
-                          : similarData[3].title
-                      }
-                    />
-                  </Link>
-                </li>
+                {similarData
+                  .filter((data, index) => index < 4)
+                  .map((data) => (
+                    <li className={classes["similar-list-item"]}>
+                      <Link to={`/${media}/${data.id}`}>
+                        <img
+                          src={`https://image.tmdb.org/t/p/w500${data.poster_path}`}
+                          alt={media === "tv" ? data.name : data.title}
+                        />
+                      </Link>
+                    </li>
+                  ))}
               </ul>
             </div>
           )}
         </div>
+        <div className={classes.overview}>{data.overview}</div>
       </div>
     </div>
   );

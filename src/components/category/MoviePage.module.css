@@ -24,6 +24,7 @@
 
 .content-wrapper {
   width: 100%;
+  margin-bottom: 30px;
 }
 
 .content {
@@ -32,6 +33,13 @@
   position: relative;
   padding: 10px;
   width: 100%;
+}
+
+.trending h1 {
+  font-size: 14px;
+  font-weight: 500;
+  color: #f4f4f4;
+  margin: 10px 0 10px 20px;
 }
 
 .content-genre-tabs {
@@ -56,11 +64,11 @@
   border-bottom: 1px solid transparent;
   cursor: pointer;
   margin-bottom: 7px;
-  padding-bottom: 3px;
+  padding-bottom: 5px;
 }
 
+.content-tab:hover,
 .content-tab.active {
-  color: #f4f4f4;
   border-bottom: 1px solid #f4f4f4;
 }
 
@@ -69,7 +77,6 @@
   width: 100%;
   overflow: hidden;
   padding: 0 35px;
-  margin-bottom: 30px;
 }
 
 .content-item {
@@ -91,12 +98,22 @@
   position: absolute;
   bottom: 20px;
   left: 15px;
-  font-size: 14px;
+  font-size: 13px;
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
+  line-height: 18px;
+}
+
+.trending .content-list {
+  height: 160px;
+  padding: 0;
+}
+
+.trending .content-list .content-title {
+  bottom: 30px;
 }
 
 .side-box {
@@ -212,9 +229,4 @@
   font-size: 40px;
   color: #fff;
   cursor: pointer;
-}
-
-.slick-slider,
-.slick-list {
-  width: 100% !important;
 }
