@@ -1,14 +1,20 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 
+import axios from "axios";
 import Context from "../../store/Context";
 
 import classes from "./Menu.module.css";
 import { AiOutlineSearch } from "react-icons/ai";
 
+const API_KEY = process.env.REACT_APP_API_KEY;
+
 const Menu = () => {
   const location = useLocation();
+  const path = location.pathname.split("/")[1];
   const ctx = useContext(Context);
+  const [searchResult, setSearchResult] = useState([]);
+  const [query, setQuery] = useState("");
 
   const handleLogout = () => {
     ctx.logout();
@@ -16,14 +22,22 @@ const Menu = () => {
     window.location.replace("/");
   };
 
+  const handleSearch = async (e) => {
+    setQuery(e.target.value);
+    if (e.target.value !== "") {
+      const response = await axios.get(
+        `https://api.themoviedb.org/3/search/multi?api_key=${API_KEY}&language=en-US&query=${e.target.value}&page=1&include_adult=false`
+      );
+      setSearchResult(response.data.results);
+    }
+  };
+
   const menuHome = `${classes["menu-item"]} ${
     location.pathname === "/" && classes.current
   }`;
-  const menuTv = `${classes["menu-item"]} ${
-    location.pathname === "/tv" && classes.current
-  }`;
+  const menuTv = `${classes["menu-item"]} ${path === "tv" && classes.current}`;
   const menuMovie = `${classes["menu-item"]} ${
-    location.pathname === "/movie" && classes.current
+    path === "movie" && classes.current
   }`;
   const menuFavorite = `${
     location.pathname.split("/")[3] === "favorite" && classes.current
@@ -58,6 +72,7 @@ const Menu = () => {
           type="text"
           autoComplete="off"
           className={classes["search-input"]}
+          onChange={handleSearch}
         />
       </div>
       {ctx.user ? (

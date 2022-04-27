@@ -24,9 +24,7 @@ const Home = () => {
       `https://api.themoviedb.org/3/movie/${response.data.results[0].id}/videos?api_key=${API_KEY}&language=en-US`
     );
     setTrailer(
-      getTrailer.data.results.find(
-        (trailer) => trailer.name === "Official Trailer"
-      )
+      getTrailer.data.results.filter((data) => data.type === "Trailer")[0]
     );
 
     return response.data;

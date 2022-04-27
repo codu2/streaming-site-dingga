@@ -58,21 +58,21 @@ const API_KEY = process.env.REACT_APP_API_KEY;
 
 const getTopRated = async () => {
   const response = await axios.get(
-    `https://api.themoviedb.org/3/movie/top_rated?api_key=${API_KEY}&include_adult=false&language=en-US&page=1`
+    `https://api.themoviedb.org/3/movie/top_rated?api_key=${API_KEY}&page=1&include_adult=false&primary_release_date.gte=2000-01-01&with_original_language=en|ko`
   );
   return response.data.results;
 };
 
 const getNowPlaying = async () => {
   const response = await axios.get(
-    `https://api.themoviedb.org/3/movie/now_playing?api_key=${API_KEY}&language=en-US&page=1`
+    `https://api.themoviedb.org/3/movie/now_playing?api_key=${API_KEY}&page=1&include_adult=false&primary_release_date.gte=2000-01-01&with_original_language=en|ko`
   );
   return response.data.results;
 };
 
 const getPopular = async () => {
   const response = await axios.get(
-    `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}`
+    `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&page=1&include_adult=false&primary_release_date.gte=2000-01-01&with_original_language=en|ko`
   );
   return response.data.results;
 };
@@ -99,7 +99,7 @@ const MoviePage = () => {
   useEffect(() => {
     const getGenreMovie = async () => {
       const response = await axios.get(
-        `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&language=en-US&include_adult=false&with_genres=${genreTab}`
+        `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&with_genres=${genreTab}&page=1&include_adult=false&primary_release_date.gte=2000-01-01&with_original_language=en|ko`
       );
       setGenreMovie(response.data.results);
     };
@@ -117,19 +117,6 @@ const MoviePage = () => {
   const { data: popularData } = popular;
   const { data: trendingData } = trending;
   const { data: nomadlandData } = nomadland;
-
-  const [searchResult, setSearchResult] = useState([]);
-  const [query, setQuery] = useState("");
-
-  const handleSearch = async (e) => {
-    setQuery(e.target.value);
-    if (e.target.value !== "") {
-      const response = await axios.get(
-        `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&language=en-US&query=${e.target.value}&page=1&include_adult=false`
-      );
-      setSearchResult(response.data.results);
-    }
-  };
 
   const tab0Css = `${classes["content-tab"]} ${
     contentTab === 0 && classes.active

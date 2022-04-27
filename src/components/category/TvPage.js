@@ -58,28 +58,28 @@ const API_KEY = process.env.REACT_APP_API_KEY;
 
 const getOnTheAir = async () => {
   const response = await axios.get(
-    `https://api.themoviedb.org/3/tv/on_the_air?api_key=${API_KEY}&language=en-US&page=1`
+    `https://api.themoviedb.org/3/tv/on_the_air?api_key=${API_KEY}&page=1&include_adult=false&primary_release_date.gte=2000-01-01&with_original_language=en|ko`
   );
   return response.data.results;
 };
 
 const getAiringToday = async () => {
   const response = await axios.get(
-    `https://api.themoviedb.org/3/tv/airing_today?api_key=${API_KEY}&language=en-US&page=1`
+    `https://api.themoviedb.org/3/tv/airing_today?api_key=${API_KEY}&page=1&include_adult=false&primary_release_date.gte=2000-01-01&with_original_language=en|ko`
   );
   return response.data.results;
 };
 
 const getTopLated = async () => {
   const response = await axios.get(
-    `https://api.themoviedb.org/3/tv/top_rated?api_key=${API_KEY}&language=en-US&page=1`
+    `https://api.themoviedb.org/3/tv/top_rated?api_key=${API_KEY}&page=1&include_adult=false&primary_release_date.gte=2000-01-01&with_original_language=en|ko`
   );
   return response.data.results;
 };
 
 const getPopular = async () => {
   const response = await axios.get(
-    `https://api.themoviedb.org/3/tv/popular?api_key=${API_KEY}&language=en-US&page=1`
+    `https://api.themoviedb.org/3/tv/popular?api_key=${API_KEY}&page=1&include_adult=false&primary_release_date.gte=2000-01-01&with_original_language=en|ko`
   );
   return response.data.results;
 };
@@ -106,7 +106,7 @@ const TvPage = () => {
   useEffect(() => {
     const getGenreTv = async () => {
       const response = await axios.get(
-        `https://api.themoviedb.org/3/discover/tv?api_key=${API_KEY}&language=en-US&include_adult=false&with_genres=${genreTab}`
+        `https://api.themoviedb.org/3/discover/tv?api_key=${API_KEY}&with_genres=${genreTab}&page=1&include_adult=false&primary_release_date.gte=2000-01-01&with_original_language=en|ko`
       );
       setGenreTv(response.data.results);
     };
@@ -126,19 +126,6 @@ const TvPage = () => {
   const { data: popularData } = popular;
   const { data: trendingData } = trending;
   const { data: pachinkoData } = pachinko;
-
-  const [searchResult, setSearchResult] = useState([]);
-  const [query, setQuery] = useState("");
-
-  const handleSearch = async (e) => {
-    setQuery(e.target.value);
-    if (e.target.value !== "") {
-      const response = await axios.get(
-        `https://api.themoviedb.org/3/search/tv?api_key=${API_KEY}&language=en-US&query=${e.target.value}&page=1&include_adult=false`
-      );
-      setSearchResult(response.data.results);
-    }
-  };
 
   const settings = {
     dots: false, // 점은 안 보이게
@@ -426,11 +413,11 @@ const TvPage = () => {
               </div>
               <div
                 className={`${classes["content-tab"]} ${
-                  genreTab === "10766" && classes.active
+                  genreTab === "10768" && classes.active
                 }`}
-                onClick={() => setGenreTab("10766")}
+                onClick={() => setGenreTab("10768")}
               >
-                Soap
+                War/Politics
               </div>
               <div
                 className={`${classes["content-tab"]} ${
@@ -448,7 +435,7 @@ const TvPage = () => {
                     .filter((data) => data.backdrop_path)
                     .map((data) => (
                       <div key={data.id} className={classes["content-item"]}>
-                        <Link to={`/movie/${data.id}`}>
+                        <Link to={`/tv/${data.id}`}>
                           <img
                             src={
                               data.backdrop_path

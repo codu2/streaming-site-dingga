@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import { useLocation, Link } from "react-router-dom";
 
 import axios from "axios";
@@ -10,7 +10,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 import classes from "./Detail.module.css";
-import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
+import { AiOutlineHeart, AiFillHeart, AiOutlineClose } from "react-icons/ai";
 import { BsListUl, BsBookmark, BsBookmarkFill } from "react-icons/bs";
 import { TiThList } from "react-icons/ti";
 
@@ -23,11 +23,32 @@ const Detail = () => {
   const media = location.pathname.split("/")[1];
   const path = location.pathname.split("/")[2];
   const [contentTab, setContentTab] = useState(0);
+  const [trailer, setTrailer] = useState({});
+  const [openTrailer, setOpenTrailer] = useState(false);
 
   const getData = async () => {
     const response = await axios.get(
       `https://api.themoviedb.org/3/${media}/${path}?api_key=${API_KEY}&language=en-US`
     );
+
+    if (media === "movie") {
+      const getTrailer = await axios.get(
+        `https://api.themoviedb.org/3/movie/${response.data.id}/videos?api_key=${API_KEY}&language=en-US`
+      );
+      setTrailer(
+        getTrailer.data.results.filter((data) => data.type === "Trailer")[0]
+      );
+    }
+
+    if (media === "tv") {
+      const getTrailer = await axios.get(
+        `https://api.themoviedb.org/3/tv/${response.data.id}/videos?api_key=${API_KEY}&language=en-US`
+      );
+      setTrailer(
+        getTrailer.data.results.filter((data) => data.type === "Trailer")[0]
+      );
+    }
+
     return response.data;
   };
 
@@ -65,6 +86,8 @@ const Detail = () => {
   if (loading) return <div>Loading..</div>;
   if (error) return <div>An error has occurred!</div>;
   if (!data) return null;
+
+  console.log(trailer);
 
   const handleWatchlist = async () => {
     if (ctx.user) {
@@ -249,7 +272,13 @@ const Detail = () => {
             )}
           </div>
           <div className={classes.actions}>
-            <button className={classes.watch}>Watch Now</button>
+            <button
+              className={classes.watch}
+              onClick={() => setOpenTrailer(true)}
+              disabled={trailer ? false : true}
+            >
+              Watch Trailer
+            </button>
             <button className={classes.add} onClick={handleWatchlist}>
               {(ctx.watchlist_movie &&
                 ctx.watchlist_movie.find((item) => item.id === data.id)) ||
@@ -346,6 +375,25 @@ const Detail = () => {
         </div>
         <div className={classes.overview}>{data.overview}</div>
       </div>
+      {openTrailer && trailer && (
+        <div className={classes.trailer}>
+          <iframe
+            src={`https://www.youtube.com/embed/${trailer.key}`}
+            width="800px"
+            height="400px"
+            title={trailer.name}
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          />
+          <div
+            className={classes["close-button"]}
+            onClick={() => setOpenTrailer(false)}
+          >
+            <AiOutlineClose />
+          </div>
+        </div>
+      )}
     </div>
   );
 };
