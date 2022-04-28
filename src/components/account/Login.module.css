@@ -1,6 +1,6 @@
 .container {
   width: 100%;
-  height: 100%;
+  height: calc(100vh - 60px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -12,17 +12,16 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #f4f4f4;
+  background-color: #000;
   padding: 20px 15px;
-  border-radius: 1rem;
-  color: #333;
+  color: #f4f4f4;
 }
 
 .login h1 {
-  font-size: 23px;
-  color: #d67b30;
+  font-size: 25px;
+  color: #f4f4f4;
   font-weight: 700;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 }
 
 .login-form {
@@ -33,36 +32,35 @@
 .login-form label {
   font-size: 13px;
   font-weight: 300;
-  margin-bottom: 7px;
+  margin-bottom: 10px;
 }
 
 .login-input {
   width: 100%;
-  padding: 8px 15px;
-  outline: none;
-  border: none;
-  margin-bottom: 15px;
-  color: #333;
-  font-size: 13px;
-  font-weight: 300;
-  border-radius: 16px;
-}
-
-.login-button {
   padding: 10px 15px;
   outline: none;
   border: none;
-  color: #f4f4f4;
-  font-weight: 700;
-  font-size: 15px;
-  border-radius: 18px;
-  background-color: #d67b30;
-  margin: 15px 0 20px;
+  margin-bottom: 15px;
+  color: #000;
+  font-size: 13px;
+  font-weight: 300;
+  font-family: "Montserrat", sans-serif;
+}
+
+.login-button {
+  padding: 12px 15px;
+  outline: none;
+  border: none;
+  color: #000;
+  font-weight: 800;
+  font-size: 16px;
+  background-color: #f4f4f4;
+  margin: 20px 0;
   cursor: pointer;
 }
 
 .login-button:disabled {
-  background-color: #e9a771;
+  background-color: #d7d7d7;
   cursor: not-allowed;
 }
 
@@ -70,33 +68,24 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-top: 30px;
 }
 
 .signup-button p {
   font-size: 12px;
   font-weight: 300;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
 }
 
 .signup-button button {
   font-size: 13px;
   font-weight: 700;
   outline: none;
-  border: none;
-  background-color: #fff;
-  color: #d67b30;
-  border-radius: 18px;
+  border: 1px solid #f4f4f4;
+  background-color: #000;
+  color: #f4f4f4;
   padding: 10px 15px;
   margin: 5px 0 10px;
   width: 100%;
-  cursor: pointer;
-}
-
-.home-button {
-  position: fixed;
-  top: 70px;
-  left: 70px;
-  font-size: 24px;
-  color: #d67b30;
   cursor: pointer;
 }

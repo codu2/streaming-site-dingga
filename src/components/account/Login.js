@@ -1,11 +1,9 @@
 import React, { useState, useContext } from "react";
-import { Link } from "react-router-dom";
 
 import axios from "axios";
 import Context from "../../store/Context";
 
 import classes from "./Login.module.css";
-import { AiFillHome } from "react-icons/ai";
 
 const API_KEY = process.env.REACT_APP_API_KEY;
 const SESSION_ID = process.env.REACT_APP_SESSION_ID;
@@ -21,54 +19,56 @@ const Login = () => {
 
     setLoading(true);
     try {
-      const getNewToken = await axios.get(
-        `https://api.themoviedb.org/3/authentication/token/new?api_key=${API_KEY}`
-      );
+      if (username !== "" && password !== "") {
+        const getNewToken = await axios.get(
+          `https://api.themoviedb.org/3/authentication/token/new?api_key=${API_KEY}`
+        );
 
-      const response = await axios.post(
-        `https://api.themoviedb.org/3/authentication/token/validate_with_login?api_key=${API_KEY}`,
-        {
-          username: username,
-          password: password,
-          request_token: getNewToken.data.request_token,
-        }
-      );
-
-      if (response.data.success) {
-        /*
-        const getSessionId = await axios.post(
-          `https://api.themoviedb.org/3/authentication/session/new?api_key=${API_KEY}`,
+        const response = await axios.post(
+          `https://api.themoviedb.org/3/authentication/token/validate_with_login?api_key=${API_KEY}`,
           {
+            username: username,
+            password: password,
             request_token: getNewToken.data.request_token,
           }
         );
 
-        const getAccount = await axios.get(
-          `https://api.themoviedb.org/3/account?api_key=${API_KEY}&session_id=${getSessionId.data.session_id}`
-        );
-        */
+        if (response.data.success) {
+          /*
+          const getSessionId = await axios.post(
+            `https://api.themoviedb.org/3/authentication/session/new?api_key=${API_KEY}`,
+            {
+              request_token: getNewToken.data.request_token,
+            }
+          );
+  
+          const getAccount = await axios.get(
+            `https://api.themoviedb.org/3/account?api_key=${API_KEY}&session_id=${getSessionId.data.session_id}`
+          );
+          */
 
-        const getAccount = await axios.get(
-          `https://api.themoviedb.org/3/account?api_key=${API_KEY}&session_id=${SESSION_ID}`
-        );
+          const getAccount = await axios.get(
+            `https://api.themoviedb.org/3/account?api_key=${API_KEY}&session_id=${SESSION_ID}`
+          );
 
-        ctx.loggedInUser(getAccount.data);
+          ctx.loggedInUser(getAccount.data);
 
+          setLoading(false);
+          window.location.replace("/");
+        }
+      } else {
         setLoading(false);
-        window.location.replace("/");
+        window.alert("Please check the username or password again.");
       }
     } catch (err) {
       setLoading(false);
 
-      window.alert("Please check the username or password again.");
+      console.log(err);
     }
   };
 
   return (
     <div className={classes.container}>
-      <Link to="/" className={classes["home-button"]}>
-        <AiFillHome />
-      </Link>
       <form className={classes.login} onSubmit={handleSubmit}>
         <h1>Log In</h1>
         <div className={classes["login-form"]}>

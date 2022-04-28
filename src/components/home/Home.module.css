@@ -162,14 +162,3 @@
   color: #f4f4f4;
   text-decoration: none;
 }
-
-.content-cast {
-  margin-top: 20px;
-  font-size: 15px;
-  font-weight: 300;
-}
-
-.content-cast > span {
-  margin-left: 12px;
-  font-weight: 400;
-}

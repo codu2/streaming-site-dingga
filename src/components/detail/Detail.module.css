@@ -11,7 +11,7 @@
 
 .content-img {
   width: 100%;
-  height: 90vh;
+  height: 100vh;
   object-fit: cover;
   position: absolute;
   top: 0;
@@ -188,7 +188,7 @@
   width: 90%;
   padding: 10px;
   color: #f4f4f4;
-  margin: 0 auto 40px;
+  margin: 10px auto 50px;
 }
 
 .next-episode h1 {
@@ -225,7 +225,7 @@
   width: 90%;
   padding: 10px;
   color: #f4f4f4;
-  margin: 0 auto 40px;
+  margin: 10px auto 50px;
 }
 
 .last-episode h1 {
@@ -288,7 +288,7 @@
   width: 90%;
   padding: 10px;
   color: #f4f4f4;
-  margin: 0 auto 40px;
+  margin: 10px auto 50px;
 }
 
 .season-actions {
@@ -370,10 +370,80 @@
   -webkit-line-clamp: 5;
 }
 
+.review {
+  width: 90%;
+  padding: 10px;
+  margin: 10px auto 50px;
+}
+
+.review h1 {
+  font-size: 20px;
+  font-weight: 600;
+  color: #f4f4f4;
+  margin-bottom: 20px;
+  margin-left: 10px;
+}
+
+.review-list {
+  width: 100%;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  height: max-content;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.review-list::-webkit-scrollbar {
+  width: 5px;
+  background-color: #000;
+}
+
+.review-list::-webkit-scrollbar-thumb {
+  width: 5px;
+  background-color: #f4f4f4;
+}
+
+.review-list-item {
+  color: #f4f4f4;
+  display: grid;
+  width: 100%;
+  grid-template-columns: 1fr 4fr 1fr;
+  font-size: 13px;
+  padding: 10px 20px 10px 10px;
+  font-weight: 400;
+}
+
+.review-list-item > div:first-child {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+}
+
+.review-list-item > div:nth-child(2) {
+  margin: 0 15px 0 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 7;
+  font-size: 12px;
+  font-weight: 300;
+  line-height: 15px;
+}
+
+.review-list-item > div:last-child {
+  text-align: end;
+  font-size: 13px;
+}
+
 .similar {
   width: 90%;
   padding: 10px;
-  margin: 0 auto 30px;
+  margin: 10px auto 50px;
 }
 
 .similar h1 {
@@ -386,17 +456,13 @@
 
 .similar-list {
   list-style: none;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  flex-wrap: wrap;
-  gap: 10px;
+  padding: 0 10px 0 20px;
 }
 
 .similar-list-item {
-  max-width: 280px;
+  max-width: 120px;
   width: 100%;
-  height: 140px;
+  height: 180px;
 }
 
 .similar-list-item img {
@@ -426,4 +492,25 @@
   font-size: 24px;
   cursor: pointer;
   color: #f4f4f4;
+}
+
+.content-networks {
+  position: absolute;
+  top: 100px;
+  left: 40px;
+  display: flex;
+  align-items: center;
+}
+
+.content-networks > div {
+  width: 100px;
+  height: 50px;
+  padding: 10px 15px;
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.content-networks img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }

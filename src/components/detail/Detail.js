@@ -13,9 +13,52 @@ import classes from "./Detail.module.css";
 import { AiOutlineHeart, AiFillHeart, AiOutlineClose } from "react-icons/ai";
 import { BsListUl, BsBookmark, BsBookmarkFill } from "react-icons/bs";
 import { TiThList } from "react-icons/ti";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
 const API_KEY = process.env.REACT_APP_API_KEY;
 const SESSION_ID = process.env.REACT_APP_SESSION_ID;
+
+function PrevArrow(props) {
+  const { className, style, onClick } = props;
+  return (
+    <IoIosArrowBack
+      className={className}
+      style={{
+        ...style,
+        display: "block",
+        background: "none",
+        color: "#f4f4f4",
+        border: "1px solid #f4f4f4",
+        borderRadius: "50%",
+        padding: "5px",
+        width: "35px",
+        height: "35px",
+      }}
+      onClick={onClick}
+    />
+  );
+}
+
+function NextArrow(props) {
+  const { className, style, onClick } = props;
+  return (
+    <IoIosArrowForward
+      className={className}
+      style={{
+        ...style,
+        display: "block",
+        background: "none",
+        color: "#f4f4f4",
+        border: "1px solid #f4f4f4",
+        borderRadius: "50%",
+        padding: "5px",
+        width: "35px",
+        height: "35px",
+      }}
+      onClick={onClick}
+    />
+  );
+}
 
 const Detail = () => {
   const ctx = useContext(Context);
@@ -200,6 +243,17 @@ const Detail = () => {
     arrows: false,
   };
 
+  const settingsList = {
+    dots: false,
+    infinite: false,
+    speed: 500,
+    slidesToShow: 7,
+    slidesToScroll: 7,
+    draggable: false,
+    prevArrow: <PrevArrow />,
+    nextArrow: <NextArrow />,
+  };
+
   return (
     <div className={classes.container}>
       <div className={classes.wrapper}>
@@ -276,14 +330,8 @@ const Detail = () => {
                   ? `Episode Run Time : ${data.episode_run_time}(min)`
                   : `RunTime : ${data.runtime}(min)`}
               </span>
-              {data.languages && (
-                <span>
-                  {media === "tv"
-                    ? `Languages : ${data.languages.map(
-                        (language) => language
-                      )}`
-                    : `Languages : ${data.original_language}`}
-                </span>
+              {data.original_language && (
+                <span>{`Languages : ${data.original_language}`}</span>
               )}
             </div>
           </div>
@@ -394,24 +442,53 @@ const Detail = () => {
               </Slider>
             </div>
           )}
+          <div className={classes.review}>
+            <h1>Reviews</h1>
+            <ul className={classes["review-list"]}>
+              {reviewsData.map((review) => (
+                <li key={review.id} className={classes["review-list-item"]}>
+                  <div>{review.author}</div>
+                  <div>{review.content}</div>
+                  <div>{new Date(review.created_at).toDateString()}</div>
+                </li>
+              ))}
+            </ul>
+          </div>
           <div className={classes.similar}>
             <h1>More Like This</h1>
-            <ul className={classes["similar-list"]}>
+            <Slider {...settingsList} className={classes["similar-list"]}>
               {similarData
-                .filter((data, index) => data.backdrop_path && index < 10)
+                .filter((data, index) => data.poster_path && index < 14)
                 .map((data) => (
-                  <li className={classes["similar-list-item"]}>
+                  <li className={classes["similar-list-item"]} key={data.id}>
                     <Link to={`/${media}/${data.id}`}>
                       <img
-                        src={`https://image.tmdb.org/t/p/w500${data.backdrop_path}`}
+                        src={`https://image.tmdb.org/t/p/w500${data.poster_path}`}
                         alt={media === "tv" ? data.name : data.title}
                       />
                     </Link>
                   </li>
                 ))}
-            </ul>
+            </Slider>
           </div>
         </div>
+        {data.networks && (
+          <div className={classes["content-networks"]}>
+            {data.networks &&
+              data.networks.map((network, i) => (
+                <div key={i}>
+                  {network.logo_path && (
+                    <img
+                      key={i}
+                      src={`https://image.tmdb.org/t/p/w500${network.logo_path}`}
+                      alt={network.name}
+                      className={classes["logo-img"]}
+                    />
+                  )}
+                </div>
+              ))}
+          </div>
+        )}
       </div>
       {openTrailer && trailer && (
         <div className={classes.trailer}>
@@ -437,33 +514,3 @@ const Detail = () => {
 };
 
 export default Detail;
-
-/*
-        <div className={classes["content-map"]}>
-            {data.networks &&
-              data.networks.map((network, i) => (
-                <div key={i}>
-                  {network.logo_path && (
-                    <img
-                      key={i}
-                      src={`https://image.tmdb.org/t/p/w500${network.logo_path}`}
-                      alt={network.name}
-                      className={classes["logo-img"]}
-                    />
-                  )}
-                </div>
-              ))}
-            {data.production_companies &&
-              data.production_companies.map((production, i) => (
-                <div key={i}>
-                  {production.logo_path && (
-                    <img
-                      src={`https://image.tmdb.org/t/p/w500${production.logo_path}`}
-                      alt={production.name}
-                      className={classes["logo-img"]}
-                    />
-                  )}
-                </div>
-              ))}
-          </div>
-          */

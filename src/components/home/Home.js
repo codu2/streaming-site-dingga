@@ -12,7 +12,6 @@ const API_KEY = process.env.REACT_APP_API_KEY;
 const Home = () => {
   const [content, setContent] = useState({});
   const [details, setDetails] = useState({});
-  const [cast, setCast] = useState([]);
   const [loading, setLoading] = useState(false);
   const [trailer, setTrailer] = useState({});
   const [openTrailer, setOpenTrailer] = useState(false);
@@ -27,11 +26,6 @@ const Home = () => {
       `https://api.themoviedb.org/3/${response.data.results[0].media_type}/${response.data.results[0].id}?api_key=${API_KEY}&language=en-US`
     );
     setDetails(getDetails.data);
-
-    const getCast = await axios.get(
-      `https://api.themoviedb.org/3/${response.data.results[0].media_type}/${response.data.results[0].id}/credits?api_key=${API_KEY}&language=en-US`
-    );
-    setCast(getCast.data.cast);
 
     const getTrailer = await axios.get(
       `https://api.themoviedb.org/3/${response.data.results[0].media_type}/${response.data.results[0].id}/videos?api_key=${API_KEY}&language=en-US`
@@ -126,14 +120,6 @@ const Home = () => {
               </div>
             </div>
           </div>
-          <div className={classes["content-cast"]}>
-            Cast :
-            {cast
-              .filter((data, index) => index < 3)
-              .map((data) => (
-                <span>{data.name}</span>
-              ))}
-          </div>
         </div>
       </div>
       {openTrailer && (
@@ -142,7 +128,7 @@ const Home = () => {
             src={`https://www.youtube.com/embed/${trailer.key}`}
             width="800px"
             height="400px"
-            title={content.title}
+            title={content.title ? content.title : content.name}
             frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
