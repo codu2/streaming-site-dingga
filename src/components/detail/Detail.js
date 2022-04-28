@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useLocation, Link } from "react-router-dom";
 
 import axios from "axios";
@@ -22,9 +22,10 @@ const Detail = () => {
   const location = useLocation();
   const media = location.pathname.split("/")[1];
   const path = location.pathname.split("/")[2];
-  const [contentTab, setContentTab] = useState(0);
   const [trailer, setTrailer] = useState({});
   const [openTrailer, setOpenTrailer] = useState(false);
+  const [season, setSeason] = useState([]);
+  const [seasonNumber, setSeasonNumber] = useState(1);
 
   const getData = async () => {
     const response = await axios.get(
@@ -47,6 +48,11 @@ const Detail = () => {
       setTrailer(
         getTrailer.data.results.filter((data) => data.type === "Trailer")[0]
       );
+
+      const getSeason = await axios.get(
+        `https://api.themoviedb.org/3/tv/${response.data.id}/season/${seasonNumber}?api_key=${API_KEY}&language=en-US`
+      );
+      setSeason(getSeason.data);
     }
 
     return response.data;
@@ -73,6 +79,18 @@ const Detail = () => {
     return response.data.cast;
   };
 
+  useEffect(() => {
+    const getSeason = async () => {
+      const response = await axios.get(
+        `https://api.themoviedb.org/3/tv/${data.id}/season/${seasonNumber}?api_key=${API_KEY}&language=en-US`
+      );
+      setSeason(response.data);
+    };
+    if (media === "tv" && data) {
+      getSeason();
+    }
+  }, [seasonNumber]);
+
   const [state] = useAsync(getData, []);
   const [similar] = useAsync(getSimilar, []);
   const [reviews] = useAsync(getReviews, []);
@@ -86,8 +104,6 @@ const Detail = () => {
   if (loading) return <div>Loading..</div>;
   if (error) return <div>An error has occurred!</div>;
   if (!data) return null;
-
-  console.log(trailer);
 
   const handleWatchlist = async () => {
     if (ctx.user) {
@@ -175,26 +191,14 @@ const Detail = () => {
     }
   };
 
-  const castTabCss = `${classes["detail-tab"]} ${
-    contentTab === 0 && classes.active
-  }`;
-  const reviewsTabCss = `${classes["detail-tab"]} ${
-    contentTab === 1 && classes.active
-  }`;
-  const similarTabCss = `${classes["detail-tab"]} ${
-    contentTab === 2 && classes.active
-  }`;
-
   const settings = {
-    dots: false, // 점은 안 보이게
-    infinite: false, // 무한 슬라이더
+    dots: false,
+    infinite: false,
     speed: 500,
-    slidesToShow: 4, //4장씩 보이게 해주세요
-    slidesToScroll: 4, //4장씩 넘어가세요
+    slidesToShow: 3,
+    slidesToScroll: 3,
     arrows: false,
   };
-
-  console.log(data);
 
   return (
     <div className={classes.container}>
@@ -202,15 +206,240 @@ const Detail = () => {
         <img
           src={
             data.backdrop_path
-              ? `https://image.tmdb.org/t/p/w1280${data.backdrop_path}`
+              ? `https://image.tmdb.org/t/p/original${data.backdrop_path}`
               : data.poster_path &&
-                `https://image.tmdb.org/t/p/w1280${data.poster_path}`
+                `https://image.tmdb.org/t/p/original${data.poster_path}`
           }
           alt={data.name}
           className={classes["content-img"]}
         />
         <div className={classes.content}>
-          <div className={classes["content-map"]}>
+          <div className={classes["content-top"]}>
+            <div className={classes.title}>
+              {`${media === "tv" ? data.name : data.title} (${
+                media === "tv"
+                  ? `${new Date(data.first_air_date).getFullYear()}~`
+                  : new Date(data.release_date).getFullYear()
+              })`}
+            </div>
+            <div className={classes.actions}>
+              <button className={classes.add} onClick={handleWatchlist}>
+                {(ctx.watchlist_movie &&
+                  ctx.watchlist_movie.find((item) => item.id === data.id)) ||
+                (ctx.watchlist_tv &&
+                  ctx.watchlist_tv.find((item) => item.id === data.id)) ? (
+                  <TiThList />
+                ) : (
+                  <BsListUl />
+                )}
+              </button>
+              <button className={classes.like} onClick={handleFavorite}>
+                {(ctx.favorite_movie &&
+                  ctx.favorite_movie.find((item) => item.id === data.id)) ||
+                (ctx.favorite_tv &&
+                  ctx.favorite_tv.find((item) => item.id === data.id)) ? (
+                  <AiFillHeart />
+                ) : (
+                  <AiOutlineHeart />
+                )}
+              </button>
+              <button className={classes.bookmark}>
+                <BsBookmark />
+              </button>
+            </div>
+          </div>
+          <div className={classes.info}>
+            <div className={classes.details}>
+              {data.genres && (
+                <ul className={classes.genres}>
+                  {data.genres.map((genre) => (
+                    <li key={genre.id} className={classes.genre}>
+                      <Link to={`/genre/${genre.id}`} className={classes.link}>
+                        {genre.name}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              )}
+              {media === "movie" && <div>{`${data.runtime}(min)`}</div>}
+              {media === "tv" && (
+                <div>{`${data.number_of_seasons} Seasons`}</div>
+              )}
+              {media === "tv" && (
+                <div>{`${data.number_of_episodes} Episodes`}</div>
+              )}
+              {media === "tv" && <div>{data.type}</div>}
+            </div>
+            <div className={classes["sub-details"]}>
+              <span>
+                {media === "tv"
+                  ? `Episode Run Time : ${data.episode_run_time}(min)`
+                  : `RunTime : ${data.runtime}(min)`}
+              </span>
+              {data.languages && (
+                <span>
+                  {media === "tv"
+                    ? `Languages : ${data.languages.map(
+                        (language) => language
+                      )}`
+                    : `Languages : ${data.original_language}`}
+                </span>
+              )}
+            </div>
+          </div>
+          <div className={classes.cast}>
+            {castData
+              .filter((data, index) => index < 5)
+              .map((data) => (
+                <div className={classes["cast-info"]} key={data.id}>
+                  <span>{data.character}</span>
+                  <span>{data.name}</span>
+                </div>
+              ))}
+          </div>
+          {data.tagline !== "" && (
+            <div className={classes.tagline}>{`"${data.tagline}"`}</div>
+          )}
+          <div className={classes.overview}>{data.overview}</div>
+          <button
+            className={classes.watch}
+            onClick={() => setOpenTrailer(true)}
+            disabled={trailer ? false : true}
+          >
+            Watch Trailer
+          </button>
+        </div>
+        <div className={classes["content-wrapper"]}>
+          {media === "tv" && data.next_episode_to_air && (
+            <div className={classes["next-episode"]}>
+              <div className={classes["next-episode-content"]}>
+                <h1>Next Episode</h1>
+                <div className={classes["next-episode-info"]}>
+                  <div>{`Episode ${data.next_episode_to_air.episode_number}`}</div>
+                  <div>{`Airing Date : ${data.next_episode_to_air.air_date}`}</div>
+                </div>
+              </div>
+              <div className={classes["next-episode-name"]}>
+                {data.next_episode_to_air.name}
+              </div>
+            </div>
+          )}
+          {media === "tv" && (
+            <div className={classes["last-episode"]}>
+              <h1>Last Episode</h1>
+              <div className={classes["last-episode-content"]}>
+                <img
+                  src={`https://image.tmdb.org/t/p/w500${data.last_episode_to_air.still_path}`}
+                  alt={data.last_episode_to_air.name}
+                />
+                <div className={classes["last-episode-info"]}>
+                  <div className={classes["last-episode-season"]}>
+                    {`Season ${data.last_episode_to_air.season_number}`}
+                  </div>
+                  <div className={classes["last-episode-name"]}>
+                    {`Episode ${data.last_episode_to_air.episode_number}. ${data.last_episode_to_air.name}`}
+                  </div>
+                  <div className={classes["last-episode-overview"]}>
+                    {data.last_episode_to_air.overview}
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+          {media === "tv" && (
+            <div className={classes.season}>
+              <div className={classes["season-actions"]}>
+                <h1>{`Season ${seasonNumber} (${
+                  season.air_date && new Date(season.air_date).getFullYear()
+                })`}</h1>
+                <div>
+                  {data.number_of_seasons > 1 &&
+                    data.seasons
+                      .filter((season) => season.season_number > 0)
+                      .map((season) => (
+                        <button
+                          key={season.id}
+                          onClick={() => setSeasonNumber(season.season_number)}
+                          className={
+                            season.season_number === seasonNumber
+                              ? classes.active
+                              : null
+                          }
+                        >
+                          {season.season_number}
+                        </button>
+                      ))}
+                </div>
+              </div>
+              <Slider {...settings} className={classes["season-episode"]}>
+                {season.episodes &&
+                  season.episodes
+                    .filter(
+                      (episode) =>
+                        new Date(episode.air_date).getTime() <=
+                        new Date().getTime()
+                    )
+                    .map((episode) => (
+                      <div key={episode.id}>
+                        <img
+                          src={`https://image.tmdb.org/t/p/w500${episode.still_path}`}
+                          alt={episode.name}
+                        />
+                        <div className={classes["season-episode-info"]}>
+                          <span>{episode.name}</span>
+                          <span>{episode.overview}</span>
+                        </div>
+                      </div>
+                    ))}
+              </Slider>
+            </div>
+          )}
+          <div className={classes.similar}>
+            <h1>More Like This</h1>
+            <ul className={classes["similar-list"]}>
+              {similarData
+                .filter((data, index) => data.backdrop_path && index < 10)
+                .map((data) => (
+                  <li className={classes["similar-list-item"]}>
+                    <Link to={`/${media}/${data.id}`}>
+                      <img
+                        src={`https://image.tmdb.org/t/p/w500${data.backdrop_path}`}
+                        alt={media === "tv" ? data.name : data.title}
+                      />
+                    </Link>
+                  </li>
+                ))}
+            </ul>
+          </div>
+        </div>
+      </div>
+      {openTrailer && trailer && (
+        <div className={classes.trailer}>
+          <iframe
+            src={`https://www.youtube.com/embed/${trailer.key}`}
+            width="800px"
+            height="400px"
+            title={trailer.name}
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          />
+          <div
+            className={classes["close-button"]}
+            onClick={() => setOpenTrailer(false)}
+          >
+            <AiOutlineClose />
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default Detail;
+
+/*
+        <div className={classes["content-map"]}>
             {data.networks &&
               data.networks.map((network, i) => (
                 <div key={i}>
@@ -237,167 +466,4 @@ const Detail = () => {
                 </div>
               ))}
           </div>
-          <div className={classes.title}>
-            <span>{`${media === "tv" ? data.name : data.title} (${
-              media === "tv"
-                ? `${new Date(data.first_air_date).getFullYear()}~`
-                : new Date(data.release_date).getFullYear()
-            })`}</span>
-            <span>{`${data.vote_average} (${data.vote_count})`}</span>
-          </div>
-          {data.tagline !== "" && (
-            <div className={classes.tagline}>{`"${data.tagline}"`}</div>
-          )}
-          {data.genres && (
-            <ul className={classes.genres}>
-              {data.genres.map((genre) => (
-                <li key={genre.id} className={classes.genre}>
-                  <Link to={`/genre/${genre.id}`} className={classes.link}>
-                    {genre.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          )}
-          <div className={classes.info}>
-            <span>
-              {media === "tv"
-                ? `Episode Run Time : ${data.episode_run_time}(min)`
-                : `RunTime : ${data.runtime}(min)`}
-            </span>
-            {data.languages && (
-              <span>
-                {media === "tv"
-                  ? `Languages : ${data.languages.map((language) => language)}`
-                  : `Languages : ${data.original_language}`}
-              </span>
-            )}
-          </div>
-          <div className={classes.actions}>
-            <button
-              className={classes.watch}
-              onClick={() => setOpenTrailer(true)}
-              disabled={trailer ? false : true}
-            >
-              Watch Trailer
-            </button>
-            <button className={classes.add} onClick={handleWatchlist}>
-              {(ctx.watchlist_movie &&
-                ctx.watchlist_movie.find((item) => item.id === data.id)) ||
-              (ctx.watchlist_tv &&
-                ctx.watchlist_tv.find((item) => item.id === data.id)) ? (
-                <TiThList />
-              ) : (
-                <BsListUl />
-              )}
-            </button>
-            <button className={classes.like} onClick={handleFavorite}>
-              {(ctx.favorite_movie &&
-                ctx.favorite_movie.find((item) => item.id === data.id)) ||
-              (ctx.favorite_tv &&
-                ctx.favorite_tv.find((item) => item.id === data.id)) ? (
-                <AiFillHeart />
-              ) : (
-                <AiOutlineHeart />
-              )}
-            </button>
-            <button className={classes.bookmark}>
-              <BsBookmark />
-            </button>
-          </div>
-        </div>
-      </div>
-      <div className={classes.details}>
-        <div className={classes.detail}>
-          <div className={classes["detail-tabs"]}>
-            <span className={castTabCss} onClick={() => setContentTab(0)}>
-              Cast
-            </span>
-            <span className={reviewsTabCss} onClick={() => setContentTab(1)}>
-              Reviews
-            </span>
-            <span
-              className={similarTabCss}
-              onClick={() => setContentTab(2)}
-            >{`Similar ${media}`}</span>
-          </div>
-          {contentTab === 0 && castData && (
-            <div className={classes.cast}>
-              <Slider {...settings} className={classes["cast-list"]}>
-                {castData.map((data) => (
-                  <div key={data.id} className={classes["cast-list-item"]}>
-                    <Link to={`/person/${data.id}`} className={classes.link}>
-                      <img
-                        src={
-                          data.profile_path &&
-                          `https://image.tmdb.org/t/p/w500${data.profile_path}`
-                        }
-                        alt={data.profile_path && data.name}
-                      />
-                    </Link>
-                    <div className={classes["cast-info"]}>
-                      <div>{data.character}</div>
-                      <div>{data.name}</div>
-                    </div>
-                  </div>
-                ))}
-              </Slider>
-            </div>
-          )}
-          {contentTab === 1 && reviewsData && (
-            <div className={classes.reviews}>
-              <ul className={classes["review-list"]}>
-                {reviewsData.map((review) => (
-                  <li className={classes["review-list-item"]} key={review.id}>
-                    <span>{review.author}</span>
-                    <span>{review.content}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-          {contentTab === 2 && similarData && (
-            <div className={classes.similar}>
-              <ul className={classes["similar-list"]}>
-                {similarData
-                  .filter((data, index) => index < 4)
-                  .map((data) => (
-                    <li className={classes["similar-list-item"]}>
-                      <Link to={`/${media}/${data.id}`}>
-                        <img
-                          src={`https://image.tmdb.org/t/p/w500${data.poster_path}`}
-                          alt={media === "tv" ? data.name : data.title}
-                        />
-                      </Link>
-                    </li>
-                  ))}
-              </ul>
-            </div>
-          )}
-        </div>
-        <div className={classes.overview}>{data.overview}</div>
-      </div>
-      {openTrailer && trailer && (
-        <div className={classes.trailer}>
-          <iframe
-            src={`https://www.youtube.com/embed/${trailer.key}`}
-            width="800px"
-            height="400px"
-            title={trailer.name}
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          />
-          <div
-            className={classes["close-button"]}
-            onClick={() => setOpenTrailer(false)}
-          >
-            <AiOutlineClose />
-          </div>
-        </div>
-      )}
-    </div>
-  );
-};
-
-export default Detail;
+          */

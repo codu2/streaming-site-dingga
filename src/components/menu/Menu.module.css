@@ -29,7 +29,7 @@
 
 .menu-item.current,
 .menu-item:hover {
-  border-bottom: 1px solid #4a7720;
+  border-bottom: 1px solid #f4f4f4;
 }
 
 .link {
@@ -81,5 +81,5 @@
 
 .login-button:hover .link,
 .logout-button:hover {
-  color: #4a7720;
+  color: #d7d7d7;
 }
