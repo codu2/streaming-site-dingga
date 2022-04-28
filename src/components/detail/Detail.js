@@ -194,6 +194,8 @@ const Detail = () => {
     arrows: false,
   };
 
+  console.log(data);
+
   return (
     <div className={classes.container}>
       <div className={classes.wrapper}>

@@ -4,12 +4,10 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-right: 15px;
-  column-gap: 70px;
+  padding-right: 1.5rem;
 }
 
 .menu-list {
-  flex: 7;
   list-style: none;
   display: flex;
   align-items: center;
@@ -26,6 +24,7 @@
   cursor: pointer;
   border-bottom: 1px solid transparent;
   padding-bottom: 5px;
+  margin: 0 3rem;
 }
 
 .menu-item.current,
@@ -39,9 +38,9 @@
 }
 
 .search {
-  flex: 2;
   display: flex;
   align-items: center;
+  margin-left: 1rem;
 }
 
 .search svg {
@@ -54,7 +53,7 @@
   border: none;
   border-bottom: 1px solid #f4f4f4;
   padding: 5px 10px;
-  width: 160px;
+  width: 140px;
   background-color: transparent;
   outline: none;
   color: #f4f4f4;
@@ -62,15 +61,22 @@
   font-family: "Montserrat", sans-serif;
 }
 
+.search svg:last-child {
+  margin-right: 0;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
 .login-button,
 .logout-button {
-  flex: 1;
   display: flex;
   align-items: center;
   font-size: 14px;
   font-weight: 500;
   color: #f4f4f4;
   cursor: pointer;
+  margin-left: 3rem;
+  width: max-content;
 }
 
 .login-button:hover .link,

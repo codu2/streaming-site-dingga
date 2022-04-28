@@ -1,11 +1,10 @@
 import React, { useContext, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 
-import axios from "axios";
 import Context from "../../store/Context";
 
 import classes from "./Menu.module.css";
-import { AiOutlineSearch } from "react-icons/ai";
+import { AiOutlineSearch, AiOutlineEnter } from "react-icons/ai";
 
 const API_KEY = process.env.REACT_APP_API_KEY;
 
@@ -13,7 +12,6 @@ const Menu = () => {
   const location = useLocation();
   const path = location.pathname.split("/")[1];
   const ctx = useContext(Context);
-  const [searchResult, setSearchResult] = useState([]);
   const [query, setQuery] = useState("");
 
   const handleLogout = () => {
@@ -22,13 +20,15 @@ const Menu = () => {
     window.location.replace("/");
   };
 
-  const handleSearch = async (e) => {
+  const handleSearchInput = (e) => {
     setQuery(e.target.value);
-    if (e.target.value !== "") {
-      const response = await axios.get(
-        `https://api.themoviedb.org/3/search/multi?api_key=${API_KEY}&language=en-US&query=${e.target.value}&page=1&include_adult=false`
-      );
-      setSearchResult(response.data.results);
+  };
+
+  const handleSearchParams = () => {
+    if (query !== "") {
+      window.location.replace(`/search?q=${query}`);
+    } else {
+      window.alert("Please enter a search term.");
     }
   };
 
@@ -72,8 +72,9 @@ const Menu = () => {
           type="text"
           autoComplete="off"
           className={classes["search-input"]}
-          onChange={handleSearch}
+          onChange={handleSearchInput}
         />
+        <AiOutlineEnter onClick={handleSearchParams} />
       </div>
       {ctx.user ? (
         <div className={classes["logout-button"]} onClick={handleLogout}>

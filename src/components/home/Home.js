@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 import axios from "axios";
 import useAsync from "../../hooks/use-data";
@@ -10,6 +11,8 @@ const API_KEY = process.env.REACT_APP_API_KEY;
 
 const Home = () => {
   const [content, setContent] = useState({});
+  const [details, setDetails] = useState({});
+  const [cast, setCast] = useState([]);
   const [loading, setLoading] = useState(false);
   const [trailer, setTrailer] = useState({});
   const [openTrailer, setOpenTrailer] = useState(false);
@@ -20,8 +23,18 @@ const Home = () => {
     );
     setContent(response.data.results[0]);
 
+    const getDetails = await axios.get(
+      `https://api.themoviedb.org/3/${response.data.results[0].media_type}/${response.data.results[0].id}?api_key=${API_KEY}&language=en-US`
+    );
+    setDetails(getDetails.data);
+
+    const getCast = await axios.get(
+      `https://api.themoviedb.org/3/${response.data.results[0].media_type}/${response.data.results[0].id}/credits?api_key=${API_KEY}&language=en-US`
+    );
+    setCast(getCast.data.cast);
+
     const getTrailer = await axios.get(
-      `https://api.themoviedb.org/3/movie/${response.data.results[0].id}/videos?api_key=${API_KEY}&language=en-US`
+      `https://api.themoviedb.org/3/${response.data.results[0].media_type}/${response.data.results[0].id}/videos?api_key=${API_KEY}&language=en-US`
     );
     setTrailer(
       getTrailer.data.results.filter((data) => data.type === "Trailer")[0]
@@ -51,7 +64,29 @@ const Home = () => {
         />
         <div className={classes["content-info"]}>
           <div className={classes["content-title"]}>
-            {content.title ? content.title : content.name}
+            <Link
+              to={`/${content.media_type}/${content.id}`}
+              className={classes.link}
+            >
+              {content.title ? content.title : content.name}
+            </Link>
+          </div>
+          <div className={classes["content-details"]}>
+            <div>
+              {content.media_type === "tv"
+                ? new Date(content.first_air_date).getFullYear()
+                : new Date(content.release_date).getFullYear()}
+            </div>
+            {content.media_type === "movie" && (
+              <div>{`${details.runtime}(min)`}</div>
+            )}
+            {content.media_type === "tv" && (
+              <div>{`${details.number_of_seasons} Seasons`}</div>
+            )}
+            {content.media_type === "tv" && (
+              <div>{`${details.number_of_episodes} Episodes`}</div>
+            )}
+            {content.media_type === "tv" && <div>{details.type}</div>}
           </div>
           <div className={classes["content-info-align"]}>
             <div className={classes["content-overview"]}>
@@ -90,6 +125,14 @@ const Home = () => {
                 Watch Trailer
               </div>
             </div>
+          </div>
+          <div className={classes["content-cast"]}>
+            Cast :
+            {cast
+              .filter((data, index) => index < 3)
+              .map((data) => (
+                <span>{data.name}</span>
+              ))}
           </div>
         </div>
       </div>

@@ -20,7 +20,7 @@ function PrevArrow(props) {
         ...style,
         display: "block",
         background: "none",
-        left: "0",
+        left: "20px",
         top: "-40px",
         color: "#f4f4f4",
       }}
@@ -38,7 +38,7 @@ function NextArrow(props) {
         ...style,
         display: "block",
         background: "none",
-        right: "0",
+        right: "20px",
         top: "-40px",
         color: "#f4f4f4",
       }}
@@ -69,8 +69,8 @@ const TvShowItem = () => {
     dots: false,
     infinite: false,
     speed: 500,
-    slidesToShow: 5,
-    slidesToScroll: 5,
+    slidesToShow: 4,
+    slidesToScroll: 4,
     draggable: false,
     prevArrow: <PrevArrow />,
     nextArrow: <NextArrow />,
@@ -95,6 +95,7 @@ const TvShowItem = () => {
                         : `https://image.tmdb.org/t/p/w500${tv.poster_path}`
                     }
                     alt={tv.name}
+                    className={classes["tv-item-img"]}
                   />
                   <div className={classes["tv-title"]}>{tv.name}</div>
                 </div>

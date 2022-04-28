@@ -15,6 +15,7 @@ import DetailPerson from "./components/detail/DetailPerson";
 import Favorite from "./components/account/Favorite";
 import WatchList from "./components/account/WatchList";
 import Login from "./components/account/Login";
+import Search from "./pages/Search";
 
 const API_KEY = process.env.REACT_APP_API_KEY;
 const SESSION_ID = process.env.REACT_APP_SESSION_ID;
@@ -66,6 +67,7 @@ function App() {
         <Route path="/account/:id/favorite" element={<Favorite />} />
         <Route path="/account/:id/watchlist" element={<WatchList />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/search" element={<Search />} />
       </Route>
     </Routes>
   );
