@@ -4,6 +4,7 @@ import { Outlet } from "react-router-dom";
 import "../App.css";
 
 import Header from "../components/menu/Header";
+import Footer from "./footer/Footer";
 
 const Layout = () => {
   return (
@@ -15,6 +16,9 @@ const Layout = () => {
         <main>
           <Outlet />
         </main>
+        <footer>
+          <Footer />
+        </footer>
       </div>
     </div>
   );

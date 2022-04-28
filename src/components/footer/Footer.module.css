@@ -1,0 +1,29 @@
+.container {
+  background-color: #000;
+  width: 100%;
+  height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #f4f4f4;
+}
+
+.footer {
+  width: 100%;
+  padding: 20px 40px 20px 60px;
+}
+
+table {
+  width: 100%;
+}
+
+table td {
+  padding-bottom: 20px;
+  font-size: 12px;
+  cursor: pointer;
+  color: #d7d7d7;
+}
+
+table td:hover {
+  color: #f4f4f4;
+}

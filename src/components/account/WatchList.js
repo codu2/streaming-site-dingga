@@ -6,7 +6,6 @@ import useAsync from "../../hooks/use-data";
 import Context from "../../store/Context";
 
 import classes from "./Account.module.css";
-import { TiThList } from "react-icons/ti";
 import { HiOutlineDotsVertical } from "react-icons/hi";
 import { AiOutlineHeart, AiOutlineClose } from "react-icons/ai";
 import { BsBookmark } from "react-icons/bs";
@@ -49,10 +48,7 @@ const WatchList = () => {
 
   return (
     <div className={classes.container}>
-      <h1>
-        <TiThList />
-        My Watchlist
-      </h1>
+      <h1>My Watchlist</h1>
       <div className={classes.wrapper}>
         <div className={classes.section}>
           <h1>Movies</h1>

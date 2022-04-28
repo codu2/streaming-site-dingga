@@ -6,18 +6,17 @@ import Context from "../../store/Context";
 import classes from "./Menu.module.css";
 import { AiOutlineSearch, AiOutlineEnter } from "react-icons/ai";
 
-const API_KEY = process.env.REACT_APP_API_KEY;
-
 const Menu = () => {
   const location = useLocation();
   const path = location.pathname.split("/")[1];
   const ctx = useContext(Context);
   const [query, setQuery] = useState("");
+  const [submenu, setSubmenu] = useState(false);
 
   const handleLogout = () => {
     ctx.logout();
 
-    window.location.replace("/");
+    window.location.reload();
   };
 
   const handleSearchInput = (e) => {
@@ -29,6 +28,14 @@ const Menu = () => {
       window.location.replace(`/search?q=${query}`);
     } else {
       window.alert("Please enter a search term.");
+    }
+  };
+
+  const handleSubmenu = (action) => {
+    if (action === "enter") {
+      setSubmenu(true);
+    } else {
+      setSubmenu(false);
     }
   };
 
@@ -64,7 +71,37 @@ const Menu = () => {
             TV Shows
           </Link>
         </li>
-        {ctx.user && <li className={classes["menu-item"]}>My Page</li>}
+        {ctx.user && (
+          <li
+            className={classes["menu-item"]}
+            onMouseEnter={() => handleSubmenu("enter")}
+            onMouseLeave={() => handleSubmenu("leave")}
+          >
+            My Page
+            {submenu && (
+              <ul className={classes["sub-menu-item"]}>
+                <li className={menuFavorite}>
+                  <Link
+                    to={`/account/${ctx.user.id}/favorite`}
+                    className={classes.link}
+                  >
+                    Favorites
+                  </Link>
+                </li>
+                <li className={menuWatchlist}>
+                  <Link
+                    to={`/account/${ctx.user.id}/watchlist`}
+                    className={classes.link}
+                  >
+                    Watchlist
+                  </Link>
+                </li>
+                <li>Bookmark</li>
+                <li>Profile</li>
+              </ul>
+            )}
+          </li>
+        )}
       </ul>
       <div className={classes.search}>
         <AiOutlineSearch />
@@ -92,33 +129,3 @@ const Menu = () => {
 };
 
 export default Menu;
-
-/*
-<div className={classes["menu-card"]}>
-        <h1>LIBRARY</h1>
-        <ul>
-          <li className={menuWatchlist}>
-            <Link
-              to={`/account/${ctx.user && ctx.user.id}/watchlist`}
-              className={classes.link}
-            >
-              <TiThList />
-              Watchlist
-            </Link>
-          </li>
-          <li className={menuFavorite}>
-            <Link
-              to={`/account/${ctx.user && ctx.user.id}/favorite`}
-              className={classes.link}
-            >
-              <AiFillHeart />
-              Favorite
-            </Link>
-          </li>
-          <li>
-            <BsBookmarkFill />
-            Bookmark
-          </li>
-        </ul>
-      </div>
-      */

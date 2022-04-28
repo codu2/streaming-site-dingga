@@ -6,7 +6,7 @@ import useAsync from "../../hooks/use-data";
 import Context from "../../store/Context";
 
 import classes from "./Account.module.css";
-import { AiFillHeart, AiOutlineClose } from "react-icons/ai";
+import { AiOutlineClose } from "react-icons/ai";
 import { HiOutlineDotsVertical } from "react-icons/hi";
 import { BsListUl, BsBookmark } from "react-icons/bs";
 import { RiDeleteBackLine } from "react-icons/ri";
@@ -48,10 +48,7 @@ const Favorite = () => {
 
   return (
     <div className={classes.container}>
-      <h1>
-        <AiFillHeart />
-        My Favorites
-      </h1>
+      <h1>My Favorites</h1>
       <div className={classes.wrapper}>
         <div className={classes.section}>
           <h1>Movies</h1>
