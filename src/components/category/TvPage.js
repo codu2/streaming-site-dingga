@@ -91,13 +91,6 @@ const getTrending = async () => {
   return response.data.results;
 };
 
-const getData = async () => {
-  const response = await axios.get(
-    `https://api.themoviedb.org/3/tv/110382?api_key=${API_KEY}&language=en-US`
-  );
-  return response.data;
-};
-
 const TvPage = () => {
   const [contentTab, setContentTab] = useState(0);
   const [genreTab, setGenreTab] = useState("10759");
@@ -118,14 +111,12 @@ const TvPage = () => {
   const [top_rated] = useAsync(getTopLated, []);
   const [popular] = useAsync(getPopular, []);
   const [trending] = useAsync(getTrending, []);
-  const [pachinko] = useAsync(getData, []);
 
   const { data: onTheAirData } = on_the_air;
   const { data: airingTodayData } = airing_today;
   const { data: topRatedData } = top_rated;
   const { data: popularData } = popular;
   const { data: trendingData } = trending;
-  const { data: pachinkoData } = pachinko;
 
   const settings = {
     dots: false, // 점은 안 보이게
@@ -461,49 +452,3 @@ const TvPage = () => {
 };
 
 export default TvPage;
-
-/*<div className={classes["side-box"]}>
-          <div className={classes["side-content"]}>
-            <h1>Search for TV Show Title</h1>
-            <div className={classes["search-input"]}>
-              <input type="text" placeholder="Search" onChange={handleSearch} />
-              <AiOutlineSearch className={classes["search-icon"]} />
-            </div>
-            <div className={classes["search-result"]}>
-              {query && searchResult && (
-                <ul>
-                  {searchResult.map((result, index) => (
-                    <li key={index}>
-                      <Link to={`/tv/${result.id}`} className={classes.link}>
-                        {result.name}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              )}
-              {!query && <div>Please enter a search term...</div>}
-            </div>
-          </div>
-          {pachinkoData && (
-            <div className={classes["side-content"]}>
-              <div className={classes.watching}>
-                <h1>Watching Movie</h1>
-                <div className={classes["watching-img"]}>
-                  <img
-                    src={
-                      pachinkoData.backdrop_path
-                        ? `https://image.tmdb.org/t/p/w500${pachinkoData.backdrop_path}`
-                        : `https://image.tmdb.org/t/p/w500${pachinkoData.poster_path}`
-                    }
-                    alt={pachinkoData.name}
-                  />
-                  <span className={classes["watching-title"]}>
-                    {pachinkoData.name}
-                  </span>
-                  <BsSkipStartCircle className={classes["watching-icon"]} />
-                </div>
-              </div>
-            </div>
-          )}
-          </div>
-          */

@@ -84,13 +84,6 @@ const getTrending = async () => {
   return response.data.results;
 };
 
-const getData = async () => {
-  const response = await axios.get(
-    `https://api.themoviedb.org/3/movie/581734?api_key=${API_KEY}&language=en-US`
-  );
-  return response.data;
-};
-
 const MoviePage = () => {
   const [contentTab, setContentTab] = useState(0);
   const [genreTab, setGenreTab] = useState("28|32");
@@ -110,13 +103,11 @@ const MoviePage = () => {
   const [now_playing] = useAsync(getNowPlaying, []);
   const [popular] = useAsync(getPopular, []);
   const [trending] = useAsync(getTrending, []);
-  const [nomadland] = useAsync(getData, []);
 
   const { data: topRatedData } = top_rated;
   const { data: nowPlayingData } = now_playing;
   const { data: popularData } = popular;
   const { data: trendingData } = trending;
-  const { data: nomadlandData } = nomadland;
 
   const tab0Css = `${classes["content-tab"]} ${
     contentTab === 0 && classes.active
@@ -398,50 +389,3 @@ const MoviePage = () => {
 };
 
 export default MoviePage;
-
-/*
-<div className={classes["side-box"]}>
-          <div className={classes["side-content"]}>
-            <h1>Search for Movie Title</h1>
-            <div className={classes["search-input"]}>
-              <input type="text" placeholder="Search" onChange={handleSearch} />
-              <AiOutlineSearch className={classes["search-icon"]} />
-            </div>
-            <div className={classes["search-result"]}>
-              {query && searchResult && (
-                <ul>
-                  {searchResult.map((result) => (
-                    <li>
-                      <Link to={`/movie/${result.id}`} className={classes.link}>
-                        {result.title}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              )}
-              {!query && <div>Please enter a search term...</div>}
-            </div>
-          </div>
-          {nomadlandData && (
-            <div className={classes["side-content"]}>
-              <div className={classes.watching}>
-                <h1>Watching Movie</h1>
-                <div className={classes["watching-img"]}>
-                  <img
-                    src={
-                      nomadlandData.backdrop_path
-                        ? `https://image.tmdb.org/t/p/w500${nomadlandData.backdrop_path}`
-                        : `https://image.tmdb.org/t/p/w500${nomadlandData.poster_path}`
-                    }
-                    alt={nomadlandData.title}
-                  />
-                  <span className={classes["watching-title"]}>
-                    {nomadlandData.title}
-                  </span>
-                  <BsSkipStartCircle className={classes["watching-icon"]} />
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
-        */
