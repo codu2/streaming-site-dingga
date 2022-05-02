@@ -72,13 +72,7 @@ const ChartDoughnut = () => {
   const data = {
     datasets: [
       {
-        data: [
-          mostWatched[0][0],
-          mostWatched[0][1],
-          mostWatched[0][2],
-          mostWatched[0][3],
-          mostWatched[0][4],
-        ],
+        data: mostWatched[0],
         backgroundColor: [
           "rgba(255, 99, 132)",
           "rgba(54, 162, 235)",
@@ -91,13 +85,7 @@ const ChartDoughnut = () => {
         fill: true,
       },
     ],
-    labels: [
-      mostWatchedGenres[0],
-      mostWatchedGenres[1],
-      mostWatchedGenres[2],
-      mostWatchedGenres[3],
-      mostWatchedGenres[4],
-    ],
+    labels: mostWatchedGenres,
   };
 
   const options = {

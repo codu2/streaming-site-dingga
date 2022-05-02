@@ -46,6 +46,101 @@ const Favorite = () => {
   const { data: favoriteMovies } = favoriteMovie;
   const { data: favoriteTvShows } = favoriteTvShow;
 
+  const handleWatchlist = async (data) => {
+    if (ctx.user) {
+      if (
+        ctx.watchlist_movie.find((item) => item.id === data.id) ||
+        ctx.watchlist_tv.find((item) => item.id === data.id)
+      ) {
+        try {
+          const response = await axios.post(
+            `https://api.themoviedb.org/3/account/${ctx.user.id}/watchlist?api_key=${API_KEY}&session_id=${SESSION_ID}`,
+            {
+              media_type: data.title ? "movie" : "tv",
+              media_id: data.id,
+              watchlist: false,
+            }
+          );
+          if (response.data.success) {
+            window.location.reload();
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      } else {
+        try {
+          const response = await axios.post(
+            `https://api.themoviedb.org/3/account/${ctx.user.id}/watchlist?api_key=${API_KEY}&session_id=${SESSION_ID}`,
+            {
+              media_type: data.title ? "movie" : "tv",
+              media_id: data.id,
+              watchlist: true,
+            }
+          );
+          if (response.data.success) {
+            window.location.replace(`/account/${ctx.user.id}/watchlist`);
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    } else {
+      window.alert(
+        `Please login to add this ${
+          data.title ? "movie" : "tv"
+        } to your watchlist`
+      );
+    }
+  };
+
+  const handleFavorite = async (data) => {
+    if (ctx.user) {
+      if (
+        ctx.favorite_movie.find((item) => item.id === data.id) ||
+        ctx.favorite_tv.find((item) => item.id === data.id)
+      ) {
+        try {
+          const response = await axios.post(
+            `https://api.themoviedb.org/3/account/${ctx.user.id}/favorite?api_key=${API_KEY}&session_id=${SESSION_ID}`,
+            {
+              media_type: data.title ? "movie" : "tv",
+              media_id: data.id,
+              favorite: false,
+            }
+          );
+          if (response.data.success) {
+            window.location.reload();
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      } else {
+        try {
+          const response = await axios.post(
+            `https://api.themoviedb.org/3/account/${ctx.user.id}/favorite?api_key=${API_KEY}&session_id=${SESSION_ID}`,
+            {
+              media_type: data.title ? "movie" : "tv",
+              media_id: data.id,
+              favorite: true,
+            }
+          );
+          if (response.data.success) {
+            window.location.reload();
+            //window.location.replace(`/account/${ctx.user.id}/favorite`);
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    } else {
+      window.alert(
+        `Please login to add this ${
+          data.title ? "movie" : "tv"
+        } to your favorite`
+      );
+    }
+  };
+
   return (
     <div className={classes.container}>
       <h1>My Favorites</h1>
@@ -95,13 +190,13 @@ const Favorite = () => {
                       )}
                       {actions === item.id && (
                         <div className={classes.actions}>
-                          <span>
+                          <span onClick={() => handleWatchlist(item)}>
                             <BsListUl /> Add to Watchlist
                           </span>
                           <span>
                             <BsBookmark /> Bookmark
                           </span>
-                          <span>
+                          <span onClick={() => handleFavorite(item)}>
                             <RiDeleteBackLine /> Remove
                           </span>
                         </div>
@@ -157,13 +252,13 @@ const Favorite = () => {
                       )}
                       {actions === item.id && (
                         <div className={classes.actions}>
-                          <span>
+                          <span onClick={() => handleFavorite(item)}>
                             <BsListUl /> Add to Watchlist
                           </span>
                           <span>
                             <BsBookmark /> Bookmark
                           </span>
-                          <span>
+                          <span onClick={() => handleWatchlist(item)}>
                             <RiDeleteBackLine /> Remove
                           </span>
                         </div>

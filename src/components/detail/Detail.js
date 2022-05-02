@@ -180,7 +180,8 @@ const Detail = () => {
             }
           );
           if (response.data.success) {
-            window.alert("Added to watchlist");
+            //window.alert("Added to watchlist");
+            window.location.reload();
             //window.location.replace(`/account/${ctx.user.id}/watchlist`);
           }
         } catch (error) {
@@ -196,7 +197,7 @@ const Detail = () => {
     if (ctx.user) {
       if (
         ctx.favorite_movie.find((item) => item.id === data.id) ||
-        ctx.favorite_movie.find((item) => item.id === data.id)
+        ctx.favorite_tv.find((item) => item.id === data.id)
       ) {
         try {
           const response = await axios.post(
@@ -224,7 +225,8 @@ const Detail = () => {
             }
           );
           if (response.data.success) {
-            window.alert("Added to favorite");
+            //window.alert("Added to favorite");
+            window.location.reload();
             //window.location.replace(`/account/${ctx.user.id}/favorite`);
           }
         } catch (error) {
