@@ -1,0 +1,143 @@
+.container {
+  padding: 15px;
+  width: 100%;
+  height: max-content;
+  min-height: calc(100vh - 60px);
+}
+
+.container > h1 {
+  font-size: 20px;
+  font-weight: 500;
+  color: #f4f4f4;
+  margin: 30px 20px 30px;
+  display: flex;
+  align-items: center;
+}
+
+.wrapper {
+  padding: 30px;
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+}
+
+.user {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #f4f4f4;
+  width: 100%;
+  padding: 10px 15px;
+}
+
+.user-img {
+  width: 130px;
+  height: 130px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-right: 40px;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-info label {
+  font-weight: 500;
+  font-size: 15px;
+  margin: 7px 0 5px;
+  text-transform: capitalize;
+}
+
+.user-input {
+  width: 300px;
+  padding: 7px 10px;
+  font-size: 13px;
+  font-weight: 300;
+  margin-bottom: 7px;
+  outline: none;
+  border: none;
+  color: #000;
+}
+
+.user-input::placeholder {
+  font-size: 13px;
+  color: #666;
+  font-weight: 300;
+  font-family: "Montserrat", sans-serif;
+}
+
+.graph {
+  flex: 1;
+  width: 100%;
+  color: #f4f4f4;
+  padding-left: 40px;
+}
+
+.graph h1 {
+  font-size: 18px;
+  font-weight: 500;
+  margin: 10px 0 30px;
+}
+
+.graph-chart {
+  display: flex;
+  justify-content: center;
+}
+
+.rating {
+  width: 100%;
+  color: #f4f4f4;
+  padding: 15px 60px;
+}
+
+.rating h1 {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.rating-wrapper {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 15px 10px;
+  column-gap: 20px;
+}
+
+.rating-movie,
+.rating-tv {
+  flex: 1;
+}
+
+.rating-movie h1,
+.rating-tv h1 {
+  font-weight: 300;
+  margin-top: 10px;
+  font-size: 15px;
+}
+
+.rating-list {
+  width: 100%;
+  margin-top: 15px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.rating-list-item {
+  text-align: center;
+  width: 110px;
+  height: 230px;
+  margin: 0 10px;
+}
+
+.rating-list-item img {
+  width: 100%;
+  height: 180px;
+}
+
+.rating-list-item span {
+  font-size: 14px;
+  margin-top: 5px;
+}

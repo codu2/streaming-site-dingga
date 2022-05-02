@@ -52,6 +52,9 @@ const Menu = () => {
   const menuWatchlist = `${
     location.pathname.split("/")[3] === "watchlist" && classes.current
   }`;
+  const menuProfile = `${
+    location.pathname.split("/")[3] === "profile" && classes.current
+  }`;
 
   return (
     <div className={classes.menu}>
@@ -97,7 +100,14 @@ const Menu = () => {
                   </Link>
                 </li>
                 <li>Bookmark</li>
-                <li>Profile</li>
+                <li className={menuProfile}>
+                  <Link
+                    to={`/account/${ctx.user.id}/profile`}
+                    className={classes.link}
+                  >
+                    Profile
+                  </Link>
+                </li>
               </ul>
             )}
           </li>

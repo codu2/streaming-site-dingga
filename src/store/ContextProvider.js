@@ -9,6 +9,8 @@ const initialState = {
   watchlist_movie: null,
   watchlist_tv: null,
   bookmark: null,
+  rated_movie: null,
+  rated_tv: null,
 };
 
 const Reducer = (state, action) => {
@@ -21,6 +23,8 @@ const Reducer = (state, action) => {
         watchlist_movie: null,
         watchlist_tv: null,
         bookmark: null,
+        rated_movie: null,
+        rated_tv: null,
       };
     case "LOGOUT":
       return {
@@ -30,6 +34,8 @@ const Reducer = (state, action) => {
         watchlist_movie: null,
         watchlist_tv: null,
         bookmark: null,
+        rated_movie: null,
+        rated_tv: null,
       };
     case "FAVORITE_MOVIE":
       return {
@@ -39,6 +45,8 @@ const Reducer = (state, action) => {
         watchlist_movie: state.watchlist_movie,
         watchlist_tv: state.watchlist_tv,
         bookmark: state.bookmark,
+        rated_movie: state.rated_movie,
+        rated_tv: state.rated_tv,
       };
     case "FAVORITE_TV":
       return {
@@ -48,6 +56,8 @@ const Reducer = (state, action) => {
         watchlist_movie: state.watchlist_movie,
         watchlist_tv: state.watchlist_tv,
         bookmark: state.bookmark,
+        rated_movie: state.rated_movie,
+        rated_tv: state.rated_tv,
       };
     case "WATCHLIST_MOVIE":
       return {
@@ -57,6 +67,8 @@ const Reducer = (state, action) => {
         watchlist_movie: action.payload,
         watchlist_tv: state.watchlist_tv,
         bookmark: state.bookmark,
+        rated_movie: state.rated_movie,
+        rated_tv: state.rated_tv,
       };
     case "WATCHLIST_TV":
       return {
@@ -66,6 +78,30 @@ const Reducer = (state, action) => {
         watchlist_movie: state.watchlist_movie,
         watchlist_tv: action.payload,
         bookmark: state.bookmark,
+        rated_movie: state.rated_movie,
+        rated_tv: state.rated_tv,
+      };
+    case "RATED_MOVIE":
+      return {
+        user: state.user,
+        favorite_movie: state.favorite_movie,
+        favorite_tv: state.favorite_tv,
+        watchlist_movie: action.payload,
+        watchlist_tv: state.watchlist_tv,
+        bookmark: state.bookmark,
+        rated_movie: action.payload,
+        rated_tv: state.rated_tv,
+      };
+    case "RATED_TV":
+      return {
+        user: state.user,
+        favorite_movie: state.favorite_movie,
+        favorite_tv: state.favorite_tv,
+        watchlist_movie: state.watchlist_movie,
+        watchlist_tv: action.payload,
+        bookmark: state.bookmark,
+        rated_movie: state.rated_movie,
+        rated_tv: action.payload,
       };
 
     default:
@@ -100,6 +136,14 @@ const ContextProvider = (props) => {
     dispatch({ type: "WATCHLIST_TV", payload: watchlist });
   };
 
+  const getRatedMovie = (rated) => {
+    dispatch({ type: "RATED_MOVIE", payload: rated });
+  };
+
+  const getRatedTv = (rated) => {
+    dispatch({ type: "RATED_TV", payload: rated });
+  };
+
   useEffect(() => {
     localStorage.setItem("user", JSON.stringify(state.user));
   }, [state.user]);
@@ -111,12 +155,16 @@ const ContextProvider = (props) => {
     watchlist_movie: state.watchlist_movie,
     watchlist_tv: state.watchlist_tv,
     bookmark: state.bookmark,
+    rated_movie: state.rated_movie,
+    rated_tv: state.rated_tv,
     loggedInUser,
     logout,
     getFavoriteMovie,
     getFavoriteTv,
     getWatchlistMovie,
     getWatchlistTv,
+    getRatedMovie,
+    getRatedTv,
   };
 
   return (

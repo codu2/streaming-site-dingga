@@ -180,7 +180,8 @@ const Detail = () => {
             }
           );
           if (response.data.success) {
-            window.location.replace(`/account/${ctx.user.id}/watchlist`);
+            window.alert("Added to watchlist");
+            //window.location.replace(`/account/${ctx.user.id}/watchlist`);
           }
         } catch (error) {
           console.log(error);
@@ -223,7 +224,8 @@ const Detail = () => {
             }
           );
           if (response.data.success) {
-            window.location.replace(`/account/${ctx.user.id}/favorite`);
+            window.alert("Added to favorite");
+            //window.location.replace(`/account/${ctx.user.id}/favorite`);
           }
         } catch (error) {
           console.log(error);

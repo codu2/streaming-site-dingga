@@ -16,6 +16,7 @@ import Favorite from "./components/account/Favorite";
 import WatchList from "./components/account/WatchList";
 import Login from "./components/account/Login";
 import Search from "./pages/Search";
+import Profile from "./components/account/Profile";
 
 const API_KEY = process.env.REACT_APP_API_KEY;
 const SESSION_ID = process.env.REACT_APP_SESSION_ID;
@@ -38,11 +39,19 @@ function App() {
       const getWatchListTv = await axios.get(
         `https://api.themoviedb.org/3/account/${ctx.user.id}/watchlist/tv?api_key=${API_KEY}&session_id=${SESSION_ID}`
       );
+      const getRatedMovie = await axios.get(
+        `https://api.themoviedb.org/3/account/${ctx.user.id}/rated/movies?api_key=${API_KEY}&language=en-US&sort_by=created_at.asc&page=1&session_id=${SESSION_ID}`
+      );
+      const getRatedTv = await axios.get(
+        `https://api.themoviedb.org/3/account/${ctx.user.id}/rated/tv?api_key=${API_KEY}&language=en-US&sort_by=created_at.asc&page=1&session_id=${SESSION_ID}`
+      );
 
       ctx.getFavoriteMovie(getFavoriteMovie.data.results);
       ctx.getFavoriteTv(getFavoriteTv.data.results);
       ctx.getWatchlistMovie(getWatchListMovie.data.results);
       ctx.getWatchlistTv(getWatchListTv.data.results);
+      ctx.getRatedMovie(getRatedMovie.data.results);
+      ctx.getRatedTv(getRatedTv.data.results);
     } catch (error) {
       console.log(error);
     }
@@ -66,6 +75,7 @@ function App() {
         <Route path="/genre/:id" element={<DetailGenre />} />
         <Route path="/account/:id/favorite" element={<Favorite />} />
         <Route path="/account/:id/watchlist" element={<WatchList />} />
+        <Route path="account/:id/profile" element={<Profile />} />
         <Route path="/login" element={<Login />} />
         <Route path="/search" element={<Search />} />
       </Route>
