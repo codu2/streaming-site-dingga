@@ -2,12 +2,11 @@ import React, { useContext, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 
 import axios from "axios";
-import useAsync from "../../hooks/use-data";
 import Context from "../../store/Context";
 
 import classes from "./Account.module.css";
 import { HiOutlineDotsVertical } from "react-icons/hi";
-import { AiOutlineHeart, AiOutlineClose } from "react-icons/ai";
+import { AiOutlineHeart, AiFillHeart, AiOutlineClose } from "react-icons/ai";
 import { BsBookmark } from "react-icons/bs";
 import { RiDeleteBackLine } from "react-icons/ri";
 
@@ -25,26 +24,6 @@ const WatchList = () => {
       window.location.replace("/login");
     }
   }, [path]);
-
-  const getWatchListMovie = async () => {
-    const response = await axios.get(
-      `https://api.themoviedb.org/3/account/${ctx.user.id}/watchlist/movies?api_key=${API_KEY}&session_id=${SESSION_ID}`
-    );
-    return response.data.results;
-  };
-
-  const getWatchListTv = async () => {
-    const response = await axios.get(
-      `https://api.themoviedb.org/3/account/${ctx.user.id}/watchlist/tv?api_key=${API_KEY}&session_id=${SESSION_ID}`
-    );
-    return response.data.results;
-  };
-
-  const [watchlistMovie] = useAsync(getWatchListMovie, []);
-  const [watchlistTv] = useAsync(getWatchListTv, []);
-
-  const { data: watchlistMovies } = watchlistMovie;
-  const { data: watchlistTvShows } = watchlistTv;
 
   const handleWatchlist = async (data) => {
     if (ctx.user) {
@@ -149,8 +128,8 @@ const WatchList = () => {
         <div className={classes.section}>
           <h1>Movies</h1>
           <ul className={classes["section-list"]}>
-            {watchlistMovies &&
-              watchlistMovies.map((item) => (
+            {ctx.watchlist_movie &&
+              ctx.watchlist_movie.map((item) => (
                 <li key={item.id}>
                   <div className={classes["section-item"]}>
                     <img
@@ -191,10 +170,18 @@ const WatchList = () => {
                       )}
                       {actions === item.id && (
                         <div className={classes.actions}>
-                          <span onClick={() => handleFavorite(item)}>
-                            <AiOutlineHeart />
-                            Favorite
-                          </span>
+                          {ctx.favorite_movie.find(
+                            (movie) => movie.id === item.id
+                          ) ? (
+                            <span style={{ cursor: "not-allowed" }}>
+                              <AiFillHeart /> In My Favorites
+                            </span>
+                          ) : (
+                            <span onClick={() => handleFavorite(item)}>
+                              <AiOutlineHeart />
+                              Mark as Favorites
+                            </span>
+                          )}
                           <span>
                             <BsBookmark /> Bookmark
                           </span>
@@ -213,8 +200,8 @@ const WatchList = () => {
         <div className={classes.section}>
           <h1>TV Shows</h1>
           <ul className={classes["section-list"]}>
-            {watchlistTvShows &&
-              watchlistTvShows.map((item) => (
+            {ctx.watchlist_tv &&
+              ctx.watchlist_tv.map((item) => (
                 <li key={item.id}>
                   <div className={classes["section-item"]}>
                     <img
@@ -255,9 +242,16 @@ const WatchList = () => {
                       )}
                       {actions === item.id && (
                         <div className={classes.actions}>
-                          <span onClick={() => handleFavorite(item)}>
-                            <AiOutlineHeart /> Favorite
-                          </span>
+                          {ctx.favorite_tv.find((tv) => tv.id === item.id) ? (
+                            <span style={{ cursor: "not-allowed" }}>
+                              <AiFillHeart /> In My Favorites
+                            </span>
+                          ) : (
+                            <span onClick={() => handleFavorite(item)}>
+                              <AiOutlineHeart />
+                              Mark as Favorites
+                            </span>
+                          )}
                           <span>
                             <BsBookmark /> Bookmark
                           </span>

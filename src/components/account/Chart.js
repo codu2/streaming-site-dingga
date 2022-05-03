@@ -1,13 +1,13 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Chart, registerables } from "chart.js";
-import { Bar, Doughnut } from "react-chartjs-2";
+import { Doughnut } from "react-chartjs-2";
 
 import Context from "../../store/Context";
 
 Chart.register(...registerables);
 
 const genre = {
-  18: "action",
+  28: "action",
   12: "adventure",
   16: "animation",
   35: "comedy",
@@ -66,8 +66,6 @@ const ChartDoughnut = () => {
     setMostWatched(genre_value);
     setMostWatchedGenres(genre_name);
   }, [ctx]);
-
-  console.log(mostWatchedGenres);
 
   const data = {
     datasets: [

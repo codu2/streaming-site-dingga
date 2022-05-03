@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 
 import axios from "axios";
-import useAsync from "../../hooks/use-data";
 import Context from "../../store/Context";
 
 import classes from "./Account.module.css";
@@ -10,6 +9,7 @@ import { AiOutlineClose } from "react-icons/ai";
 import { HiOutlineDotsVertical } from "react-icons/hi";
 import { BsListUl, BsBookmark } from "react-icons/bs";
 import { RiDeleteBackLine } from "react-icons/ri";
+import { TiThList } from "react-icons/ti";
 
 const API_KEY = process.env.REACT_APP_API_KEY;
 const SESSION_ID = process.env.REACT_APP_SESSION_ID;
@@ -25,26 +25,6 @@ const Favorite = () => {
       window.location.replace("/login");
     }
   }, [path]);
-
-  const getFavoriteMovie = async () => {
-    const response = await axios.get(
-      `https://api.themoviedb.org/3/account/${ctx.user.id}/favorite/movies?api_key=${API_KEY}&session_id=${SESSION_ID}`
-    );
-    return response.data.results;
-  };
-
-  const getFavoriteTv = async () => {
-    const response = await axios.get(
-      `https://api.themoviedb.org/3/account/${ctx.user.id}/favorite/tv?api_key=${API_KEY}&session_id=${SESSION_ID}`
-    );
-    return response.data.results;
-  };
-
-  const [favoriteMovie] = useAsync(getFavoriteMovie, []);
-  const [favoriteTvShow] = useAsync(getFavoriteTv, []);
-
-  const { data: favoriteMovies } = favoriteMovie;
-  const { data: favoriteTvShows } = favoriteTvShow;
 
   const handleWatchlist = async (data) => {
     if (ctx.user) {
@@ -148,8 +128,8 @@ const Favorite = () => {
         <div className={classes.section}>
           <h1>Movies</h1>
           <ul className={classes["section-list"]}>
-            {favoriteMovies &&
-              favoriteMovies.map((item) => (
+            {ctx.favorite_movie &&
+              ctx.favorite_movie.map((item) => (
                 <li key={item.id}>
                   <div className={classes["section-item"]}>
                     <img
@@ -190,9 +170,17 @@ const Favorite = () => {
                       )}
                       {actions === item.id && (
                         <div className={classes.actions}>
-                          <span onClick={() => handleWatchlist(item)}>
-                            <BsListUl /> Add to Watchlist
-                          </span>
+                          {ctx.watchlist_movie.find(
+                            (movie) => movie.id === item.id
+                          ) ? (
+                            <span style={{ cursor: "not-allowed" }}>
+                              <TiThList /> In My Watchlist
+                            </span>
+                          ) : (
+                            <span onClick={() => handleWatchlist(item)}>
+                              <BsListUl /> Add to Watchlist
+                            </span>
+                          )}
                           <span>
                             <BsBookmark /> Bookmark
                           </span>
@@ -210,8 +198,8 @@ const Favorite = () => {
         <div className={classes.section}>
           <h1>TV Shows</h1>
           <ul className={classes["section-list"]}>
-            {favoriteTvShows &&
-              favoriteTvShows.map((item) => (
+            {ctx.favorite_tv &&
+              ctx.favorite_tv.map((item) => (
                 <li key={item.id}>
                   <div className={classes["section-item"]}>
                     <img
@@ -252,13 +240,19 @@ const Favorite = () => {
                       )}
                       {actions === item.id && (
                         <div className={classes.actions}>
-                          <span onClick={() => handleFavorite(item)}>
-                            <BsListUl /> Add to Watchlist
-                          </span>
+                          {ctx.watchlist_tv.find((tv) => tv.id === item.id) ? (
+                            <span style={{ cursor: "not-allowed" }}>
+                              <TiThList /> In My Watchlist
+                            </span>
+                          ) : (
+                            <span onClick={() => handleWatchlist(item)}>
+                              <BsListUl /> Add to Watchlist
+                            </span>
+                          )}
                           <span>
                             <BsBookmark /> Bookmark
                           </span>
-                          <span onClick={() => handleWatchlist(item)}>
+                          <span onClick={() => handleFavorite(item)}>
                             <RiDeleteBackLine /> Remove
                           </span>
                         </div>

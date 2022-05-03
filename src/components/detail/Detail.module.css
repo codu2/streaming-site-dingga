@@ -514,3 +514,34 @@
   height: 100%;
   object-fit: contain;
 }
+
+.scope {
+  border: 0.8px solid #f4f4f4;
+  outline: none;
+  background-color: transparent;
+  padding: 12px 22px;
+  color: #fff;
+  width: 200px;
+  height: 40px;
+  margin-left: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.star {
+  color: #ddd;
+}
+
+.star:hover {
+  color: gold;
+}
+
+.yellow-star {
+  color: gold;
+}
+
+.half-star {
+  color: rgb(255, 215, 0, 0.7);
+}

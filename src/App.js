@@ -25,32 +25,48 @@ function App() {
   const location = useLocation();
   const ctx = useContext(Context);
 
-  const getData = async () => {
+  const getFavorite = async () => {
     try {
       const getFavoriteMovie = await axios.get(
         `https://api.themoviedb.org/3/account/${ctx.user.id}/favorite/movies?api_key=${API_KEY}&session_id=${SESSION_ID}`
       );
+      ctx.getFavoriteMovie(getFavoriteMovie.data.results);
+
       const getFavoriteTv = await axios.get(
         `https://api.themoviedb.org/3/account/${ctx.user.id}/favorite/tv?api_key=${API_KEY}&session_id=${SESSION_ID}`
       );
+      ctx.getFavoriteTv(getFavoriteTv.data.results);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getWatchlist = async () => {
+    try {
       const getWatchListMovie = await axios.get(
         `https://api.themoviedb.org/3/account/${ctx.user.id}/watchlist/movies?api_key=${API_KEY}&session_id=${SESSION_ID}`
       );
+      ctx.getWatchlistMovie(getWatchListMovie.data.results);
+
       const getWatchListTv = await axios.get(
         `https://api.themoviedb.org/3/account/${ctx.user.id}/watchlist/tv?api_key=${API_KEY}&session_id=${SESSION_ID}`
       );
+      ctx.getWatchlistTv(getWatchListTv.data.results);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getRated = async () => {
+    try {
       const getRatedMovie = await axios.get(
         `https://api.themoviedb.org/3/account/${ctx.user.id}/rated/movies?api_key=${API_KEY}&language=en-US&sort_by=created_at.asc&page=1&session_id=${SESSION_ID}`
       );
+      ctx.getRatedMovie(getRatedMovie.data.results);
+
       const getRatedTv = await axios.get(
         `https://api.themoviedb.org/3/account/${ctx.user.id}/rated/tv?api_key=${API_KEY}&language=en-US&sort_by=created_at.asc&page=1&session_id=${SESSION_ID}`
       );
-
-      ctx.getFavoriteMovie(getFavoriteMovie.data.results);
-      ctx.getFavoriteTv(getFavoriteTv.data.results);
-      ctx.getWatchlistMovie(getWatchListMovie.data.results);
-      ctx.getWatchlistTv(getWatchListTv.data.results);
-      ctx.getRatedMovie(getRatedMovie.data.results);
       ctx.getRatedTv(getRatedTv.data.results);
     } catch (error) {
       console.log(error);
@@ -59,7 +75,9 @@ function App() {
 
   useEffect(() => {
     if (ctx.user) {
-      getData();
+      getFavorite();
+      getWatchlist();
+      getRated();
     }
   }, [ctx.user]);
 

@@ -14,6 +14,7 @@ import { AiOutlineHeart, AiFillHeart, AiOutlineClose } from "react-icons/ai";
 import { BsListUl, BsBookmark, BsBookmarkFill } from "react-icons/bs";
 import { TiThList } from "react-icons/ti";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import { FaStar, FaStarHalf } from "react-icons/fa";
 
 const API_KEY = process.env.REACT_APP_API_KEY;
 const SESSION_ID = process.env.REACT_APP_SESSION_ID;
@@ -60,6 +61,8 @@ function NextArrow(props) {
   );
 }
 
+const Scope = [0, 1, 2, 3, 4];
+
 const Detail = () => {
   const ctx = useContext(Context);
   const location = useLocation();
@@ -69,6 +72,28 @@ const Detail = () => {
   const [openTrailer, setOpenTrailer] = useState(false);
   const [season, setSeason] = useState([]);
   const [seasonNumber, setSeasonNumber] = useState(1);
+  const [clicked, setClicked] = useState([false, false, false, false, false]);
+  const [hovered, setHovered] = useState(null);
+  const [score, setScore] = useState(0);
+  const [clickedRect, setClickedRect] = useState(null);
+  const [hoveredRect, setHoveredRect] = useState(null);
+
+  const handleStarClick = (index) => {
+    let clickStates = [...clicked];
+    for (let i = 0; i < 5; i++) {
+      clickStates[i] = i <= index ? true : false;
+    }
+    setClicked(clickStates);
+  };
+
+  useEffect(() => {
+    handleScore();
+  }, [clicked]);
+
+  const handleScore = () => {
+    let score = clicked.filter(Boolean).length;
+    setScore(score);
+  };
 
   const getData = async () => {
     const response = await axios.get(
@@ -303,6 +328,39 @@ const Detail = () => {
               </button>
               <button className={classes.bookmark}>
                 <BsBookmark />
+              </button>
+              <button className={classes.scope}>
+                {Scope.map((el, idx) => (
+                  <FaStar
+                    key={idx}
+                    size="20"
+                    onClick={(e) => {
+                      handleStarClick(el);
+                      let rect = e.target.getBoundingClientRect();
+                      let x = e.clientX - rect.left;
+                      setClickedRect(x <= 10 ? true : false);
+                    }}
+                    onMouseMove={(e) => {
+                      let rect = e.target.getBoundingClientRect();
+                      let x = e.clientX - rect.left;
+                      setHoveredRect(x <= 10 ? true : false);
+                    }}
+                    onMouseEnter={() => {
+                      setHovered(el);
+                    }}
+                    onMouseLeave={() => {
+                      setHovered(null);
+                      setHoveredRect(null);
+                    }}
+                    className={
+                      clicked[el] || hovered > el
+                        ? classes["yellow-star"]
+                        : hovered === el && (clickedRect || hoveredRect)
+                        ? classes["half-star"]
+                        : classes.star
+                    }
+                  />
+                ))}
               </button>
             </div>
           </div>
