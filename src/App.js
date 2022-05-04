@@ -79,7 +79,7 @@ function App() {
       getWatchlist();
       getRated();
     }
-  }, [ctx.user]);
+  }, [ctx.user, location.pathname]);
 
   return (
     <Routes>

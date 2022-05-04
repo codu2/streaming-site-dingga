@@ -461,14 +461,22 @@ const Detail = () => {
               </div>
             </div>
             <div className={classes.cast}>
-              {castData
-                .filter((data, index) => index < 5)
-                .map((data) => (
-                  <div className={classes["cast-info"]} key={data.id}>
-                    <span>{data.character}</span>
-                    <span>{data.name}</span>
-                  </div>
-                ))}
+              {castData &&
+                castData
+                  .filter((data, index) => index < 5)
+                  .map((data) => (
+                    <div className={classes["cast-info"]} key={data.id}>
+                      <span>{data.character}</span>
+                      <span>
+                        <Link
+                          to={`/person/${data.id}`}
+                          className={classes.link}
+                        >
+                          {data.name}
+                        </Link>
+                      </span>
+                    </div>
+                  ))}
             </div>
             {data.tagline !== "" && (
               <div className={classes.tagline}>{`"${data.tagline}"`}</div>
@@ -572,13 +580,14 @@ const Detail = () => {
             <div className={classes.review}>
               <h1>Reviews</h1>
               <ul className={classes["review-list"]}>
-                {reviewsData.map((review) => (
-                  <li key={review.id} className={classes["review-list-item"]}>
-                    <div>{review.author}</div>
-                    <div>{review.content}</div>
-                    <div>{new Date(review.created_at).toDateString()}</div>
-                  </li>
-                ))}
+                {reviewsData &&
+                  reviewsData.map((review) => (
+                    <li key={review.id} className={classes["review-list-item"]}>
+                      <div>{review.author}</div>
+                      <div>{review.content}</div>
+                      <div>{new Date(review.created_at).toDateString()}</div>
+                    </li>
+                  ))}
               </ul>
             </div>
             <div className={classes.similar}>
