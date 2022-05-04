@@ -14,7 +14,6 @@ import { AiOutlineHeart, AiFillHeart, AiOutlineClose } from "react-icons/ai";
 import { BsListUl, BsBookmark, BsBookmarkFill } from "react-icons/bs";
 import { TiThList } from "react-icons/ti";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
-import { FaStar, FaStarHalf } from "react-icons/fa";
 
 const API_KEY = process.env.REACT_APP_API_KEY;
 const SESSION_ID = process.env.REACT_APP_SESSION_ID;
@@ -61,7 +60,7 @@ function NextArrow(props) {
   );
 }
 
-const Scope = [0, 1, 2, 3, 4];
+const Scope = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
 const Detail = () => {
   const ctx = useContext(Context);
@@ -72,28 +71,22 @@ const Detail = () => {
   const [openTrailer, setOpenTrailer] = useState(false);
   const [season, setSeason] = useState([]);
   const [seasonNumber, setSeasonNumber] = useState(1);
-  const [clicked, setClicked] = useState([false, false, false, false, false]);
+  const [clicked, setClicked] = useState([
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+  ]);
   const [hovered, setHovered] = useState(null);
   const [score, setScore] = useState(0);
-  const [clickedRect, setClickedRect] = useState(null);
+  const [clickedNum, setClickedNum] = useState(null);
   const [hoveredRect, setHoveredRect] = useState(null);
-
-  const handleStarClick = (index) => {
-    let clickStates = [...clicked];
-    for (let i = 0; i < 5; i++) {
-      clickStates[i] = i <= index ? true : false;
-    }
-    setClicked(clickStates);
-  };
-
-  useEffect(() => {
-    handleScore();
-  }, [clicked]);
-
-  const handleScore = () => {
-    let score = clicked.filter(Boolean).length;
-    setScore(score);
-  };
 
   const getData = async () => {
     const response = await axios.get(
@@ -169,9 +162,52 @@ const Detail = () => {
   const { data: reviewsData } = reviews;
   const { data: castData } = cast;
 
-  if (loading) return <div>Loading..</div>;
-  if (error) return <div>An error has occurred!</div>;
-  if (!data) return null;
+  const handleStarClick = (index) => {
+    let clickStates = [...clicked];
+    for (let i = 0; i < 10; i++) {
+      clickStates[i] = i < index ? true : false;
+    }
+    setClicked(clickStates);
+  };
+
+  useEffect(() => {
+    handleScore();
+  }, [clicked]);
+
+  const handleScore = () => {
+    let score = clicked.filter(Boolean).length;
+    setScore(score);
+  };
+
+  useEffect(() => {
+    if (ctx.user && score > 0) {
+      const Rating = async () => {
+        const response = await axios.post(
+          `https://api.themoviedb.org/3/${media}/${data.id}/rating?api_key=${API_KEY}&session_id=${SESSION_ID}`,
+          {
+            value: score,
+          }
+        );
+        if (response.data.success) {
+          window.alert(response.data.status_message);
+        }
+      };
+      Rating();
+    }
+  }, [score, clicked]);
+  //종속성 배열에 score만 넣는다면 상세 페이지의 content가 이미 rating된 movie나 tv일 경우 clickNum에 이미 저장된 rating을 저장할 때
+  //rating을 수정하는 요청이 보내진다. 따라서 clicked, 즉 직접 눌러서 변경할 때만 수정 요청을 보내도록 한다.
+
+  useEffect(() => {
+    if (data && ctx.rated_movie && ctx.rated_tv) {
+      const ratedItem =
+        ctx.rated_movie.find((movie) => movie.id === data.id) ||
+        ctx.rated_tv.find((tv) => tv.id === data.id);
+      if (ratedItem) {
+        setClickedNum(ratedItem.rating);
+      }
+    }
+  }, [data, ctx]);
 
   const handleWatchlist = async () => {
     if (ctx.user) {
@@ -285,273 +321,307 @@ const Detail = () => {
 
   return (
     <div className={classes.container}>
-      <div className={classes.wrapper}>
-        <img
-          src={
-            data.backdrop_path
-              ? `https://image.tmdb.org/t/p/original${data.backdrop_path}`
-              : data.poster_path &&
-                `https://image.tmdb.org/t/p/original${data.poster_path}`
-          }
-          alt={data.name}
-          className={classes["content-img"]}
-        />
-        <div className={classes.content}>
-          <div className={classes["content-top"]}>
-            <div className={classes.title}>
-              {`${media === "tv" ? data.name : data.title} (${
-                media === "tv"
-                  ? `${new Date(data.first_air_date).getFullYear()}~`
-                  : new Date(data.release_date).getFullYear()
-              })`}
-            </div>
-            <div className={classes.actions}>
-              <button className={classes.add} onClick={handleWatchlist}>
-                {(ctx.watchlist_movie &&
-                  ctx.watchlist_movie.find((item) => item.id === data.id)) ||
-                (ctx.watchlist_tv &&
-                  ctx.watchlist_tv.find((item) => item.id === data.id)) ? (
-                  <TiThList />
-                ) : (
-                  <BsListUl />
-                )}
-              </button>
-              <button className={classes.like} onClick={handleFavorite}>
-                {(ctx.favorite_movie &&
-                  ctx.favorite_movie.find((item) => item.id === data.id)) ||
-                (ctx.favorite_tv &&
-                  ctx.favorite_tv.find((item) => item.id === data.id)) ? (
-                  <AiFillHeart />
-                ) : (
-                  <AiOutlineHeart />
-                )}
-              </button>
-              <button className={classes.bookmark}>
-                <BsBookmark />
-              </button>
-              <button className={classes.scope}>
-                {Scope.map((el, idx) => (
-                  <FaStar
-                    key={idx}
-                    size="20"
-                    onClick={(e) => {
-                      handleStarClick(el);
-                      let rect = e.target.getBoundingClientRect();
-                      let x = e.clientX - rect.left;
-                      setClickedRect(x <= 10 ? true : false);
-                    }}
-                    onMouseMove={(e) => {
-                      let rect = e.target.getBoundingClientRect();
-                      let x = e.clientX - rect.left;
-                      setHoveredRect(x <= 10 ? true : false);
-                    }}
-                    onMouseEnter={() => {
-                      setHovered(el);
-                    }}
-                    onMouseLeave={() => {
-                      setHovered(null);
-                      setHoveredRect(null);
-                    }}
-                    className={
-                      clicked[el] || hovered > el
-                        ? classes["yellow-star"]
-                        : hovered === el && (clickedRect || hoveredRect)
-                        ? classes["half-star"]
-                        : classes.star
-                    }
-                  />
-                ))}
-              </button>
-            </div>
-          </div>
-          <div className={classes.info}>
-            <div className={classes.details}>
-              {data.genres && (
-                <ul className={classes.genres}>
-                  {data.genres.map((genre) => (
-                    <li key={genre.id} className={classes.genre}>
-                      <Link to={`/genre/${genre.id}`} className={classes.link}>
-                        {genre.name}
-                      </Link>
-                    </li>
+      {data && (
+        <div className={classes.wrapper}>
+          <img
+            src={
+              data.backdrop_path
+                ? `https://image.tmdb.org/t/p/original${data.backdrop_path}`
+                : data.poster_path &&
+                  `https://image.tmdb.org/t/p/original${data.poster_path}`
+            }
+            alt={data.name}
+            className={classes["content-img"]}
+          />
+          <div className={classes.content}>
+            <div className={classes["content-top"]}>
+              <div className={classes.title}>
+                {`${media === "tv" ? data.name : data.title} (${
+                  media === "tv"
+                    ? `${new Date(data.first_air_date).getFullYear()}~`
+                    : new Date(data.release_date).getFullYear()
+                })`}
+              </div>
+              <div className={classes.actions}>
+                <button className={classes.add} onClick={handleWatchlist}>
+                  {(ctx.watchlist_movie &&
+                    ctx.watchlist_movie.find((item) => item.id === data.id)) ||
+                  (ctx.watchlist_tv &&
+                    ctx.watchlist_tv.find((item) => item.id === data.id)) ? (
+                    <TiThList />
+                  ) : (
+                    <BsListUl />
+                  )}
+                </button>
+                <button className={classes.like} onClick={handleFavorite}>
+                  {(ctx.favorite_movie &&
+                    ctx.favorite_movie.find((item) => item.id === data.id)) ||
+                  (ctx.favorite_tv &&
+                    ctx.favorite_tv.find((item) => item.id === data.id)) ? (
+                    <AiFillHeart />
+                  ) : (
+                    <AiOutlineHeart />
+                  )}
+                </button>
+                <button className={classes.bookmark}>
+                  <BsBookmark />
+                </button>
+                <button className={classes.scope}>
+                  {Scope.map((el, idx) => (
+                    <div
+                      style={{ display: `${el % 2 === 0 && "none"}` }}
+                      key={idx}
+                      //size="20"
+                      onClick={(e) => {
+                        let rect = e.target.getBoundingClientRect();
+                        let x = e.clientX - rect.left;
+                        //setClickedRect(x);
+                        if (x <= 10) {
+                          handleStarClick(el);
+                          setClickedNum(el);
+                        } else if (x > 10) {
+                          handleStarClick(el + 1);
+                          setClickedNum(el + 1);
+                        }
+                      }}
+                      onMouseMove={(e) => {
+                        let rect = e.target.getBoundingClientRect();
+                        let x = e.clientX - rect.left;
+                        setHoveredRect(x);
+                        if (x <= 10 ? true : false) {
+                          setHovered(el);
+                        } else if (x > 10) {
+                          setHovered(el + 1);
+                        }
+                      }}
+                      onMouseEnter={(e) => {
+                        let rect = e.target.getBoundingClientRect();
+                        let x = e.clientX - rect.left;
+                        setHoveredRect(x <= 10 ? true : false);
+                        if (x <= 10) {
+                          setHovered(el);
+                        } else if (x > 10) {
+                          setHovered(el + 1);
+                        }
+                      }}
+                      onMouseLeave={() => {
+                        setHovered(null);
+                        setHoveredRect(null);
+                      }}
+                      className={`${classes.star} ${
+                        ((score % 2 === 0 &&
+                          (score === el + 1 || clicked[el - 1])) ||
+                          hoveredRect === false ||
+                          hovered > el ||
+                          clickedNum >= el) &&
+                        classes["yellow-star"]
+                      } ${
+                        ((score === el && score % 2 !== 0) || hovered === el) &&
+                        classes["half-star"]
+                      }`}
+                    />
                   ))}
-                </ul>
-              )}
-              {media === "movie" && <div>{`${data.runtime}(min)`}</div>}
-              {media === "tv" && (
-                <div>{`${data.number_of_seasons} Seasons`}</div>
-              )}
-              {media === "tv" && (
-                <div>{`${data.number_of_episodes} Episodes`}</div>
-              )}
-              {media === "tv" && <div>{data.type}</div>}
-            </div>
-            <div className={classes["sub-details"]}>
-              <span>
-                {media === "tv"
-                  ? `Episode Run Time : ${data.episode_run_time}(min)`
-                  : `RunTime : ${data.runtime}(min)`}
-              </span>
-              {data.original_language && (
-                <span>{`Languages : ${data.original_language}`}</span>
-              )}
-            </div>
-          </div>
-          <div className={classes.cast}>
-            {castData
-              .filter((data, index) => index < 5)
-              .map((data) => (
-                <div className={classes["cast-info"]} key={data.id}>
-                  <span>{data.character}</span>
-                  <span>{data.name}</span>
-                </div>
-              ))}
-          </div>
-          {data.tagline !== "" && (
-            <div className={classes.tagline}>{`"${data.tagline}"`}</div>
-          )}
-          <div className={classes.overview}>{data.overview}</div>
-          <button
-            className={classes.watch}
-            onClick={() => setOpenTrailer(true)}
-            disabled={trailer ? false : true}
-          >
-            Watch Trailer
-          </button>
-        </div>
-        <div className={classes["content-wrapper"]}>
-          {media === "tv" && data.next_episode_to_air && (
-            <div className={classes["next-episode"]}>
-              <div className={classes["next-episode-content"]}>
-                <h1>Next Episode</h1>
-                <div className={classes["next-episode-info"]}>
-                  <div>{`Episode ${data.next_episode_to_air.episode_number}`}</div>
-                  <div>{`Airing Date : ${data.next_episode_to_air.air_date}`}</div>
-                </div>
-              </div>
-              <div className={classes["next-episode-name"]}>
-                {data.next_episode_to_air.name}
+                </button>
               </div>
             </div>
-          )}
-          {media === "tv" && (
-            <div className={classes["last-episode"]}>
-              <h1>Last Episode</h1>
-              <div className={classes["last-episode-content"]}>
-                <img
-                  src={`https://image.tmdb.org/t/p/w500${data.last_episode_to_air.still_path}`}
-                  alt={data.last_episode_to_air.name}
-                />
-                <div className={classes["last-episode-info"]}>
-                  <div className={classes["last-episode-season"]}>
-                    {`Season ${data.last_episode_to_air.season_number}`}
-                  </div>
-                  <div className={classes["last-episode-name"]}>
-                    {`Episode ${data.last_episode_to_air.episode_number}. ${data.last_episode_to_air.name}`}
-                  </div>
-                  <div className={classes["last-episode-overview"]}>
-                    {data.last_episode_to_air.overview}
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-          {media === "tv" && (
-            <div className={classes.season}>
-              <div className={classes["season-actions"]}>
-                <h1>{`Season ${seasonNumber} (${
-                  season.air_date && new Date(season.air_date).getFullYear()
-                })`}</h1>
-                <div>
-                  {data.number_of_seasons > 1 &&
-                    data.seasons
-                      .filter((season) => season.season_number > 0)
-                      .map((season) => (
-                        <button
-                          key={season.id}
-                          onClick={() => setSeasonNumber(season.season_number)}
-                          className={
-                            season.season_number === seasonNumber
-                              ? classes.active
-                              : null
-                          }
+            <div className={classes.info}>
+              <div className={classes.details}>
+                {data.genres && (
+                  <ul className={classes.genres}>
+                    {data.genres.map((genre) => (
+                      <li key={genre.id} className={classes.genre}>
+                        <Link
+                          to={`/genre/${genre.id}`}
+                          className={classes.link}
                         >
-                          {season.season_number}
-                        </button>
-                      ))}
+                          {genre.name}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+                {media === "movie" && <div>{`${data.runtime}(min)`}</div>}
+                {media === "tv" && (
+                  <div>{`${data.number_of_seasons} Seasons`}</div>
+                )}
+                {media === "tv" && (
+                  <div>{`${data.number_of_episodes} Episodes`}</div>
+                )}
+                {media === "tv" && <div>{data.type}</div>}
+              </div>
+              <div className={classes["sub-details"]}>
+                <span>
+                  {media === "tv"
+                    ? `Episode Run Time : ${data.episode_run_time}(min)`
+                    : `RunTime : ${data.runtime}(min)`}
+                </span>
+                {data.original_language && (
+                  <span>{`Languages : ${data.original_language}`}</span>
+                )}
+              </div>
+            </div>
+            <div className={classes.cast}>
+              {castData
+                .filter((data, index) => index < 5)
+                .map((data) => (
+                  <div className={classes["cast-info"]} key={data.id}>
+                    <span>{data.character}</span>
+                    <span>{data.name}</span>
+                  </div>
+                ))}
+            </div>
+            {data.tagline !== "" && (
+              <div className={classes.tagline}>{`"${data.tagline}"`}</div>
+            )}
+            <div className={classes.overview}>{data.overview}</div>
+            <button
+              className={classes.watch}
+              onClick={() => setOpenTrailer(true)}
+              disabled={trailer ? false : true}
+            >
+              Watch Trailer
+            </button>
+          </div>
+          <div className={classes["content-wrapper"]}>
+            {media === "tv" && data.next_episode_to_air && (
+              <div className={classes["next-episode"]}>
+                <div className={classes["next-episode-content"]}>
+                  <h1>Next Episode</h1>
+                  <div className={classes["next-episode-info"]}>
+                    <div>{`Episode ${data.next_episode_to_air.episode_number}`}</div>
+                    <div>{`Airing Date : ${data.next_episode_to_air.air_date}`}</div>
+                  </div>
+                </div>
+                <div className={classes["next-episode-name"]}>
+                  {data.next_episode_to_air.name}
                 </div>
               </div>
-              <Slider {...settings} className={classes["season-episode"]}>
-                {season.episodes &&
-                  season.episodes
-                    .filter(
-                      (episode) =>
-                        new Date(episode.air_date).getTime() <=
-                        new Date().getTime()
-                    )
-                    .map((episode) => (
-                      <div key={episode.id}>
-                        <img
-                          src={`https://image.tmdb.org/t/p/w500${episode.still_path}`}
-                          alt={episode.name}
-                        />
-                        <div className={classes["season-episode-info"]}>
-                          <span>{episode.name}</span>
-                          <span>{episode.overview}</span>
+            )}
+            {media === "tv" && (
+              <div className={classes["last-episode"]}>
+                <h1>Last Episode</h1>
+                <div className={classes["last-episode-content"]}>
+                  <img
+                    src={`https://image.tmdb.org/t/p/w500${data.last_episode_to_air.still_path}`}
+                    alt={data.last_episode_to_air.name}
+                  />
+                  <div className={classes["last-episode-info"]}>
+                    <div className={classes["last-episode-season"]}>
+                      {`Season ${data.last_episode_to_air.season_number}`}
+                    </div>
+                    <div className={classes["last-episode-name"]}>
+                      {`Episode ${data.last_episode_to_air.episode_number}. ${data.last_episode_to_air.name}`}
+                    </div>
+                    <div className={classes["last-episode-overview"]}>
+                      {data.last_episode_to_air.overview}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+            {media === "tv" && (
+              <div className={classes.season}>
+                <div className={classes["season-actions"]}>
+                  <h1>{`Season ${seasonNumber} (${
+                    season.air_date && new Date(season.air_date).getFullYear()
+                  })`}</h1>
+                  <div>
+                    {data.number_of_seasons > 1 &&
+                      data.seasons
+                        .filter((season) => season.season_number > 0)
+                        .map((season) => (
+                          <button
+                            key={season.id}
+                            onClick={() =>
+                              setSeasonNumber(season.season_number)
+                            }
+                            className={
+                              season.season_number === seasonNumber
+                                ? classes.active
+                                : null
+                            }
+                          >
+                            {season.season_number}
+                          </button>
+                        ))}
+                  </div>
+                </div>
+                <Slider {...settings} className={classes["season-episode"]}>
+                  {season.episodes &&
+                    season.episodes
+                      .filter(
+                        (episode) =>
+                          new Date(episode.air_date).getTime() <=
+                          new Date().getTime()
+                      )
+                      .map((episode) => (
+                        <div key={episode.id}>
+                          <img
+                            src={`https://image.tmdb.org/t/p/w500${episode.still_path}`}
+                            alt={episode.name}
+                          />
+                          <div className={classes["season-episode-info"]}>
+                            <span>{episode.name}</span>
+                            <span>{episode.overview}</span>
+                          </div>
                         </div>
-                      </div>
+                      ))}
+                </Slider>
+              </div>
+            )}
+            <div className={classes.review}>
+              <h1>Reviews</h1>
+              <ul className={classes["review-list"]}>
+                {reviewsData.map((review) => (
+                  <li key={review.id} className={classes["review-list-item"]}>
+                    <div>{review.author}</div>
+                    <div>{review.content}</div>
+                    <div>{new Date(review.created_at).toDateString()}</div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className={classes.similar}>
+              <h1>More Like This</h1>
+              <Slider {...settingsList} className={classes["similar-list"]}>
+                {similarData &&
+                  similarData
+                    .filter((data, index) => data.poster_path && index < 14)
+                    .map((data) => (
+                      <li
+                        className={classes["similar-list-item"]}
+                        key={data.id}
+                      >
+                        <Link to={`/${media}/${data.id}`}>
+                          <img
+                            src={`https://image.tmdb.org/t/p/w500${data.poster_path}`}
+                            alt={media === "tv" ? data.name : data.title}
+                          />
+                        </Link>
+                      </li>
                     ))}
               </Slider>
             </div>
-          )}
-          <div className={classes.review}>
-            <h1>Reviews</h1>
-            <ul className={classes["review-list"]}>
-              {reviewsData.map((review) => (
-                <li key={review.id} className={classes["review-list-item"]}>
-                  <div>{review.author}</div>
-                  <div>{review.content}</div>
-                  <div>{new Date(review.created_at).toDateString()}</div>
-                </li>
-              ))}
-            </ul>
           </div>
-          <div className={classes.similar}>
-            <h1>More Like This</h1>
-            <Slider {...settingsList} className={classes["similar-list"]}>
-              {similarData
-                .filter((data, index) => data.poster_path && index < 14)
-                .map((data) => (
-                  <li className={classes["similar-list-item"]} key={data.id}>
-                    <Link to={`/${media}/${data.id}`}>
+          {data.networks && (
+            <div className={classes["content-networks"]}>
+              {data.networks &&
+                data.networks.map((network, i) => (
+                  <div key={i}>
+                    {network.logo_path && (
                       <img
-                        src={`https://image.tmdb.org/t/p/w500${data.poster_path}`}
-                        alt={media === "tv" ? data.name : data.title}
+                        key={i}
+                        src={`https://image.tmdb.org/t/p/w500${network.logo_path}`}
+                        alt={network.name}
+                        className={classes["logo-img"]}
                       />
-                    </Link>
-                  </li>
+                    )}
+                  </div>
                 ))}
-            </Slider>
-          </div>
+            </div>
+          )}
         </div>
-        {data.networks && (
-          <div className={classes["content-networks"]}>
-            {data.networks &&
-              data.networks.map((network, i) => (
-                <div key={i}>
-                  {network.logo_path && (
-                    <img
-                      key={i}
-                      src={`https://image.tmdb.org/t/p/w500${network.logo_path}`}
-                      alt={network.name}
-                      className={classes["logo-img"]}
-                    />
-                  )}
-                </div>
-              ))}
-          </div>
-        )}
-      </div>
+      )}
       {openTrailer && trailer && (
         <div className={classes.trailer}>
           <iframe
@@ -576,3 +646,17 @@ const Detail = () => {
 };
 
 export default Detail;
+
+/*
+className={`${classes.star} ${
+                      ((score === el + 1 && score % 2 === 0) ||
+                        (score % 2 === 0 && clicked[el - 1]) ||
+                        hoveredRect === false ||
+                        hovered > el ||
+                        clickedNum >= el) &&
+                      classes["yellow-star"]
+                    } ${
+                      ((score === el && score % 2 !== 0) || hovered === el) &&
+                      classes["half-star"]
+                    }`}
+                    */

@@ -130,14 +130,27 @@
   width: 110px;
   height: 230px;
   margin: 0 10px;
+  position: relative;
 }
 
 .rating-list-item img {
   width: 100%;
   height: 180px;
+  opacity: 0.9;
 }
 
 .rating-list-item span {
   font-size: 14px;
   margin-top: 5px;
+}
+
+.rating-remove {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.rating-remove svg {
+  font-size: 20px;
+  cursor: pointer;
 }

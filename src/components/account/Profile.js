@@ -1,10 +1,15 @@
 import React, { useState, useContext } from "react";
+import { Link } from "react-router-dom";
 
+import axios from "axios";
 import Context from "../../store/Context";
 
 import classes from "./Profile.module.css";
 import Chart from "./Chart";
-import { AiFillStar, AiOutlineStar } from "react-icons/ai";
+import { AiOutlineMinusCircle } from "react-icons/ai";
+
+const API_KEY = process.env.REACT_APP_API_KEY;
+const SESSION_ID = process.env.REACT_APP_SESSION_ID;
 
 const Profile = () => {
   const ctx = useContext(Context);
@@ -16,6 +21,17 @@ const Profile = () => {
 
   const handleUserInfo = (e) => {
     SetUserInfo({ ...userInfo, [e.target.name]: e.target.value });
+  };
+
+  const handleRating = async (data) => {
+    const response = await axios.delete(
+      `https://api.themoviedb.org/3/${data.title ? "movie" : "tv"}/${
+        data.id
+      }/rating?api_key=${API_KEY}&session_id=${SESSION_ID}`
+    );
+    if (response.data.success) {
+      window.location.reload();
+    }
   };
 
   return (
@@ -75,11 +91,19 @@ const Profile = () => {
               {ctx.rated_movie &&
                 ctx.rated_movie.map((movie) => (
                   <div key={movie.id} className={classes["rating-list-item"]}>
-                    <img
-                      src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                      alt={movie.title}
-                    />
+                    <Link to={`/movie/${movie.id}`}>
+                      <img
+                        src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                        alt={movie.title}
+                      />
+                    </Link>
                     <span>{`${movie.title} (${movie.rating})`}</span>
+                    <span
+                      className={classes["rating-remove"]}
+                      onClick={() => handleRating(movie)}
+                    >
+                      <AiOutlineMinusCircle />
+                    </span>
                   </div>
                 ))}
             </ul>
@@ -90,11 +114,19 @@ const Profile = () => {
               {ctx.rated_tv &&
                 ctx.rated_tv.map((tv) => (
                   <div key={tv.id} className={classes["rating-list-item"]}>
-                    <img
-                      src={`https://image.tmdb.org/t/p/w500${tv.poster_path}`}
-                      alt={tv.name}
-                    />
+                    <Link to={`/tv/${tv.id}`}>
+                      <img
+                        src={`https://image.tmdb.org/t/p/w500${tv.poster_path}`}
+                        alt={tv.name}
+                      />
+                    </Link>
                     <span>{`${tv.name} (${tv.rating})`}</span>
+                    <span
+                      className={classes["rating-remove"]}
+                      onClick={() => handleRating(tv)}
+                    >
+                      <AiOutlineMinusCircle />
+                    </span>
                   </div>
                 ))}
             </ul>
@@ -106,22 +138,3 @@ const Profile = () => {
 };
 
 export default Profile;
-
-/*
-{mostWatchedGenres &&
-  Object.keys(mostWatchedGenres)
-  .filter((id, index) => index < 6)
-  .map((id) => (
-    <div className={classes["graph-list-item"]}>
-      <span
-        style={{
-          width: "10px",
-          height: `${mostWatchedGenres[id] * 20}px`,
-          backgroundColor: "#333",
-          marginBottom: "5px",
-        }}
-      ></span>
-      <span>{genre[id]}</span>
-    </div>
-))}
-*/
