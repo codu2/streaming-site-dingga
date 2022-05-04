@@ -25,22 +25,6 @@ function App() {
   const location = useLocation();
   const ctx = useContext(Context);
 
-  const getPopular = async () => {
-    try {
-      const getPopularMovie = await axios.get(
-        `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&page=1&include_adult=false&primary_release_date.gte=2000-01-01&with_original_language=en|ko`
-      );
-      ctx.getPopularMovie(getPopularMovie.data.results);
-
-      const getPopularTv = await axios.get(
-        `https://api.themoviedb.org/3/tv/popular?api_key=${API_KEY}&page=1&include_adult=false&primary_release_date.gte=2000-01-01&with_original_language=en|ko`
-      );
-      ctx.getPopularTv(getPopularTv.data.results);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   const getFavorite = async () => {
     try {
       const getFavoriteMovie = await axios.get(
@@ -88,10 +72,6 @@ function App() {
       console.log(error);
     }
   };
-
-  useEffect(() => {
-    getPopular();
-  }, []);
 
   useEffect(() => {
     if (ctx.user) {

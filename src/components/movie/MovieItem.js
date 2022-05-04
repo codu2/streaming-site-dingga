@@ -1,6 +1,7 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 
+import axios from "axios";
 import Context from "../../store/Context";
 
 import Slider from "react-slick";
@@ -46,8 +47,25 @@ function NextArrow(props) {
   );
 }
 
+const API_KEY = process.env.REACT_APP_API_KEY;
+
 const MovieItem = () => {
   const ctx = useContext(Context);
+
+  const getPopular = async () => {
+    try {
+      const getPopularMovie = await axios.get(
+        `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&page=1&include_adult=false&primary_release_date.gte=2000-01-01&with_original_language=en|ko`
+      );
+      ctx.getPopularMovie(getPopularMovie.data.results);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getPopular();
+  }, []);
 
   const settings = {
     dots: false,
