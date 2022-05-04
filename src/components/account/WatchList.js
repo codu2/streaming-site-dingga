@@ -23,7 +23,7 @@ const WatchList = () => {
     if (!ctx.user) {
       window.location.replace("/login");
     }
-  }, [path]);
+  }, [path, ctx.user]);
 
   const handleWatchlist = async (data) => {
     if (ctx.user) {

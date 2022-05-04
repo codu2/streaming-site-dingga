@@ -1,8 +1,7 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 
-import axios from "axios";
-import useAsync from "../../hooks/use-data";
+import Context from "../../store/Context";
 
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
@@ -47,23 +46,8 @@ function NextArrow(props) {
   );
 }
 
-const API_KEY = process.env.REACT_APP_API_KEY;
-
-const getData = async () => {
-  const response = await axios.get(
-    `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&page=1&include_adult=false&primary_release_date.gte=2000-01-01&with_original_language=en|ko`
-  );
-  return response.data.results;
-};
-
 const MovieItem = () => {
-  const [state] = useAsync(getData, []);
-
-  const { loading, data, error } = state;
-
-  if (loading) return <div>Loading..</div>;
-  if (error) return <div>An error has occurred!</div>;
-  if (!data) return null;
+  const ctx = useContext(Context);
 
   const settings = {
     dots: false,
@@ -82,26 +66,27 @@ const MovieItem = () => {
         <h1>Popular Movies</h1>
       </div>
       <Slider {...settings} className={classes.items}>
-        {data
-          .filter((data) => data.backdrop_path)
-          .map((movie) => (
-            <div key={movie.id}>
-              <Link to={`/movie/${movie.id}`}>
-                <div className={classes["movie-item-card"]}>
-                  <img
-                    src={
-                      movie.backdrop_path
-                        ? `https://image.tmdb.org/t/p/w500${movie.backdrop_path}`
-                        : `https://image.tmdb.org/t/p/w500${movie.poster_path}`
-                    }
-                    alt={movie.title}
-                    className={classes["movie-item-img"]}
-                  />
-                  <div className={classes["movie-title"]}>{movie.title}</div>
-                </div>
-              </Link>
-            </div>
-          ))}
+        {ctx.popular_movie &&
+          ctx.popular_movie
+            .filter((data) => data.backdrop_path)
+            .map((movie) => (
+              <div key={movie.id}>
+                <Link to={`/movie/${movie.id}`}>
+                  <div className={classes["movie-item-card"]}>
+                    <img
+                      src={
+                        movie.backdrop_path
+                          ? `https://image.tmdb.org/t/p/w500${movie.backdrop_path}`
+                          : `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+                      }
+                      alt={movie.title}
+                      className={classes["movie-item-img"]}
+                    />
+                    <div className={classes["movie-title"]}>{movie.title}</div>
+                  </div>
+                </Link>
+              </div>
+            ))}
       </Slider>
     </div>
   );

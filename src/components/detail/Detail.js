@@ -11,7 +11,7 @@ import "slick-carousel/slick/slick-theme.css";
 
 import classes from "./Detail.module.css";
 import { AiOutlineHeart, AiFillHeart, AiOutlineClose } from "react-icons/ai";
-import { BsListUl, BsBookmark, BsBookmarkFill } from "react-icons/bs";
+import { BsListUl, BsBookmark } from "react-icons/bs";
 import { TiThList } from "react-icons/ti";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
@@ -140,6 +140,16 @@ const Detail = () => {
     return response.data.cast;
   };
 
+  const [state] = useAsync(getData, []);
+  const [similar] = useAsync(getSimilar, []);
+  const [reviews] = useAsync(getReviews, []);
+  const [cast] = useAsync(getCast, []);
+
+  const { data } = state;
+  const { data: similarData } = similar;
+  const { data: reviewsData } = reviews;
+  const { data: castData } = cast;
+
   useEffect(() => {
     const getSeason = async () => {
       const response = await axios.get(
@@ -150,17 +160,7 @@ const Detail = () => {
     if (media === "tv" && data) {
       getSeason();
     }
-  }, [seasonNumber]);
-
-  const [state] = useAsync(getData, []);
-  const [similar] = useAsync(getSimilar, []);
-  const [reviews] = useAsync(getReviews, []);
-  const [cast] = useAsync(getCast, []);
-
-  const { loading, data, error } = state;
-  const { data: similarData } = similar;
-  const { data: reviewsData } = reviews;
-  const { data: castData } = cast;
+  }, [seasonNumber, data, media]);
 
   const handleStarClick = (index) => {
     let clickStates = [...clicked];
@@ -194,7 +194,7 @@ const Detail = () => {
       };
       Rating();
     }
-  }, [score, clicked]);
+  }, [score, clicked, ctx.user]);
   //종속성 배열에 score만 넣는다면 상세 페이지의 content가 이미 rating된 movie나 tv일 경우 clickNum에 이미 저장된 rating을 저장할 때
   //rating을 수정하는 요청이 보내진다. 따라서 clicked, 즉 직접 눌러서 변경할 때만 수정 요청을 보내도록 한다.
 

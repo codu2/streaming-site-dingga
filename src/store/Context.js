@@ -9,6 +9,8 @@ const Context = React.createContext({
   bookmark: null,
   rated_movie: null,
   rated_tv: null,
+  popular_movie: null,
+  popular_tv: null,
   loggedInUser: (user) => {},
   logout: () => {},
   getFavoriteMovie: (movie) => {},
@@ -17,6 +19,8 @@ const Context = React.createContext({
   getWatchlistTv: (tv) => {},
   getRatedMovie: (movie) => {},
   getRatedTv: (tv) => {},
+  getPopularMovie: (movie) => {},
+  getPopularTv: (tv) => {},
 });
 
 export default Context;

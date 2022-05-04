@@ -5,8 +5,8 @@ import axios from "axios";
 
 import classes from "./Pages.module.css";
 import { AiOutlineSearch, AiOutlineEnter } from "react-icons/ai";
-import { RiMovie2Fill, RiSlideshow3Fill } from "react-icons/ri";
-import { BsFillPersonFill } from "react-icons/bs";
+//import { RiMovie2Fill, RiSlideshow3Fill } from "react-icons/ri";
+//import { BsFillPersonFill } from "react-icons/bs";
 
 const API_KEY = process.env.REACT_APP_API_KEY;
 

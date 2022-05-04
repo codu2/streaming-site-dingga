@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 import axios from "axios";
-import useAsync from "../../hooks/use-data";
 
 import classes from "./Home.module.css";
 import { AiOutlineClose } from "react-icons/ai";
@@ -33,19 +32,23 @@ const Home = () => {
     setTrailer(
       getTrailer.data.results.filter((data) => data.type === "Trailer")[0]
     );
-
-    return response.data;
   };
 
-  const [state] = useAsync(getData, []);
+  useEffect(() => {
+    getData();
+  }, []);
 
   const handleTrailer = () => {
     setLoading(true);
 
-    setTimeout(() => {
+    const trailerFun = () => {
       setOpenTrailer(true);
       setLoading(false);
-    }, 1000);
+    };
+
+    setTimeout(trailerFun(), 1000);
+
+    clearTimeout(trailerFun);
   };
 
   return (

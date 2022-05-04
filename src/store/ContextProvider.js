@@ -11,6 +11,8 @@ const initialState = {
   bookmark: null,
   rated_movie: null,
   rated_tv: null,
+  popular_movie: null,
+  popular_tv: null,
 };
 
 const Reducer = (state, action) => {
@@ -25,6 +27,8 @@ const Reducer = (state, action) => {
         bookmark: null,
         rated_movie: null,
         rated_tv: null,
+        popular_movie: null,
+        popular_tv: null,
       };
     case "LOGOUT":
       return {
@@ -36,6 +40,8 @@ const Reducer = (state, action) => {
         bookmark: null,
         rated_movie: null,
         rated_tv: null,
+        popular_movie: null,
+        popular_tv: null,
       };
     case "FAVORITE_MOVIE":
       return {
@@ -66,6 +72,16 @@ const Reducer = (state, action) => {
       return {
         ...state,
         rated_tv: action.payload,
+      };
+    case "POPULAR_MOVIE":
+      return {
+        ...state,
+        popular_movie: action.payload,
+      };
+    case "POPULAR_TV":
+      return {
+        ...state,
+        popular_tv: action.payload,
       };
 
     default:
@@ -108,6 +124,14 @@ const ContextProvider = (props) => {
     dispatch({ type: "RATED_TV", payload: rated });
   };
 
+  const getPopularMovie = (popular) => {
+    dispatch({ type: "POPULAR_MOVIE", payload: popular });
+  };
+
+  const getPopularTv = (popular) => {
+    dispatch({ type: "POPULAR_TV", payload: popular });
+  };
+
   useEffect(() => {
     localStorage.setItem("user", JSON.stringify(state.user));
   }, [state.user]);
@@ -121,6 +145,8 @@ const ContextProvider = (props) => {
     bookmark: state.bookmark,
     rated_movie: state.rated_movie,
     rated_tv: state.rated_tv,
+    popular_movie: state.popular_movie,
+    popular_tv: state.popular_tv,
     loggedInUser,
     logout,
     getFavoriteMovie,
@@ -129,6 +155,8 @@ const ContextProvider = (props) => {
     getWatchlistTv,
     getRatedMovie,
     getRatedTv,
+    getPopularMovie,
+    getPopularTv,
   };
 
   return (
