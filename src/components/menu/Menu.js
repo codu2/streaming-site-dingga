@@ -6,7 +6,7 @@ import Context from "../../store/Context";
 import classes from "./Menu.module.css";
 import { AiOutlineSearch, AiOutlineEnter } from "react-icons/ai";
 
-const Menu = () => {
+const Menu = ({ sideMenu }) => {
   const location = useLocation();
   const path = location.pathname.split("/")[1];
   const ctx = useContext(Context);
@@ -39,6 +39,7 @@ const Menu = () => {
     }
   };
 
+  const menuList = `${classes["menu-list"]} ${sideMenu && classes.active}`;
   const menuHome = `${classes["menu-item"]} ${
     location.pathname === "/" && classes.current
   }`;
@@ -58,7 +59,7 @@ const Menu = () => {
 
   return (
     <div className={classes.menu}>
-      <ul className={classes["menu-list"]}>
+      <ul className={menuList}>
         <li className={menuHome}>
           <Link to="/" className={classes.link}>
             Home
