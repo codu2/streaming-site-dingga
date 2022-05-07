@@ -42,11 +42,42 @@ const DetailPerson = () => {
   if (!data) return null;
 
   const settings = {
-    dots: false, // 점은 안 보이게
-    infinite: true, // 무한 슬라이더
+    dots: false,
+    infinite: true,
     speed: 500,
-    slidesToShow: 8, //5장씩 보이게 해주세요
-    slidesToScroll: 8, //1장씩 넘어가세요
+    slidesToShow: 8,
+    slidesToScroll: 8,
+    responsive: [
+      // 반응형 웹 구현 옵션
+      {
+        breakpoint: 960,
+        settings: {
+          slidesToShow: 6,
+          slidesToScroll: 6,
+        },
+      },
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 5,
+          slidesToScroll: 5,
+        },
+      },
+      {
+        breakpoint: 610,
+        settings: {
+          slidesToShow: 4,
+          slidesToScroll: 4,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 3,
+        },
+      },
+    ],
   };
 
   return (

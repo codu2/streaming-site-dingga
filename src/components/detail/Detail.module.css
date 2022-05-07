@@ -37,7 +37,7 @@
   padding-bottom: 20px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.7);
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: space-between;
   margin-bottom: 10px;
 }
@@ -92,6 +92,16 @@
   font-weight: 300;
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
+  line-height: 20px;
+}
+
+.details {
+  margin-right: 20px;
+}
+
+.sub-details {
+  justify-content: flex-end;
 }
 
 .genres {

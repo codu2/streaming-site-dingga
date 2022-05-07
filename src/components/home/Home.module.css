@@ -7,7 +7,7 @@
 
 .content {
   width: 100%;
-  height: 500px;
+  height: 600px;
   position: relative;
 }
 
@@ -23,22 +23,24 @@
 
 .content-info {
   position: absolute;
-  bottom: 5rem;
+  bottom: 4rem;
   left: 3rem;
   color: #f4f4f4;
+  width: calc(100% - 6rem);
 }
 
 .content-title {
-  font-size: 35px;
+  font-size: 34px;
   font-weight: 700;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
   letter-spacing: 1px;
+  width: 70%;
 }
 
 .content-details {
   display: flex;
   align-items: center;
-  margin-bottom: 25px;
+  margin-bottom: 15px;
 }
 
 .content-details > div:not(:last-child)::after {
@@ -47,11 +49,12 @@
 }
 
 .content-details > div {
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 300;
 }
 
 .content-info-align {
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -59,13 +62,15 @@
 
 .content-overview {
   font-size: 14px;
-  width: 60%;
+  width: 65%;
   line-height: 20px;
 }
 
+/*
 .content-trailer {
   display: flex;
   align-items: center;
+  justify-content: center;
   width: 30%;
 }
 
@@ -135,6 +140,27 @@
   border-bottom: 1px solid #f4f4f4;
   cursor: pointer;
 }
+*/
+
+.content-trailer {
+  width: 20%;
+  min-width: 190px;
+  border: none;
+  padding: 15px 20px;
+  font-size: 15px;
+  font-weight: 700;
+  background-color: rgba(255, 255, 255, 0.5);
+  color: #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.content-trailer svg {
+  font-size: 20px;
+  margin-right: 5px;
+}
 
 .trailer {
   position: fixed;
@@ -161,4 +187,41 @@
 .link {
   color: #f4f4f4;
   text-decoration: none;
+}
+
+@media screen and (max-width: 768px) {
+  .content {
+    height: 550px;
+  }
+
+  .content-title {
+    font-size: 28px;
+    width: 70%;
+  }
+
+  .content-details,
+  .content-overview {
+    display: none;
+  }
+
+  .content-info-align {
+    justify-content: flex-end;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .content {
+    height: 500px;
+  }
+
+  .content-title {
+    font-size: 22px;
+    width: 100%;
+  }
+
+  .content-trailer {
+    width: 100%;
+    margin-top: 15px;
+    font-size: 14px;
+  }
 }

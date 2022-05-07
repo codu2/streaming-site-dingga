@@ -319,6 +319,8 @@ const Detail = () => {
     nextArrow: <NextArrow />,
   };
 
+  console.log(season);
+
   return (
     <div className={classes.container}>
       {data && (
@@ -509,10 +511,12 @@ const Detail = () => {
               <div className={classes["last-episode"]}>
                 <h1>Last Episode</h1>
                 <div className={classes["last-episode-content"]}>
-                  <img
-                    src={`https://image.tmdb.org/t/p/w500${data.last_episode_to_air.still_path}`}
-                    alt={data.last_episode_to_air.name}
-                  />
+                  {data.last_episode_to_air.still_path && (
+                    <img
+                      src={`https://image.tmdb.org/t/p/w500${data.last_episode_to_air.still_path}`}
+                      alt={data.last_episode_to_air.name}
+                    />
+                  )}
                   <div className={classes["last-episode-info"]}>
                     <div className={classes["last-episode-season"]}>
                       {`Season ${data.last_episode_to_air.season_number}`}
@@ -564,10 +568,27 @@ const Detail = () => {
                       )
                       .map((episode) => (
                         <div key={episode.id}>
-                          <img
-                            src={`https://image.tmdb.org/t/p/w500${episode.still_path}`}
-                            alt={episode.name}
-                          />
+                          {episode.still_path ? (
+                            <img
+                              src={`https://image.tmdb.org/t/p/w500${episode.still_path}`}
+                              alt={episode.name}
+                            />
+                          ) : (
+                            <div
+                              style={{
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                width: "288px",
+                                height: "140px",
+                                margin: "10px 0",
+                                fontSize: "13px",
+                                color: "#ddd",
+                              }}
+                            >
+                              No Image
+                            </div>
+                          )}
                           <div className={classes["season-episode-info"]}>
                             <span>{episode.name}</span>
                             <span>{episode.overview}</span>

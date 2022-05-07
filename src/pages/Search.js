@@ -60,16 +60,35 @@ const Search = () => {
       <ul className={classes["search-result"]}>
         {searchResult.map((result) => (
           <li key={result.id} className={classes["search-result-item"]}>
-            <img
-              src={
-                result.backdrop_path
-                  ? `https://image.tmdb.org/t/p/w500${result.backdrop_path}`
-                  : result.poster_path
-                  ? `https://image.tmdb.org/t/p/w500${result.poster_path}`
-                  : `https://image.tmdb.org/t/p/w500${result.profile_path}`
-              }
-              alt={result.title ? result.title : result.name}
-            />
+            {result.backdrop_path ||
+            result.poster_path ||
+            result.profile_path ? (
+              <img
+                src={
+                  result.backdrop_path
+                    ? `https://image.tmdb.org/t/p/w500${result.backdrop_path}`
+                    : result.poster_path
+                    ? `https://image.tmdb.org/t/p/w500${result.poster_path}`
+                    : `https://image.tmdb.org/t/p/w500${result.profile_path}`
+                }
+                alt={result.title ? result.title : result.name}
+              />
+            ) : (
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: "220px",
+                  height: "140px",
+                  paddingBottom: "15px",
+                  fontSize: "13px",
+                  color: "#ddd",
+                }}
+              >
+                No Image
+              </div>
+            )}
             <div className={classes["search-result-link"]}>
               <Link
                 to={`/${result.media_type}/${result.id}`}

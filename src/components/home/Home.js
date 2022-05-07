@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 
 import classes from "./Home.module.css";
-import { AiOutlineClose } from "react-icons/ai";
+import { AiOutlineClose, AiFillCaretRight } from "react-icons/ai";
 
 const API_KEY = process.env.REACT_APP_API_KEY;
 
@@ -48,7 +48,7 @@ const Home = () => {
 
     setTimeout(trailerFun(), 1000);
 
-    clearTimeout(trailerFun);
+    //clearTimeout(trailerFun);
   };
 
   return (
@@ -94,38 +94,12 @@ const Home = () => {
               <div className={classes["content-overview"]}>
                 {content.overview}
               </div>
-              <div className={classes["content-trailer"]}>
-                <div className={classes["content-trailer-loading"]}>
-                  <div className={classes.outer}>
-                    <div className={classes.inner}></div>
-                  </div>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    version="1.1"
-                    width="60px"
-                    height="60px"
-                  >
-                    <defs>
-                      <linearGradient id="GradientColor">
-                        <stop offset="0%" stopColor="#ccc" />
-                        <stop offset="100%" stopColor="#f4f4f4" />
-                      </linearGradient>
-                    </defs>
-                    <circle
-                      cx="30"
-                      cy="30"
-                      r="25"
-                      strokeLinecap="round"
-                      className={loading ? classes.active : null}
-                    />
-                  </svg>
-                </div>
-                <div
-                  className={classes["content-trailer-button"]}
-                  onClick={handleTrailer}
-                >
-                  Watch Trailer
-                </div>
+              <div
+                className={classes["content-trailer"]}
+                onClick={handleTrailer}
+              >
+                <AiFillCaretRight />
+                Watch Trailer
               </div>
             </div>
           </div>
@@ -155,3 +129,37 @@ const Home = () => {
 };
 
 export default Home;
+
+/*
+ <div className={classes["content-trailer-loading"]}>
+  <div className={classes.outer}>
+    <div className={classes.inner}></div>
+  </div>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    version="1.1"
+    width="60px"
+    height="60px"
+  >
+    <defs>
+      <linearGradient id="GradientColor">
+        <stop offset="0%" stopColor="#ccc" />
+        <stop offset="100%" stopColor="#f4f4f4" />
+      </linearGradient>
+    </defs>
+    <circle
+      cx="30"
+      cy="30"
+      r="25"
+      strokeLinecap="round"
+      className={loading ? classes.active : null}
+    />
+  </svg>
+</div>
+<div
+  className={classes["content-trailer-button"]}
+  onClick={handleTrailer}
+>
+  Watch Trailer
+</div>
+*/

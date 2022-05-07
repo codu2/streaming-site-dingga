@@ -22,7 +22,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 10px 0 80px;
+  padding: 10px 0 60px;
+  border-bottom: 0.5px solid #ddd;
 }
 
 .search-input input {
@@ -52,9 +53,11 @@
   width: 100%;
   display: flex;
   flex-wrap: wrap;
-  row-gap: 15px;
+  row-gap: 20px;
+  column-gap: 15px;
   margin-bottom: 40px;
-  justify-content: space-between;
+  justify-content: center;
+  padding-top: 40px;
 }
 
 .search-result-item {
