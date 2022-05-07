@@ -101,7 +101,7 @@
 .rating-wrapper {
   width: 100%;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   padding: 15px 10px;
   column-gap: 20px;
 }
@@ -123,13 +123,14 @@
   margin-top: 15px;
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
 }
 
 .rating-list-item {
   text-align: center;
   width: 110px;
   height: 230px;
-  margin: 0 10px;
+  margin: 0 10px 5px;
   position: relative;
 }
 
@@ -153,4 +154,44 @@
 .rating-remove svg {
   font-size: 20px;
   cursor: pointer;
+}
+
+@media screen and (max-width: 1024px) {
+  .wrapper {
+    display: block;
+  }
+
+  .user {
+    padding: 15px 15px 25px;
+    margin-bottom: 30px;
+    border-bottom: 0.7px solid #ddd;
+  }
+
+  .graph h1,
+  .rating h1 {
+    font-size: 16px;
+  }
+
+  .rating-movie h1,
+  .rating-tv h1 {
+    font-size: 14px;
+  }
+
+  .rating-list-item span {
+    font-size: 12px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .user {
+    flex-direction: column;
+  }
+
+  .user-img {
+    margin-bottom: 10px;
+  }
+
+  .user-input {
+    max-width: 260px;
+  }
 }

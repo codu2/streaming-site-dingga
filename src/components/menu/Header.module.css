@@ -31,6 +31,19 @@
   cursor: pointer;
 }
 
+@media screen and (max-width: 1185px) {
+  .logo {
+    margin-right: 0;
+    padding-left: 3.7rem;
+  }
+
+  .menu {
+    display: block;
+    color: #f4f4f4;
+  }
+}
+
+/*
 @media screen and (max-width: 1024px) {
   .logo {
     margin-right: 0;
@@ -42,3 +55,4 @@
     color: #f4f4f4;
   }
 }
+*/
