@@ -73,7 +73,7 @@
 }
 
 .content-list {
-  height: 150px;
+  height: 200px;
   width: 100%;
   overflow: hidden;
   padding: 0 35px;
@@ -87,17 +87,19 @@
 
 .content-item img {
   width: 100%;
-  height: 100%;
+  height: 200px;
   object-fit: cover;
   opacity: 0.8;
+  object-position: top;
 }
 
 .content-title {
   width: 80%;
+  height: max-content;
   color: #f4f4f4;
   position: absolute;
   bottom: 20px;
-  left: 15px;
+  left: 20px;
   font-size: 13px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -108,12 +110,13 @@
 }
 
 .trending .content-list {
-  height: 170px;
+  height: 220px;
   padding: 0;
 }
 
 .trending .content-list .content-title {
-  bottom: 30px;
+  bottom: 20px;
+  font-weight: 500;
 }
 
 .link {
@@ -121,4 +124,28 @@
   font-weight: 300;
   text-decoration: none;
   color: #333;
+}
+
+@media screen and (max-width: 768px) {
+  .container > h1 {
+    font-size: 20px;
+  }
+
+  .wrapper {
+    padding: 10px 20px;
+  }
+
+  .trending h1 {
+    font-size: 13px;
+  }
+
+  .content-tab {
+    font-size: 12px;
+  }
+
+  .trending .content-list .content-title {
+    bottom: 20px;
+    font-weight: 500;
+    font-size: 13px;
+  }
 }

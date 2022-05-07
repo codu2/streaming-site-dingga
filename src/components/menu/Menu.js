@@ -16,7 +16,7 @@ const Menu = ({ sideMenu }) => {
   const handleLogout = () => {
     ctx.logout();
 
-    window.location.reload();
+    window.location.replace("/");
   };
 
   const handleSearchInput = (e) => {

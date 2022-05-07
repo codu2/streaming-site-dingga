@@ -189,13 +189,19 @@
   text-decoration: none;
 }
 
+@media screen and (max-width: 1024px) {
+  .content-title {
+    font-size: 28px;
+  }
+}
+
 @media screen and (max-width: 768px) {
   .content {
     height: 550px;
   }
 
   .content-title {
-    font-size: 28px;
+    font-size: 26px;
     width: 70%;
   }
 

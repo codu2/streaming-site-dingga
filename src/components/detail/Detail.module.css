@@ -22,7 +22,8 @@
 .content {
   position: absolute;
   left: 0;
-  top: 40vh;
+  /*top: 40vh;*/
+  bottom: 1.5rem;
   width: 100%;
   padding: 0 40px;
 }
@@ -447,7 +448,7 @@
 
 .review-list-item > div:last-child {
   text-align: end;
-  font-size: 13px;
+  font-size: 12px;
 }
 
 .similar {
@@ -461,18 +462,17 @@
   font-weight: 600;
   color: #f4f4f4;
   margin-bottom: 20px;
-  margin-left: 10px;
+  text-align: center;
 }
 
 .similar-list {
   list-style: none;
-  padding: 0 10px 0 20px;
+  width: 100%;
 }
 
 .similar-list-item {
-  max-width: 120px;
   width: 100%;
-  height: 180px;
+  height: 190px;
 }
 
 .similar-list-item img {
@@ -594,4 +594,209 @@
   font-size: 20px;
   top: 0;
   left: 0;
+}
+
+@media screen and (max-width: 1024px) {
+  .title {
+    color: #f4f4f4;
+    font-size: 26px;
+    font-weight: 300;
+  }
+
+  .actions {
+    display: flex;
+    align-items: center;
+  }
+
+  .actions .add,
+  .like,
+  .bookmark {
+    padding: 0;
+    width: 40px;
+    font-size: 16px;
+  }
+
+  .similar-list-item {
+    height: 180px;
+  }
+
+  .scope {
+    width: 160px;
+    padding: 0 10px;
+  }
+
+  .star,
+  .star.yellow-star,
+  .star.half-star {
+    width: 18px;
+    height: 18px;
+  }
+
+  .star::after,
+  .star.yellow-star::after,
+  .star.half-star::after {
+    width: 18px;
+    height: 18px;
+    font-size: 18px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .content-top {
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+
+  .title {
+    font-size: 24px;
+    margin-bottom: 12px;
+    text-align: center;
+  }
+
+  .info {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .details,
+  .sub-details,
+  .cast-info {
+    font-size: 13px;
+  }
+
+  .sub-details {
+    margin-top: 5px;
+  }
+
+  .tagline {
+    font-size: 14px;
+  }
+
+  .overview {
+    font-size: 13px;
+    width: 90%;
+  }
+
+  .next-episode h1,
+  .last-episode h1,
+  .season-actions h1,
+  .review h1,
+  .similar h1 {
+    font-size: 18px;
+  }
+
+  .next-episode-content {
+    flex-direction: column;
+    align-items: flex-start;
+    font-size: 13px;
+  }
+
+  .next-episode-name {
+    font-size: 14px;
+  }
+
+  .next-episode-info {
+    width: 100%;
+    margin-top: 15px;
+    justify-content: center;
+  }
+
+  .next-episode-info > div:first-child {
+    margin: 0;
+  }
+
+  .last-episode-content {
+    display: block;
+  }
+
+  .last-episode-content img {
+    width: 100%;
+    height: 200px;
+    margin-right: 0;
+  }
+
+  .last-episode-info {
+    width: 100%;
+    height: 130px;
+  }
+
+  .last-episode-season {
+    font-size: 14px;
+  }
+
+  .last-episode-name {
+    font-size: 13px;
+  }
+
+  .last-episode-overview {
+    font-size: 12px;
+  }
+
+  .season-actions {
+    flex-direction: column;
+  }
+
+  .season-actions > div {
+    width: 100%;
+    max-width: 100%;
+    margin-top: 15px;
+    justify-content: flex-start;
+  }
+
+  .season-actions button {
+    width: 25px;
+    height: 25px;
+    margin: 0 5px 0 0;
+  }
+
+  .season-episode-info > span {
+    font-size: 12px;
+  }
+
+  .season-episode-info > span:last-child {
+    font-size: 10px;
+  }
+
+  .review-list-item > div:first-child,
+  .review-list-item > div:last-child {
+    font-size: 11px;
+  }
+
+  .review-list-item > div:nth-child(2) {
+    margin: 0 15px 0 12px;
+    -webkit-line-clamp: 5;
+    font-size: 10px;
+  }
+
+  .similar-list-item {
+    height: 170px;
+  }
+
+  .watch {
+    position: absolute;
+    right: 1.5rem;
+    top: -6rem;
+    font-size: 12px;
+    font-weight: 400;
+    padding: 12px 15px;
+    width: 145px;
+    border: 0.7px solid #f4f4f4;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .title {
+    font-size: 22px;
+  }
+
+  .next-episode-info {
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+
+  .next-episode-info > div {
+    line-height: 20px;
+  }
 }

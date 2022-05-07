@@ -31,8 +31,10 @@ function PrevArrow(props) {
         border: "1px solid #f4f4f4",
         borderRadius: "50%",
         padding: "5px",
-        width: "35px",
-        height: "35px",
+        width: "30px",
+        height: "30px",
+        top: "-30px",
+        left: "0",
       }}
       onClick={onClick}
     />
@@ -52,8 +54,10 @@ function NextArrow(props) {
         border: "1px solid #f4f4f4",
         borderRadius: "50%",
         padding: "5px",
-        width: "35px",
-        height: "35px",
+        width: "30px",
+        height: "30px",
+        top: "-30px",
+        right: "0",
       }}
       onClick={onClick}
     />
@@ -306,20 +310,78 @@ const Detail = () => {
     slidesToShow: 3,
     slidesToScroll: 3,
     arrows: false,
+    responsive: [
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 2,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+    ],
   };
 
   const settingsList = {
     dots: false,
     infinite: false,
     speed: 500,
-    slidesToShow: 7,
-    slidesToScroll: 7,
-    draggable: false,
+    slidesToShow: 8,
+    slidesToScroll: 8,
     prevArrow: <PrevArrow />,
     nextArrow: <NextArrow />,
+    draggable: false,
+    responsive: [
+      {
+        breakpoint: 1200,
+        settings: {
+          slidesToShow: 7,
+          slidesToScroll: 7,
+        },
+      },
+      {
+        breakpoint: 1000,
+        settings: {
+          slidesToShow: 6,
+          slidesToScroll: 6,
+        },
+      },
+      {
+        breakpoint: 860,
+        settings: {
+          slidesToShow: 5,
+          slidesToScroll: 5,
+        },
+      },
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 4,
+          slidesToScroll: 4,
+        },
+      },
+      {
+        breakpoint: 620,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 3,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 2,
+        },
+      },
+    ],
   };
-
-  console.log(season);
 
   return (
     <div className={classes.container}>
@@ -465,7 +527,7 @@ const Detail = () => {
             <div className={classes.cast}>
               {castData &&
                 castData
-                  .filter((data, index) => index < 5)
+                  .filter((data, index) => index < 3)
                   .map((data) => (
                     <div className={classes["cast-info"]} key={data.id}>
                       <span>{data.character}</span>
@@ -513,7 +575,7 @@ const Detail = () => {
                 <div className={classes["last-episode-content"]}>
                   {data.last_episode_to_air.still_path && (
                     <img
-                      src={`https://image.tmdb.org/t/p/w500${data.last_episode_to_air.still_path}`}
+                      src={`https://image.tmdb.org/t/p/w1280${data.last_episode_to_air.still_path}`}
                       alt={data.last_episode_to_air.name}
                     />
                   )}

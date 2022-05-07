@@ -118,11 +118,27 @@ const MoviePage = () => {
     dots: false, // 점은 안 보이게
     infinite: true, // 무한 슬라이더
     speed: 500,
-    slidesToShow: 4, //4장씩 보이게 해주세요
-    slidesToScroll: 4, //4장씩 넘어가세요
+    slidesToShow: 3, //3장씩 보이게 해주세요
+    slidesToScroll: 3, //3장씩 넘어가세요
     draggable: false, // 드래그 안되게
     prevArrow: <PrevArrow />,
     nextArrow: <NextArrow />,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 2,
+        },
+      },
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+    ],
   };
 
   const tredingSettings = {
@@ -132,6 +148,22 @@ const MoviePage = () => {
     slidesToShow: 3,
     slidesToScroll: 3,
     draggable: true,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 2,
+        },
+      },
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+    ],
   };
 
   return (
@@ -156,8 +188,8 @@ const MoviePage = () => {
                             <img
                               src={
                                 data.backdrop_path
-                                  ? `https://image.tmdb.org/t/p/w500${data.backdrop_path}`
-                                  : `https://image.tmdb.org/t/p/w500${data.poster_path}`
+                                  ? `https://image.tmdb.org/t/p/w1280${data.backdrop_path}`
+                                  : `https://image.tmdb.org/t/p/w1280${data.poster_path}`
                               }
                               alt={data.title}
                             />
