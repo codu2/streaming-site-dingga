@@ -92,6 +92,10 @@ const Detail = () => {
   const [clickedNum, setClickedNum] = useState(null);
   const [hoveredRect, setHoveredRect] = useState(null);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const getData = async () => {
     const response = await axios.get(
       `https://api.themoviedb.org/3/${media}/${path}?api_key=${API_KEY}&language=en-US`

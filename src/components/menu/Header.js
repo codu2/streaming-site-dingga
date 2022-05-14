@@ -18,7 +18,7 @@ const Header = () => {
         <AiOutlineMenu />
       </div>
       <div className={classes.logo}>DINGGA</div>
-      <Menu sideMenu={sideMenu} />
+      <Menu sideMenu={sideMenu} setSideMenu={setSideMenu} />
     </div>
   );
 };

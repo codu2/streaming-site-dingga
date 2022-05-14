@@ -1,16 +1,17 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 import axios from "axios";
 import Context from "../../store/Context";
 
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+//import Slider from "react-slick";
+//import "slick-carousel/slick/slick.css";
+//import "slick-carousel/slick/slick-theme.css";
 
 import classes from "./TvShowItem.module.css";
-import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+//import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
+/*
 function PrevArrow(props) {
   const { className, style, onClick } = props;
   return (
@@ -46,11 +47,13 @@ function NextArrow(props) {
     />
   );
 }
+*/
 
 const API_KEY = process.env.REACT_APP_API_KEY;
 
 const TvShowItem = () => {
   const ctx = useContext(Context);
+  const [contentNum, setContentNum] = useState(null);
 
   const getPopular = async () => {
     try {
@@ -67,6 +70,7 @@ const TvShowItem = () => {
     getPopular();
   }, []);
 
+  /*
   const settings = {
     dots: false,
     infinite: false,
@@ -100,16 +104,33 @@ const TvShowItem = () => {
       },
     ],
   };
+  */
+
+  useEffect(() => {
+    setContentNum(window.innerWidth > 1024 ? 4 : 3);
+  }, []);
+
+  window.addEventListener("resize", function () {
+    let innerWidth = window.innerWidth;
+
+    if (innerWidth > 1024) {
+      setContentNum(4);
+    } else if (innerWidth < 768) {
+      setContentNum(2);
+    } else {
+      setContentNum(3);
+    }
+  });
 
   return (
     <div className={classes["tv-item"]}>
       <div className={classes["tv-item-top"]}>
         <h1>Popular TV Show</h1>
       </div>
-      <Slider {...settings} className={classes.items}>
+      <div className={classes.items}>
         {ctx.popular_tv &&
           ctx.popular_tv
-            .filter((data) => data.backdrop_path)
+            .filter((data, index) => data.backdrop_path && index < contentNum)
             .map((tv) => (
               <div key={tv.id}>
                 <Link to={`/tv/${tv.id}`}>
@@ -128,7 +149,7 @@ const TvShowItem = () => {
                 </Link>
               </div>
             ))}
-      </Slider>
+      </div>
     </div>
   );
 };

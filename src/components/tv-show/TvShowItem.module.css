@@ -19,6 +19,7 @@
   gap: 10px;
   width: 100%;
   padding: 0 20px;
+  justify-content: center;
 }
 
 .tv-item-card {

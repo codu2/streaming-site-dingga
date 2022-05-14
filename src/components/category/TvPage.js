@@ -117,8 +117,8 @@ const TvPage = () => {
     dots: false, // 점은 안 보이게
     infinite: true, // 무한 슬라이더
     speed: 500,
-    slidesToShow: 4, //4장씩 보이게 해주세요
-    slidesToScroll: 4, //4장씩 넘어가세요
+    slidesToShow: 3, //3장씩 보이게 해주세요
+    slidesToScroll: 3, //3장씩 넘어가세요
     draggable: false, // 드래그 안되게
     prevArrow: <PrevArrow />,
     nextArrow: <NextArrow />,
@@ -182,7 +182,7 @@ const TvPage = () => {
                     {trendingData
                       .filter((data, index) => data.backdrop_path && index < 10)
                       .map((data) => (
-                        <div key={data.id} className={classes["content-item"]}>
+                        <div key={data.id} className={classes["trending-item"]}>
                           <Link to={`/tv/${data.id}`}>
                             <img
                               src={

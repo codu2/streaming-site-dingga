@@ -6,7 +6,7 @@ import Context from "../../store/Context";
 import classes from "./Menu.module.css";
 import { AiOutlineSearch, AiOutlineEnter } from "react-icons/ai";
 
-const Menu = ({ sideMenu }) => {
+const Menu = ({ sideMenu, setSideMenu }) => {
   const location = useLocation();
   const path = location.pathname.split("/")[1];
   const ctx = useContext(Context);
@@ -39,7 +39,12 @@ const Menu = ({ sideMenu }) => {
     }
   };
 
+  const handleSideMenu = () => {
+    setSideMenu(false);
+  };
+
   const menuList = `${classes["menu-list"]} ${sideMenu && classes.active}`;
+  const menuSearch = `${classes.search} ${sideMenu && classes.active}`;
   const menuHome = `${classes["menu-item"]} ${
     location.pathname === "/" && classes.current
   }`;
@@ -60,17 +65,17 @@ const Menu = ({ sideMenu }) => {
   return (
     <div className={classes.menu}>
       <ul className={menuList}>
-        <li className={menuHome}>
+        <li className={menuHome} onClick={handleSideMenu}>
           <Link to="/" className={classes.link}>
             Home
           </Link>
         </li>
-        <li className={menuMovie}>
+        <li className={menuMovie} onClick={handleSideMenu}>
           <Link to={`/movie`} className={classes.link}>
             Movies
           </Link>
         </li>
-        <li className={menuTv}>
+        <li className={menuTv} onClick={handleSideMenu}>
           <Link to={`/tv`} className={classes.link}>
             TV Shows
           </Link>
@@ -84,7 +89,7 @@ const Menu = ({ sideMenu }) => {
             My Page
             {submenu && (
               <ul className={classes["sub-menu-item"]}>
-                <li className={menuFavorite}>
+                <li className={menuFavorite} onClick={handleSideMenu}>
                   <Link
                     to={`/account/${ctx.user.id}/favorite`}
                     className={classes.link}
@@ -92,7 +97,7 @@ const Menu = ({ sideMenu }) => {
                     Favorites
                   </Link>
                 </li>
-                <li className={menuWatchlist}>
+                <li className={menuWatchlist} onClick={handleSideMenu}>
                   <Link
                     to={`/account/${ctx.user.id}/watchlist`}
                     className={classes.link}
@@ -101,7 +106,7 @@ const Menu = ({ sideMenu }) => {
                   </Link>
                 </li>
                 <li>Bookmark</li>
-                <li className={menuProfile}>
+                <li className={menuProfile} onClick={handleSideMenu}>
                   <Link
                     to={`/account/${ctx.user.id}/profile`}
                     className={classes.link}
@@ -114,15 +119,21 @@ const Menu = ({ sideMenu }) => {
           </li>
         )}
       </ul>
-      <div className={classes.search}>
-        <AiOutlineSearch />
+      <div className={menuSearch}>
+        <label htmlFor="searchInput">
+          <AiOutlineSearch />
+        </label>
         <input
           type="text"
           autoComplete="off"
           className={classes["search-input"]}
+          id="searchInput"
           onChange={handleSearchInput}
         />
-        <AiOutlineEnter onClick={handleSearchParams} />
+        <AiOutlineEnter
+          className={classes["search-button"]}
+          onClick={handleSearchParams}
+        />
       </div>
       {ctx.user ? (
         <div className={classes["logout-button"]} onClick={handleLogout}>

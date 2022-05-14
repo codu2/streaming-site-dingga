@@ -183,7 +183,7 @@ const MoviePage = () => {
                     {trendingData
                       .filter((data, index) => data.backdrop_path && index < 10)
                       .map((data) => (
-                        <div key={data.id} className={classes["content-item"]}>
+                        <div key={data.id} className={classes["trending-item"]}>
                           <Link to={`/movie/${data.id}`}>
                             <img
                               src={

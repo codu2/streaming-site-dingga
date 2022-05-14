@@ -44,17 +44,23 @@ const Search = () => {
   console.log(searchResult);
   return (
     <div className={classes.container}>
-      <div className={classes.search}>
+      <div className={classes["search-wrapper"]}>
         <h1>Search Results</h1>
-        <div className={classes["search-input"]}>
-          <AiOutlineSearch />
+        <div className={classes.search}>
+          <label htmlFor="searchInput">
+            <AiOutlineSearch />
+          </label>
           <input
             type="text"
             autoComplete="off"
             className={classes["search-input"]}
+            id="searchInput"
             onChange={handleSearchInput}
           />
-          <AiOutlineEnter onClick={handleSearchParams} />
+          <AiOutlineEnter
+            className={classes["search-button"]}
+            onClick={handleSearchParams}
+          />
         </div>
       </div>
       <ul className={classes["search-result"]}>

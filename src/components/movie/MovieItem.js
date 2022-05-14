@@ -1,16 +1,17 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 import axios from "axios";
 import Context from "../../store/Context";
 
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+//import Slider from "react-slick";
+//import "slick-carousel/slick/slick.css";
+//import "slick-carousel/slick/slick-theme.css";
 
 import classes from "./MovieItem.module.css";
-import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+//import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
+/*
 function PrevArrow(props) {
   const { className, style, onClick } = props;
   return (
@@ -46,11 +47,13 @@ function NextArrow(props) {
     />
   );
 }
+*/
 
 const API_KEY = process.env.REACT_APP_API_KEY;
 
 const MovieItem = () => {
   const ctx = useContext(Context);
+  const [contentNum, setContentNum] = useState(null);
 
   const getPopular = async () => {
     try {
@@ -67,6 +70,7 @@ const MovieItem = () => {
     getPopular();
   }, []);
 
+  /*
   const settings = {
     dots: false,
     infinite: false,
@@ -100,16 +104,33 @@ const MovieItem = () => {
       },
     ],
   };
+  */
+
+  useEffect(() => {
+    setContentNum(window.innerWidth > 1024 ? 4 : 3);
+  }, []);
+
+  window.addEventListener("resize", function () {
+    let innerWidth = window.innerWidth;
+
+    if (innerWidth > 1024) {
+      setContentNum(4);
+    } else if (innerWidth < 768) {
+      setContentNum(2);
+    } else {
+      setContentNum(3);
+    }
+  });
 
   return (
     <div className={classes["movie-item"]}>
       <div className={classes["movie-item-top"]}>
         <h1>Popular Movies</h1>
       </div>
-      <Slider {...settings} className={classes.items}>
+      <div className={classes.items}>
         {ctx.popular_movie &&
           ctx.popular_movie
-            .filter((data) => data.backdrop_path)
+            .filter((data, index) => data.backdrop_path && index < contentNum)
             .map((movie) => (
               <div key={movie.id}>
                 <Link to={`/movie/${movie.id}`}>
@@ -128,7 +149,7 @@ const MovieItem = () => {
                 </Link>
               </div>
             ))}
-      </Slider>
+      </div>
     </div>
   );
 };
