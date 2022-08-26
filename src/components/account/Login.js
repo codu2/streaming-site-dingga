@@ -4,6 +4,7 @@ import axios from "axios";
 import Context from "../../store/Context";
 
 import classes from "./Login.module.css";
+import { MdOutlineLogin } from "react-icons/md";
 
 const API_KEY = process.env.REACT_APP_API_KEY;
 const SESSION_ID = process.env.REACT_APP_SESSION_ID;
@@ -70,30 +71,44 @@ const Login = () => {
   return (
     <div className={classes.container}>
       <form className={classes.login} onSubmit={handleSubmit}>
-        <h1>Log In</h1>
+        <h1>Welcome to DINGGA</h1>
         <div className={classes["login-form"]}>
-          <label htmlFor="username">Username</label>
-          <input
-            type="text"
-            id="username"
-            name="username"
-            className={classes["login-input"]}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-          <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            className={classes["login-input"]}
-            onChange={(e) => setPassword(e.target.value)}
-          />
+          <div className={classes["login-form-wrapper"]}>
+            <input
+              type="text"
+              id="username"
+              name="username"
+              className={classes["login-input"]}
+              onChange={(e) => setUsername(e.target.value)}
+              autoComplete="off"
+              placeholder=" "
+            />
+            <label className={classes["login-form-label"]} htmlFor="username">
+              Username
+            </label>
+          </div>
+          <div className={classes["login-form-wrapper"]}>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              className={classes["login-input"]}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder=" "
+            />
+            <label className={classes["login-form-label"]} htmlFor="password">
+              Password
+            </label>
+          </div>
           <button
             type="submit"
             className={classes["login-button"]}
             disabled={loading}
           >
-            Log In
+            <div>
+              <MdOutlineLogin />
+            </div>
+            <div>Log In</div>
           </button>
           <div className={classes["signup-button"]}>
             <p> If you don't have an account yet please register first.</p>

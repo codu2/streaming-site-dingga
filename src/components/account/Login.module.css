@@ -21,7 +21,7 @@
   font-size: 25px;
   color: #f4f4f4;
   font-weight: 700;
-  margin-bottom: 30px;
+  margin-bottom: 40px;
 }
 
 .login-form {
@@ -29,39 +29,108 @@
   flex-direction: column;
 }
 
-.login-form label {
-  font-size: 13px;
-  font-weight: 300;
-  margin-bottom: 10px;
+.login-form-wrapper {
+  position: relative;
+  width: 300px;
+  height: 40px;
+  margin-bottom: 15px;
+}
+
+.login-form-label {
+  position: absolute;
+  top: 11px;
+  left: 2px;
+  padding: 0 10px;
+  font-size: 12px;
+  cursor: text;
+  transition: top 200ms ease-in, left 200ms ease-in, font-size 200ms ease-in;
+  background-color: #000;
+  color: #d7d7d7;
+  font-weight: 500;
 }
 
 .login-input {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
+  height: 100%;
   padding: 10px 15px;
   outline: none;
-  border: none;
-  margin-bottom: 15px;
-  color: #000;
-  font-size: 13px;
+  border: 1.5px solid #d7d7d7;
   font-weight: 300;
   font-family: "Montserrat", sans-serif;
+  border-radius: 8px;
+  background: none;
+  transition: border 0.2s ease-in;
+  color: #f4f4f4;
+}
+
+.login-input:hover {
+  border-color: #90cea1;
+}
+
+.login-input:focus {
+  border-color: #01b4e4;
+}
+
+.login-input:focus + .login-form-label,
+.login-input:not(:placeholder-shown).login-input:not(:focus)
+  + .login-form-label {
+  top: -6px;
+  font-size: 10px;
+  left: 10px;
+  color: #f4f4f4;
 }
 
 .login-button {
-  padding: 12px 15px;
+  width: 300px;
+  height: 40px;
+  padding: 10px 15px;
   outline: none;
   border: none;
   color: #000;
-  font-weight: 800;
-  font-size: 16px;
-  background-color: #f4f4f4;
+  font-weight: 700;
+  font-size: 14px;
+  background: #f4f4f4;
   margin: 20px 0;
   cursor: pointer;
+  border-radius: 8px;
+
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+.login-button div {
+  width: 300px;
+  height: 40px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: left 200ms ease-in;
+}
+
+.login-button div:first-child {
+  left: -300px;
+  font-size: 24px;
 }
 
 .login-button:disabled {
   background-color: #d7d7d7;
   cursor: not-allowed;
+}
+
+.login-button:hover div {
+  left: 300px;
+}
+
+.login-button:hover div:first-child {
+  left: 0;
 }
 
 .signup-button {
@@ -78,7 +147,7 @@
 }
 
 .signup-button button {
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 700;
   outline: none;
   border: 1px solid #f4f4f4;
@@ -86,6 +155,8 @@
   color: #f4f4f4;
   padding: 10px 15px;
   margin: 5px 0 10px;
-  width: 100%;
+  width: 300px;
+  height: 40px;
   cursor: pointer;
+  border-radius: 8px;
 }
