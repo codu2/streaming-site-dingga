@@ -91,19 +91,18 @@ const Profile = () => {
               {ctx.rated_movie &&
                 ctx.rated_movie.map((movie) => (
                   <div key={movie.id} className={classes["rating-list-item"]}>
-                    <Link to={`/movie/${movie.id}`}>
-                      <img
-                        src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                        alt={movie.title}
-                      />
-                    </Link>
-                    <span>{`${movie.title} (${movie.rating})`}</span>
-                    <span
-                      className={classes["rating-remove"]}
-                      onClick={() => handleRating(movie)}
-                    >
-                      <AiOutlineMinusCircle />
-                    </span>
+                    <Link to={`/movie/${movie.id}`}>{movie.title}</Link>
+                    <div>
+                      <div
+                        className={classes["rating-score"]}
+                      >{`(${movie.rating})`}</div>
+                      <div
+                        className={classes["rating-remove"]}
+                        onClick={() => handleRating(movie)}
+                      >
+                        <AiOutlineMinusCircle />
+                      </div>
+                    </div>
                   </div>
                 ))}
             </ul>
@@ -114,19 +113,18 @@ const Profile = () => {
               {ctx.rated_tv &&
                 ctx.rated_tv.map((tv) => (
                   <div key={tv.id} className={classes["rating-list-item"]}>
-                    <Link to={`/tv/${tv.id}`}>
-                      <img
-                        src={`https://image.tmdb.org/t/p/w500${tv.poster_path}`}
-                        alt={tv.name}
-                      />
-                    </Link>
-                    <span>{`${tv.name} (${tv.rating})`}</span>
-                    <span
-                      className={classes["rating-remove"]}
-                      onClick={() => handleRating(tv)}
-                    >
-                      <AiOutlineMinusCircle />
-                    </span>
+                    <Link to={`/tv/${tv.id}`}>{tv.name}</Link>
+                    <div>
+                      <div
+                        className={classes["rating-score"]}
+                      >{`(${tv.rating})`}</div>
+                      <div
+                        className={classes["rating-remove"]}
+                        onClick={() => handleRating(tv)}
+                      >
+                        <AiOutlineMinusCircle />
+                      </div>
+                    </div>
                   </div>
                 ))}
             </ul>

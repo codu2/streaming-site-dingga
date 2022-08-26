@@ -72,12 +72,12 @@ const ChartDoughnut = () => {
       {
         data: mostWatched[0],
         backgroundColor: [
-          "rgba(255, 99, 132)",
-          "rgba(54, 162, 235)",
-          "rgba(255, 206, 86)",
+          "rgba(13, 37, 63)",
+          "rgba(1, 180, 228)",
+          "rgba(144,206,161)",
           "rgba(75, 192, 192)",
-          "rgba(153, 102, 255)",
-          "rgba(255, 159, 64)",
+          "rgb(158, 210, 198)",
+          "rgb(43, 72, 101)",
         ],
         borderWidth: 0, //경계선 굵기
         fill: true,
@@ -95,11 +95,7 @@ const ChartDoughnut = () => {
     },
   };
 
-  return (
-    <div>
-      <Doughnut data={data} options={options} />
-    </div>
-  );
+  return <Doughnut data={data} options={options} />;
 };
 
 export default ChartDoughnut;
