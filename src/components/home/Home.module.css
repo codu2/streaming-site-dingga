@@ -7,7 +7,7 @@
 
 .content {
   width: 100%;
-  height: 600px;
+  height: calc(100vh - 60px);
   position: relative;
 }
 
@@ -23,16 +23,16 @@
 
 .content-info {
   position: absolute;
-  bottom: 4rem;
+  bottom: 6rem;
   left: 3rem;
   color: #f4f4f4;
   width: calc(100% - 6rem);
 }
 
 .content-title {
-  font-size: 34px;
+  font-size: 32px;
   font-weight: 700;
-  margin-bottom: 25px;
+  margin-bottom: 28px;
   letter-spacing: 1px;
   width: 70%;
 }
@@ -40,16 +40,16 @@
 .content-details {
   display: flex;
   align-items: center;
-  margin-bottom: 15px;
+  margin-bottom: 16px;
 }
 
 .content-details > div:not(:last-child)::after {
   content: "|";
-  margin: 10px;
+  margin: 12px;
 }
 
 .content-details > div {
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 300;
 }
 
@@ -63,7 +63,8 @@
 .content-overview {
   font-size: 14px;
   width: 65%;
-  line-height: 20px;
+  line-height: 24px;
+  font-weight: 300;
 }
 
 /*
@@ -155,6 +156,11 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  transition: background-color 200ms ease-in-out;
+}
+
+.content-trailer:hover {
+  background-color: #f4f4f4;
 }
 
 .content-trailer svg {
@@ -182,24 +188,40 @@
   font-size: 24px;
   cursor: pointer;
   color: #f4f4f4;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background-color: transparent;
+  transition: background-color 200ms ease-in-out;
 }
 
-.link {
-  color: #f4f4f4;
-  text-decoration: none;
+.close-button:hover {
+  background-color: #222;
 }
 
 @media screen and (max-width: 1024px) {
   .content-title {
     font-size: 28px;
   }
+
+  .content-details {
+    margin-bottom: 12px;
+  }
+
+  .content-details > div {
+    font-size: 12px;
+  }
+
+  .content-overview {
+    font-size: 12px;
+    line-height: 18px;
+  }
 }
 
 @media screen and (max-width: 768px) {
-  .content {
-    height: 550px;
-  }
-
   .content-title {
     font-size: 26px;
     width: 70%;
@@ -210,24 +232,16 @@
     display: none;
   }
 
-  .content-info-align {
-    justify-content: flex-end;
-  }
-}
-
-@media screen and (max-width: 480px) {
-  .content {
-    height: 500px;
-  }
-
-  .content-title {
-    font-size: 22px;
-    width: 100%;
-  }
-
   .content-trailer {
     width: 100%;
     margin-top: 15px;
     font-size: 14px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .content-title {
+    font-size: 22px;
+    width: 100%;
   }
 }

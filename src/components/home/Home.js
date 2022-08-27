@@ -66,10 +66,7 @@ const Home = () => {
           />
           <div className={classes["content-info"]}>
             <div className={classes["content-title"]}>
-              <Link
-                to={`/${content.media_type}/${content.id}`}
-                className={classes.link}
-              >
+              <Link to={`/${content.media_type}/${content.id}`}>
                 {content.title ? content.title : content.name}
               </Link>
             </div>
