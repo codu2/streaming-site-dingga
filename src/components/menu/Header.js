@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 import classes from "./Header.module.css";
 import Menu from "./Menu";
@@ -17,7 +18,9 @@ const Header = () => {
       <div className={classes.menu} onClick={handleSideMenu}>
         <AiOutlineMenu />
       </div>
-      <div className={classes.logo}>DINGGA</div>
+      <div className={classes.logo}>
+        <Link to="/">DINGGA</Link>
+      </div>
       <Menu sideMenu={sideMenu} setSideMenu={setSideMenu} />
     </div>
   );

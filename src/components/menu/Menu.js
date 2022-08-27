@@ -2,9 +2,12 @@ import React, { useContext, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 
 import Context from "../../store/Context";
+import axios from "axios";
 
 import classes from "./Menu.module.css";
-import { AiOutlineSearch, AiOutlineEnter } from "react-icons/ai";
+import { AiOutlineSearch } from "react-icons/ai";
+
+const API_KEY = process.env.REACT_APP_API_KEY;
 
 const Menu = ({ sideMenu, setSideMenu }) => {
   const location = useLocation();
@@ -12,6 +15,7 @@ const Menu = ({ sideMenu, setSideMenu }) => {
   const ctx = useContext(Context);
   const [query, setQuery] = useState("");
   const [submenu, setSubmenu] = useState(false);
+  const [searchResult, setSearchResult] = useState([]);
 
   const handleLogout = () => {
     ctx.logout();
@@ -19,15 +23,16 @@ const Menu = ({ sideMenu, setSideMenu }) => {
     window.location.replace("/");
   };
 
-  const handleSearchInput = (e) => {
-    setQuery(e.target.value);
-  };
-
-  const handleSearchParams = () => {
-    if (query !== "") {
-      window.location.replace(`/search?q=${query}`);
+  const handleSearchInput = async (e) => {
+    if (e.target.value !== "") {
+      setQuery(e.target.value);
+      const response = await axios.get(
+        `https://api.themoviedb.org/3/search/multi?api_key=${API_KEY}&language=en-US&query=${e.target.value}&page=1&include_adult=false`
+      );
+      setSearchResult(response.data.results);
     } else {
-      window.alert("Please enter a search term.");
+      setQuery("");
+      setSearchResult([]);
     }
   };
 
@@ -45,9 +50,6 @@ const Menu = ({ sideMenu, setSideMenu }) => {
 
   const menuList = `${classes["menu-list"]} ${sideMenu && classes.active}`;
   const menuSearch = `${classes.search} ${sideMenu && classes.active}`;
-  const menuHome = `${classes["menu-item"]} ${
-    location.pathname === "/" && classes.current
-  }`;
   const menuTv = `${classes["menu-item"]} ${path === "tv" && classes.current}`;
   const menuMovie = `${classes["menu-item"]} ${
     path === "movie" && classes.current
@@ -65,11 +67,6 @@ const Menu = ({ sideMenu, setSideMenu }) => {
   return (
     <div className={classes.menu}>
       <ul className={menuList}>
-        <li className={menuHome} onClick={handleSideMenu}>
-          <Link to="/" className={classes.link}>
-            Home
-          </Link>
-        </li>
         <li className={menuMovie} onClick={handleSideMenu}>
           <Link to={`/movie`} className={classes.link}>
             Movies
@@ -129,11 +126,41 @@ const Menu = ({ sideMenu, setSideMenu }) => {
           className={classes["search-input"]}
           id="searchInput"
           onChange={handleSearchInput}
+          placeholder="Search"
+          value={query}
         />
-        <AiOutlineEnter
-          className={classes["search-button"]}
-          onClick={handleSearchParams}
-        />
+        {searchResult.length !== 0 && (
+          <div className={classes["search-result-wrapper"]}>
+            <div
+              className={classes["search-result-query"]}
+            >{`Search Results for "${query}"`}</div>
+            <ul className={classes["search-result"]}>
+              {searchResult
+                ?.filter((result, index) => index < 5)
+                .map((result) => (
+                  <li
+                    key={result?.id}
+                    onClick={() => {
+                      window.location.replace(`/search?q=${result?.name}`);
+                    }}
+                  >
+                    {result?.media_type === "movie"
+                      ? result?.title
+                      : result?.name}
+                  </li>
+                ))}
+            </ul>
+            <div
+              className={classes["search-result-link"]}
+              onClick={() => {
+                setQuery("");
+                setSearchResult([]);
+              }}
+            >
+              <Link to={`/search?q=${query}`}>View more search results</Link>
+            </div>
+          </div>
+        )}
       </div>
       {ctx.user ? (
         <div className={classes["logout-button"]} onClick={handleLogout}>
