@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useSearchParams, Link } from "react-router-dom";
 
 import axios from "axios";
 
 import classes from "./Pages.module.css";
-import { AiOutlineSearch, AiOutlineEnter } from "react-icons/ai";
+import { AiOutlineSearch } from "react-icons/ai";
 //import { RiMovie2Fill, RiSlideshow3Fill } from "react-icons/ri";
 //import { BsFillPersonFill } from "react-icons/bs";
 
@@ -16,36 +16,35 @@ const Search = () => {
   const [query, setQuery] = useState("");
   const [searchResult, setSearchResult] = useState([]);
 
-  const handleSearchInput = (e) => {
-    setQuery(e.target.value);
-  };
+  const search = useCallback(async (query) => {
+    const response = await axios.get(
+      `https://api.themoviedb.org/3/search/multi?api_key=${API_KEY}&language=en-US&query=${query}&page=1&include_adult=false`
+    );
+    setSearchResult(response.data.results);
+  }, []);
 
-  const handleSearchParams = () => {
-    if (query !== "") {
-      window.location.replace(`/search?q=${query}`);
+  const handleSearchInput = async (e) => {
+    window.history.pushState("", "search", `/search?q=${e.target.value}`);
+    if (e.target.value !== "") {
+      setQuery(e.target.value);
+      search(e.target.value);
     } else {
-      window.alert("Please enter a search term.");
-    }
-  };
-
-  const handleSearch = async (e) => {
-    if (q !== "") {
-      const response = await axios.get(
-        `https://api.themoviedb.org/3/search/multi?api_key=${API_KEY}&language=en-US&query=${q}&page=1&include_adult=false`
-      );
-      setSearchResult(response.data.results);
+      setQuery("");
+      setSearchResult([]);
     }
   };
 
   useEffect(() => {
-    handleSearch();
-  }, [query]);
+    if (q) {
+      setQuery(q);
+      search(q);
+    }
+  }, [q, search]);
 
-  console.log(searchResult);
   return (
     <div className={classes.container}>
       <div className={classes["search-wrapper"]}>
-        <h1>Search Results</h1>
+        <h1>Search for Movies, TV series, and Actors</h1>
         <div className={classes.search}>
           <label htmlFor="searchInput">
             <AiOutlineSearch />
@@ -56,10 +55,8 @@ const Search = () => {
             className={classes["search-input"]}
             id="searchInput"
             onChange={handleSearchInput}
-          />
-          <AiOutlineEnter
-            className={classes["search-button"]}
-            onClick={handleSearchParams}
+            value={query}
+            placeholder="Search"
           />
         </div>
       </div>
@@ -85,11 +82,12 @@ const Search = () => {
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  width: "220px",
-                  height: "140px",
+                  width: "180px",
+                  height: "120px",
                   paddingBottom: "15px",
-                  fontSize: "13px",
-                  color: "#ddd",
+                  fontSize: "10px",
+                  color: "#d7d7d7",
+                  backgroundColor: "#222",
                 }}
               >
                 No Image
