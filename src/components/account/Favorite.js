@@ -130,67 +130,65 @@ const Favorite = () => {
           <ul className={classes["section-list"]}>
             {ctx.favorite_movie &&
               ctx.favorite_movie.map((item) => (
-                <li key={item.id}>
-                  <div className={classes["section-item"]}>
-                    <img
-                      src={
-                        item.poster_path
-                          ? `https://image.tmdb.org/t/p/w500${item.poster_path}`
-                          : `https://image.tmdb.org/t/p/w500${item.backdrop_path}`
-                      }
-                      alt={item.title}
-                      className={item.img}
-                    />
-                    <div className={classes["section-item-info"]}>
-                      <Link to={`/movie/${item.id}`} className={classes.link}>
-                        <div className={classes.title}>{item.title}</div>
-                      </Link>
-                      <div className={classes.info}>
-                        {`${item.release_date}(${
-                          item.original_language && item.original_language
-                        })`}
-                      </div>
-                      <div className={classes.overview}>{item.overview}</div>
+                <li key={item.id} className={classes["section-item"]}>
+                  <img
+                    src={
+                      item.poster_path
+                        ? `https://image.tmdb.org/t/p/w500${item.poster_path}`
+                        : `https://image.tmdb.org/t/p/w500${item.backdrop_path}`
+                    }
+                    alt={item.title}
+                    className={item.img}
+                  />
+                  <div className={classes["section-item-info"]}>
+                    <Link to={`/movie/${item.id}`} className={classes.link}>
+                      <div className={classes.title}>{item.title}</div>
+                    </Link>
+                    <div className={classes.info}>
+                      {`${item.release_date}(${
+                        item.original_language && item.original_language
+                      })`}
                     </div>
-                    <div className={classes["actions-button"]}>
-                      {actions !== item.id ? (
-                        <HiOutlineDotsVertical
-                          onClick={() => {
-                            setActions(item.id);
-                          }}
-                        />
-                      ) : (
-                        <AiOutlineClose
-                          onClick={() => {
-                            if (actions === item.id) {
-                              setActions(null);
-                            }
-                          }}
-                        />
-                      )}
-                      {actions === item.id && (
-                        <div className={classes.actions}>
-                          {ctx.watchlist_movie.find(
-                            (movie) => movie.id === item.id
-                          ) ? (
-                            <span style={{ cursor: "not-allowed" }}>
-                              <TiThList /> In My Watchlist
-                            </span>
-                          ) : (
-                            <span onClick={() => handleWatchlist(item)}>
-                              <BsListUl /> Add to Watchlist
-                            </span>
-                          )}
-                          <span>
-                            <BsBookmark /> Bookmark
-                          </span>
-                          <span onClick={() => handleFavorite(item)}>
-                            <RiDeleteBackLine /> Remove
-                          </span>
-                        </div>
-                      )}
-                    </div>
+                    <div className={classes.overview}>{item.overview}</div>
                   </div>
+                  <div className={classes["actions-button"]}>
+                    {actions !== item.id ? (
+                      <HiOutlineDotsVertical
+                        onClick={() => {
+                          setActions(item.id);
+                        }}
+                      />
+                    ) : (
+                      <AiOutlineClose
+                        onClick={() => {
+                          if (actions === item.id) {
+                            setActions(null);
+                          }
+                        }}
+                      />
+                    )}
+                  </div>
+                  {actions === item.id && (
+                    <div className={classes.actions}>
+                      {ctx.watchlist_movie.find(
+                        (movie) => movie.id === item.id
+                      ) ? (
+                        <span style={{ cursor: "not-allowed" }}>
+                          <TiThList /> In My Watchlist
+                        </span>
+                      ) : (
+                        <span onClick={() => handleWatchlist(item)}>
+                          <BsListUl /> Add to Watchlist
+                        </span>
+                      )}
+                      <span>
+                        <BsBookmark /> Bookmark
+                      </span>
+                      <span onClick={() => handleFavorite(item)}>
+                        <RiDeleteBackLine /> Remove
+                      </span>
+                    </div>
+                  )}
                 </li>
               ))}
           </ul>
@@ -200,65 +198,63 @@ const Favorite = () => {
           <ul className={classes["section-list"]}>
             {ctx.favorite_tv &&
               ctx.favorite_tv.map((item) => (
-                <li key={item.id}>
-                  <div className={classes["section-item"]}>
-                    <img
-                      src={
-                        item.poster_path
-                          ? `https://image.tmdb.org/t/p/w500${item.poster_path}`
-                          : `https://image.tmdb.org/t/p/w500${item.backdrop_path}`
-                      }
-                      alt={item.name}
-                      className={item.img}
-                    />
-                    <div className={classes["section-item-info"]}>
-                      <Link to={`/tv/${item.id}`} className={classes.link}>
-                        <div className={classes.title}>{item.name}</div>{" "}
-                      </Link>
-                      <div className={classes.info}>
-                        {`${item.first_air_date}(${
-                          item.origin_country && item.origin_country[0]
-                        })`}
-                      </div>
-                      <div className={classes.overview}>{item.overview}</div>
+                <li key={item.id} className={classes["section-item"]}>
+                  <img
+                    src={
+                      item.poster_path
+                        ? `https://image.tmdb.org/t/p/w500${item.poster_path}`
+                        : `https://image.tmdb.org/t/p/w500${item.backdrop_path}`
+                    }
+                    alt={item.name}
+                    className={item.img}
+                  />
+                  <div className={classes["section-item-info"]}>
+                    <Link to={`/tv/${item.id}`} className={classes.link}>
+                      <div className={classes.title}>{item.name}</div>{" "}
+                    </Link>
+                    <div className={classes.info}>
+                      {`${item.first_air_date}(${
+                        item.origin_country && item.origin_country[0]
+                      })`}
                     </div>
-                    <div className={classes["actions-button"]}>
-                      {actions !== item.id ? (
-                        <HiOutlineDotsVertical
-                          onClick={() => {
-                            setActions(item.id);
-                          }}
-                        />
-                      ) : (
-                        <AiOutlineClose
-                          onClick={() => {
-                            if (actions === item.id) {
-                              setActions(null);
-                            }
-                          }}
-                        />
-                      )}
-                      {actions === item.id && (
-                        <div className={classes.actions}>
-                          {ctx.watchlist_tv.find((tv) => tv.id === item.id) ? (
-                            <span style={{ cursor: "not-allowed" }}>
-                              <TiThList /> In My Watchlist
-                            </span>
-                          ) : (
-                            <span onClick={() => handleWatchlist(item)}>
-                              <BsListUl /> Add to Watchlist
-                            </span>
-                          )}
-                          <span>
-                            <BsBookmark /> Bookmark
-                          </span>
-                          <span onClick={() => handleFavorite(item)}>
-                            <RiDeleteBackLine /> Remove
-                          </span>
-                        </div>
-                      )}
-                    </div>
+                    <div className={classes.overview}>{item.overview}</div>
                   </div>
+                  <div className={classes["actions-button"]}>
+                    {actions !== item.id ? (
+                      <HiOutlineDotsVertical
+                        onClick={() => {
+                          setActions(item.id);
+                        }}
+                      />
+                    ) : (
+                      <AiOutlineClose
+                        onClick={() => {
+                          if (actions === item.id) {
+                            setActions(null);
+                          }
+                        }}
+                      />
+                    )}
+                  </div>
+                  {actions === item.id && (
+                    <div className={classes.actions}>
+                      {ctx.watchlist_tv.find((tv) => tv.id === item.id) ? (
+                        <span style={{ cursor: "not-allowed" }}>
+                          <TiThList /> In My Watchlist
+                        </span>
+                      ) : (
+                        <span onClick={() => handleWatchlist(item)}>
+                          <BsListUl /> Add to Watchlist
+                        </span>
+                      )}
+                      <span>
+                        <BsBookmark /> Bookmark
+                      </span>
+                      <span onClick={() => handleFavorite(item)}>
+                        <RiDeleteBackLine /> Remove
+                      </span>
+                    </div>
+                  )}
                 </li>
               ))}
           </ul>
