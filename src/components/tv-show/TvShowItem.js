@@ -1,59 +1,20 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 import axios from "axios";
 import Context from "../../store/Context";
 
-//import Slider from "react-slick";
-//import "slick-carousel/slick/slick.css";
-//import "slick-carousel/slick/slick-theme.css";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 import classes from "./TvShowItem.module.css";
-//import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
-
-/*
-function PrevArrow(props) {
-  const { className, style, onClick } = props;
-  return (
-    <IoIosArrowBack
-      className={className}
-      style={{
-        ...style,
-        display: "block",
-        background: "none",
-        left: "20px",
-        top: "-40px",
-        color: "#f4f4f4",
-      }}
-      onClick={onClick}
-    />
-  );
-}
-
-function NextArrow(props) {
-  const { className, style, onClick } = props;
-  return (
-    <IoIosArrowForward
-      className={className}
-      style={{
-        ...style,
-        display: "block",
-        background: "none",
-        right: "20px",
-        top: "-40px",
-        color: "#f4f4f4",
-      }}
-      onClick={onClick}
-    />
-  );
-}
-*/
+import { AiFillTrophy } from "react-icons/ai";
 
 const API_KEY = process.env.REACT_APP_API_KEY;
 
 const TvShowItem = () => {
   const ctx = useContext(Context);
-  const [contentNum, setContentNum] = useState(null);
 
   const getPopular = async () => {
     try {
@@ -70,16 +31,14 @@ const TvShowItem = () => {
     getPopular();
   }, []);
 
-  /*
   const settings = {
-    dots: false,
+    dots: true,
     infinite: false,
     speed: 500,
     slidesToShow: 4,
     slidesToScroll: 4,
     draggable: false,
-    prevArrow: <PrevArrow />,
-    nextArrow: <NextArrow />,
+    arrows: false,
     responsive: [
       {
         breakpoint: 1024,
@@ -104,33 +63,19 @@ const TvShowItem = () => {
       },
     ],
   };
-  */
-
-  useEffect(() => {
-    setContentNum(window.innerWidth > 1024 ? 4 : 3);
-  }, []);
-
-  window.addEventListener("resize", function () {
-    let innerWidth = window.innerWidth;
-
-    if (innerWidth > 1024) {
-      setContentNum(4);
-    } else if (innerWidth < 768) {
-      setContentNum(2);
-    } else {
-      setContentNum(3);
-    }
-  });
 
   return (
     <div className={classes["tv-item"]}>
       <div className={classes["tv-item-top"]}>
-        <h1>Popular TV Show</h1>
+        <h1>
+          <AiFillTrophy />
+          Popular TV Show
+        </h1>
       </div>
-      <div className={classes.items}>
+      <Slider {...settings} className={classes.items}>
         {ctx.popular_tv &&
           ctx.popular_tv
-            .filter((data, index) => data.backdrop_path && index < contentNum)
+            .filter((data, index) => data.backdrop_path && index < 10)
             .map((tv) => (
               <div key={tv.id}>
                 <Link to={`/tv/${tv.id}`}>
@@ -149,7 +94,7 @@ const TvShowItem = () => {
                 </Link>
               </div>
             ))}
-      </div>
+      </Slider>
     </div>
   );
 };

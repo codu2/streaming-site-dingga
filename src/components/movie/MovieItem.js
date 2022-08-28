@@ -1,59 +1,20 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 import axios from "axios";
 import Context from "../../store/Context";
 
-//import Slider from "react-slick";
-//import "slick-carousel/slick/slick.css";
-//import "slick-carousel/slick/slick-theme.css";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 import classes from "./MovieItem.module.css";
-//import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
-
-/*
-function PrevArrow(props) {
-  const { className, style, onClick } = props;
-  return (
-    <IoIosArrowBack
-      className={className}
-      style={{
-        ...style,
-        display: "block",
-        background: "none",
-        left: "20px",
-        top: "-40px",
-        color: "#f4f4f4",
-      }}
-      onClick={onClick}
-    />
-  );
-}
-
-function NextArrow(props) {
-  const { className, style, onClick } = props;
-  return (
-    <IoIosArrowForward
-      className={className}
-      style={{
-        ...style,
-        display: "block",
-        background: "none",
-        right: "20px",
-        top: "-40px",
-        color: "#f4f4f4",
-      }}
-      onClick={onClick}
-    />
-  );
-}
-*/
+import { AiFillTrophy } from "react-icons/ai";
 
 const API_KEY = process.env.REACT_APP_API_KEY;
 
 const MovieItem = () => {
   const ctx = useContext(Context);
-  const [contentNum, setContentNum] = useState(null);
 
   const getPopular = async () => {
     try {
@@ -70,16 +31,14 @@ const MovieItem = () => {
     getPopular();
   }, []);
 
-  /*
   const settings = {
-    dots: false,
+    dots: true,
     infinite: false,
     speed: 500,
     slidesToShow: 4,
     slidesToScroll: 4,
     draggable: false,
-    prevArrow: <PrevArrow />,
-    nextArrow: <NextArrow />,
+    arrows: false,
     responsive: [
       {
         breakpoint: 1024,
@@ -104,8 +63,8 @@ const MovieItem = () => {
       },
     ],
   };
-  */
 
+  /*
   useEffect(() => {
     setContentNum(window.innerWidth > 1024 ? 4 : 3);
   }, []);
@@ -121,16 +80,22 @@ const MovieItem = () => {
       setContentNum(3);
     }
   });
+  */
+
+  console.log(ctx.popular_movie);
 
   return (
     <div className={classes["movie-item"]}>
       <div className={classes["movie-item-top"]}>
-        <h1>Popular Movies</h1>
+        <h1>
+          <AiFillTrophy />
+          Popular Movies
+        </h1>
       </div>
-      <div className={classes.items}>
+      <Slider {...settings} className={classes.items}>
         {ctx.popular_movie &&
           ctx.popular_movie
-            .filter((data, index) => data.backdrop_path && index < contentNum)
+            .filter((data, index) => data.backdrop_path && index < 10)
             .map((movie) => (
               <div key={movie.id}>
                 <Link to={`/movie/${movie.id}`}>
@@ -149,7 +114,7 @@ const MovieItem = () => {
                 </Link>
               </div>
             ))}
-      </div>
+      </Slider>
     </div>
   );
 };
