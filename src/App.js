@@ -4,6 +4,10 @@ import { Routes, Route, useLocation } from "react-router-dom";
 import axios from "axios";
 import Context from "./store/Context";
 
+// slick-carousel css 변경을 위한 import
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+
 import "./App.css";
 
 import Homepage from "./pages/Homepage";

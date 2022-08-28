@@ -43,3 +43,38 @@ a {
   text-decoration: none;
   color: inherit;
 }
+
+.slick-list {
+  width: 100%;
+}
+
+.slick-dots li button:before {
+  font-family: "slick";
+  font-size: 14px;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  width: 18px;
+  height: 18px;
+
+  content: "•";
+  text-align: center;
+
+  color: #d7d7d7;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  margin-top: 10px;
+}
+
+.slick-dots li.slick-active button:before {
+  opacity: 0.75;
+  color: #d7d7d7;
+}
+
+/*
+slick-carousel css 변경 시 바꾸고자 하는 css만 변경할 수 있는 게 아니라 모든 css가 초기화되므로 변경을 원치 않는 부분은 코드를 전부 붙여넣기 해야 함
+*/
