@@ -24,7 +24,8 @@
 
 .content-wrapper {
   width: 100%;
-  margin-bottom: 50px;
+  height: max-content;
+  margin: 20px 0 50px;
 }
 
 .content {
@@ -73,9 +74,7 @@
 }
 
 .content-list {
-  height: 160px;
   width: 100%;
-  overflow: hidden;
   padding: 0 35px;
 }
 

@@ -9,45 +9,6 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 import classes from "./TvPage.module.css";
-import { BsArrowLeftCircle, BsArrowRightCircle } from "react-icons/bs";
-
-function PrevArrow(props) {
-  const { className, style, onClick } = props;
-  return (
-    <BsArrowLeftCircle
-      className={className}
-      style={{
-        ...style,
-        display: "block",
-        background: "none",
-        color: "#f4f4f4",
-        width: "28px",
-        height: "28px",
-        left: "0",
-      }}
-      onClick={onClick}
-    />
-  );
-}
-
-function NextArrow(props) {
-  const { className, style, onClick } = props;
-  return (
-    <BsArrowRightCircle
-      className={className}
-      style={{
-        ...style,
-        display: "block",
-        background: "none",
-        color: "#f4f4f4",
-        width: "28px",
-        height: "28px",
-        right: "0",
-      }}
-      onClick={onClick}
-    />
-  );
-}
 
 const API_KEY = process.env.REACT_APP_API_KEY;
 
@@ -114,14 +75,13 @@ const TvPage = () => {
   const { data: trendingData } = trending;
 
   const settings = {
-    dots: false, // 점은 안 보이게
-    infinite: true, // 무한 슬라이더
+    dots: true,
+    infinite: false,
     speed: 500,
-    slidesToShow: 3, //3장씩 보이게 해주세요
-    slidesToScroll: 3, //3장씩 넘어가세요
-    draggable: false, // 드래그 안되게
-    prevArrow: <PrevArrow />,
-    nextArrow: <NextArrow />,
+    slidesToShow: 3,
+    slidesToScroll: 3,
+    draggable: false,
+    arrows: false,
     responsive: [
       {
         breakpoint: 1024,
@@ -146,7 +106,11 @@ const TvPage = () => {
     speed: 500,
     slidesToShow: 3,
     slidesToScroll: 3,
-    draggable: true,
+    draggable: false,
+    autoplay: true,
+    autoplaySpeed: 2000,
+    pauseOnHover: true,
+    arrows: false,
     responsive: [
       {
         breakpoint: 1024,
@@ -183,18 +147,19 @@ const TvPage = () => {
                       .filter((data, index) => data.backdrop_path && index < 10)
                       .map((data) => (
                         <div key={data.id} className={classes["trending-item"]}>
-                          <Link to={`/tv/${data.id}`}>
-                            <img
-                              src={
-                                data.backdrop_path
-                                  ? `https://image.tmdb.org/t/p/w500${data.backdrop_path}`
-                                  : `https://image.tmdb.org/t/p/w500${data.poster_path}`
-                              }
-                              alt={data.name}
-                            />
-                            <div className={classes["content-title"]}>
-                              {data.name}
-                            </div>
+                          <img
+                            src={
+                              data.backdrop_path
+                                ? `https://image.tmdb.org/t/p/w500${data.backdrop_path}`
+                                : `https://image.tmdb.org/t/p/w500${data.poster_path}`
+                            }
+                            alt={data.name}
+                          />
+                          <Link
+                            to={`/tv/${data.id}`}
+                            className={classes["content-title"]}
+                          >
+                            {data.name}
                           </Link>
                         </div>
                       ))}
