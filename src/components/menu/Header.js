@@ -15,13 +15,15 @@ const Header = () => {
 
   return (
     <div className={classes.header}>
-      <div className={classes.menu} onClick={handleSideMenu}>
-        <AiOutlineMenu />
+      <div className={classes.container}>
+        <div className={classes.menu} onClick={handleSideMenu}>
+          <AiOutlineMenu />
+        </div>
+        <div className={classes.logo}>
+          <Link to="/">DINGGA</Link>
+        </div>
+        <Menu sideMenu={sideMenu} setSideMenu={setSideMenu} />
       </div>
-      <div className={classes.logo}>
-        <Link to="/">DINGGA</Link>
-      </div>
-      <Menu sideMenu={sideMenu} setSideMenu={setSideMenu} />
     </div>
   );
 };
