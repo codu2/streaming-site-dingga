@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import { useLocation, Link } from "react-router-dom";
+import { Comment, List } from "antd";
 
 import axios from "axios";
 import useAsync from "../../hooks/use-data";
@@ -11,58 +12,12 @@ import "slick-carousel/slick/slick-theme.css";
 
 import classes from "./Detail.module.css";
 import { AiOutlineHeart, AiFillHeart, AiOutlineClose } from "react-icons/ai";
-import { BsListUl, BsBookmark } from "react-icons/bs";
+import { BsListUl, BsBookmark, BsPlayCircle } from "react-icons/bs";
 import { TiThList } from "react-icons/ti";
-import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import { RiArrowDownSLine } from "react-icons/ri";
 
 const API_KEY = process.env.REACT_APP_API_KEY;
 const SESSION_ID = process.env.REACT_APP_SESSION_ID;
-
-function PrevArrow(props) {
-  const { className, style, onClick } = props;
-  return (
-    <IoIosArrowBack
-      className={className}
-      style={{
-        ...style,
-        display: "block",
-        background: "none",
-        color: "#f4f4f4",
-        border: "1px solid #f4f4f4",
-        borderRadius: "50%",
-        padding: "5px",
-        width: "30px",
-        height: "30px",
-        top: "-30px",
-        left: "0",
-      }}
-      onClick={onClick}
-    />
-  );
-}
-
-function NextArrow(props) {
-  const { className, style, onClick } = props;
-  return (
-    <IoIosArrowForward
-      className={className}
-      style={{
-        ...style,
-        display: "block",
-        background: "none",
-        color: "#f4f4f4",
-        border: "1px solid #f4f4f4",
-        borderRadius: "50%",
-        padding: "5px",
-        width: "30px",
-        height: "30px",
-        top: "-30px",
-        right: "0",
-      }}
-      onClick={onClick}
-    />
-  );
-}
 
 const Scope = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
@@ -91,6 +46,7 @@ const Detail = () => {
   const [score, setScore] = useState(0);
   const [clickedNum, setClickedNum] = useState(null);
   const [hoveredRect, setHoveredRect] = useState(null);
+  const [dropdown, setDropdown] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -333,52 +289,23 @@ const Detail = () => {
   };
 
   const settingsList = {
-    dots: false,
+    dots: true,
     infinite: false,
     speed: 500,
-    slidesToShow: 8,
-    slidesToScroll: 8,
-    prevArrow: <PrevArrow />,
-    nextArrow: <NextArrow />,
+    slidesToShow: 4,
+    slidesToScroll: 4,
     draggable: false,
+    arrows: false,
     responsive: [
       {
-        breakpoint: 1200,
-        settings: {
-          slidesToShow: 7,
-          slidesToScroll: 7,
-        },
-      },
-      {
-        breakpoint: 1000,
-        settings: {
-          slidesToShow: 6,
-          slidesToScroll: 6,
-        },
-      },
-      {
-        breakpoint: 860,
-        settings: {
-          slidesToShow: 5,
-          slidesToScroll: 5,
-        },
-      },
-      {
-        breakpoint: 768,
-        settings: {
-          slidesToShow: 4,
-          slidesToScroll: 4,
-        },
-      },
-      {
-        breakpoint: 620,
+        breakpoint: 1024,
         settings: {
           slidesToShow: 3,
           slidesToScroll: 3,
         },
       },
       {
-        breakpoint: 480,
+        breakpoint: 768,
         settings: {
           slidesToShow: 2,
           slidesToScroll: 2,
@@ -498,12 +425,7 @@ const Detail = () => {
                   <ul className={classes.genres}>
                     {data.genres.map((genre) => (
                       <li key={genre.id} className={classes.genre}>
-                        <Link
-                          to={`/genre/${genre.id}`}
-                          className={classes.link}
-                        >
-                          {genre.name}
-                        </Link>
+                        <Link to={`/genre/${genre.id}`}>{genre.name}</Link>
                       </li>
                     ))}
                   </ul>
@@ -536,12 +458,7 @@ const Detail = () => {
                     <div className={classes["cast-info"]} key={data.id}>
                       <span>{data.character}</span>
                       <span>
-                        <Link
-                          to={`/person/${data.id}`}
-                          className={classes.link}
-                        >
-                          {data.name}
-                        </Link>
+                        <Link to={`/person/${data.id}`}>{data.name}</Link>
                       </span>
                     </div>
                   ))}
@@ -555,7 +472,7 @@ const Detail = () => {
               onClick={() => setOpenTrailer(true)}
               disabled={trailer ? false : true}
             >
-              Watch Trailer
+              <BsPlayCircle />
             </button>
           </div>
           <div className={classes["content-wrapper"]}>
@@ -603,26 +520,34 @@ const Detail = () => {
                   <h1>{`Season ${seasonNumber} (${
                     season.air_date && new Date(season.air_date).getFullYear()
                   })`}</h1>
-                  <div>
-                    {data.number_of_seasons > 1 &&
+                  <ul className={classes["season-option"]}>
+                    <li className={classes["season-curr"]}>
+                      {seasonNumber}
+                      <span onClick={() => setDropdown((prev) => !prev)}>
+                        <RiArrowDownSLine />
+                      </span>
+                    </li>
+                    {dropdown &&
+                      data.number_of_seasons > 1 &&
                       data.seasons
                         .filter((season) => season.season_number > 0)
                         .map((season) => (
-                          <button
+                          <li
                             key={season.id}
-                            onClick={() =>
-                              setSeasonNumber(season.season_number)
-                            }
-                            className={
+                            className={`${classes["season-btn"]} ${
                               season.season_number === seasonNumber
-                                ? classes.active
+                                ? classes.selected
                                 : null
-                            }
+                            }`}
+                            onClick={() => {
+                              setSeasonNumber(season.season_number);
+                              setDropdown(false);
+                            }}
                           >
                             {season.season_number}
-                          </button>
+                          </li>
                         ))}
-                  </div>
+                  </ul>
                 </div>
                 <Slider {...settings} className={classes["season-episode"]}>
                   {season.episodes &&
@@ -664,25 +589,53 @@ const Detail = () => {
                 </Slider>
               </div>
             )}
-            <div className={classes.review}>
-              <h1>Reviews</h1>
-              <ul className={classes["review-list"]}>
-                {reviewsData &&
-                  reviewsData.map((review) => (
-                    <li key={review.id} className={classes["review-list-item"]}>
-                      <div>{review.author}</div>
-                      <div>{review.content}</div>
-                      <div>{new Date(review.created_at).toDateString()}</div>
+            {reviewsData?.length > 0 && (
+              <List
+                className={classes["comment-list"]}
+                header={`${reviewsData?.length} replies`}
+                itemLayout="horizontal"
+                dataSource={reviewsData && reviewsData}
+                renderItem={(item) => {
+                  let avatar = item.author_details.avatar_path;
+                  if (avatar) {
+                    avatar = avatar.includes("https")
+                      ? avatar.slice(1)
+                      : `https://image.tmdb.org/t/p/w500${avatar}`;
+                  }
+                  return (
+                    <li key={item.id}>
+                      <Comment
+                        //actions={item.actions}
+                        author={item.author}
+                        avatar={
+                          item.author_details.avatar_path ? (
+                            avatar
+                          ) : (
+                            <div className={classes["avatar-initial"]}>
+                              {item.author.charAt(0)}
+                            </div>
+                          )
+                        }
+                        content={item.content}
+                        datetime={new Date(item.created_at).toDateString()}
+                      />
                     </li>
-                  ))}
-              </ul>
-            </div>
+                  );
+                }}
+                pagination={{
+                  onChange: (page) => {
+                    console.log(page);
+                  },
+                  pageSize: 5,
+                }}
+              />
+            )}
             <div className={classes.similar}>
               <h1>More Like This</h1>
               <Slider {...settingsList} className={classes["similar-list"]}>
                 {similarData &&
                   similarData
-                    .filter((data, index) => data.poster_path && index < 14)
+                    .filter((data) => data.backdrop_path)
                     .map((data) => (
                       <li
                         className={classes["similar-list-item"]}
@@ -690,9 +643,10 @@ const Detail = () => {
                       >
                         <Link to={`/${media}/${data.id}`}>
                           <img
-                            src={`https://image.tmdb.org/t/p/w500${data.poster_path}`}
+                            src={`https://image.tmdb.org/t/p/w500${data.backdrop_path}`}
                             alt={media === "tv" ? data.name : data.title}
                           />
+                          <div>{media === "tv" ? data.name : data.title}</div>
                         </Link>
                       </li>
                     ))}

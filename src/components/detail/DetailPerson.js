@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useLocation, Link } from "react-router-dom";
 
 import axios from "axios";
@@ -9,12 +9,15 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 import classes from "./DetailPerson.module.css";
+import { BsThreeDots, BsMouse } from "react-icons/bs";
+import { MdClose } from "react-icons/md";
 
 const API_KEY = process.env.REACT_APP_API_KEY;
 
 const DetailPerson = () => {
   const location = useLocation();
   const path = location.pathname.split("/")[2];
+  const [moreBtn, setMoreBtn] = useState(false);
 
   //Andrew Garfield
   const getPerson = async () => {
@@ -97,36 +100,57 @@ const DetailPerson = () => {
             <div className={classes.birthday}>{data.birthday}</div>
             <div className={classes["place-birth"]}>{data.place_of_birth}</div>
           </div>
-          <div className={classes.biography}>{data.biography}</div>
+          <div
+            className={`${classes.biography} ${moreBtn ? classes.more : null}`}
+          >
+            {data.biography}
+          </div>
+          <div className={classes["btn-wrapper"]}>
+            <button
+              type="button"
+              className={classes["more-btn"]}
+              onClick={() => setMoreBtn((prev) => !prev)}
+            >
+              {moreBtn ? <MdClose /> : <BsThreeDots />}
+            </button>
+          </div>
         </div>
       </div>
-      <Slider {...settings} className={classes.cast}>
-        {castData &&
-          castData.map((data) => (
-            <div className={classes["cast-item"]} key={data.id}>
-              <img
-                src={
-                  data.poster_path
-                    ? `https://image.tmdb.org/t/p/w500${data.poster_path}`
-                    : data.backdrop_path &&
-                      `https://image.tmdb.org/t/p/w500${data.backdrop_path}`
-                }
-                alt={data.poster_path && data.title ? data.title : data.name}
-                className={classes["cast-img"]}
-              />
-              <div className={classes["cast-title"]}>
-                <Link
-                  to={`/${data.title ? "movie" : "tv"}/${data.id}`}
-                  className={classes.link}
-                >{`${data.title ? data.title : data.name} (${
-                  data.first_air_date
-                    ? `${new Date(data.first_air_date).getFullYear()}~`
-                    : new Date(data.release_date).getFullYear()
-                })`}</Link>
-              </div>
-            </div>
-          ))}
-      </Slider>
+      <div className={classes.cast}>
+        <div className={classes["slider-icon"]}>
+          <BsMouse /> Moving Slides
+        </div>
+        <Slider {...settings}>
+          {castData &&
+            castData
+              .filter((data) => data.poster_path || data.backdrop_path)
+              .map((data) => (
+                <div className={classes["cast-item"]} key={data.id}>
+                  <img
+                    src={
+                      data.poster_path
+                        ? `https://image.tmdb.org/t/p/w500${data.poster_path}`
+                        : data.backdrop_path &&
+                          `https://image.tmdb.org/t/p/w500${data.backdrop_path}`
+                    }
+                    alt={
+                      data.poster_path && data.title ? data.title : data.name
+                    }
+                    className={classes["cast-img"]}
+                  />
+                  <div className={classes["cast-title"]}>
+                    <Link to={`/${data.title ? "movie" : "tv"}/${data.id}`}>{`${
+                      data.title ? data.title : data.name
+                    } (${
+                      data.first_air_date
+                        ? `${new Date(data.first_air_date).getFullYear()}~`
+                        : new Date(data.release_date).getFullYear()
+                    })`}</Link>
+                  </div>
+                </div>
+              ))}
+        </Slider>
+      </div>
     </div>
   );
 };

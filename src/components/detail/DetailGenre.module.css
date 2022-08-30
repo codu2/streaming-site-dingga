@@ -7,17 +7,19 @@
 
 .genre {
   width: 100%;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 300;
   color: #f4f4f4;
   line-height: 24px;
   margin-bottom: 20px;
+  padding-top: 40px;
+  text-align: center;
 }
 
 .genre span {
   font-size: 20px;
   font-weight: 500;
-  color: #4a7720;
+  color: #90cea1;
 }
 
 .genre-result {
@@ -32,27 +34,25 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
   margin-bottom: 20px;
 }
 
 .genre-content > h1 {
-  margin: 10px 0 15px;
-  font-size: 15px;
+  margin: 10px 0 16px;
+  font-size: 16px;
   font-weight: 500;
   color: #f4f4f4;
 }
 
 .genre-list {
-  height: 220px;
+  height: 244px;
   width: 100%;
-  overflow: hidden;
 }
 
 .genre-list-item {
   height: 100%;
   width: 100%;
-  overflow: hidden;
+  outline: none;
 }
 
 .genre-title {
@@ -70,11 +70,19 @@
 
 .genre-list-item img {
   width: 100%;
-  height: 180px;
+  height: 204px;
   object-fit: cover;
+  opacity: 0.8;
 }
 
-.link {
-  color: #333;
-  text-decoration: none;
+.slider-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.slider-btn:hover {
+  background-color: rgba(255, 255, 255, 0.7);
 }

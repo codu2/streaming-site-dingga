@@ -9,8 +9,29 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 import classes from "./DetailGenre.module.css";
+import { MdOutlineArrowForwardIos } from "react-icons/md";
 
 const API_KEY = process.env.REACT_APP_API_KEY;
+
+function NextArrow(props) {
+  const { className, style, onClick } = props;
+  return (
+    <MdOutlineArrowForwardIos
+      className={`${className} ${classes["slider-btn"]}`}
+      style={{
+        ...style,
+        display: "block",
+        top: "50%",
+        right: "8px",
+        color: "#f4f4f4",
+        width: "48px",
+        height: "48px",
+        borderRadius: "50%",
+      }}
+      onClick={onClick}
+    />
+  );
+}
 
 const DetailGenre = () => {
   const location = useLocation();
@@ -53,11 +74,12 @@ const DetailGenre = () => {
   }, [path, genresData]);
 
   const settings = {
-    dots: false, // 점은 안 보이게
-    infinite: true, // 무한 슬라이더
+    dots: false,
+    infinite: true,
     speed: 500,
-    slidesToShow: 8, //5장씩 보이게 해주세요
-    slidesToScroll: 8, //1장씩 넘어가세요
+    slidesToShow: 8,
+    slidesToScroll: 8,
+    nextArrow: <NextArrow />,
   };
 
   return (
@@ -68,7 +90,7 @@ const DetailGenre = () => {
       <div className={classes["genre-result"]}>
         {genreMovie.length !== 0 && (
           <div className={classes["genre-content"]}>
-            <h1>- Movies</h1>
+            <h1>Movies</h1>
             <Slider {...settings} className={classes["genre-list"]}>
               {genreMovie &&
                 genreMovie.map((movie) => (
@@ -93,7 +115,7 @@ const DetailGenre = () => {
         )}
         {genreTv.length !== 0 && (
           <div className={classes["genre-content"]}>
-            <h1>- TV Shows</h1>
+            <h1>TV Shows</h1>
             <Slider {...settings} className={classes["genre-list"]}>
               {genreTv.map((tv) => (
                 <div key={tv.id} className={classes["genre-list-item"]}>
